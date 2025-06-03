@@ -1,7 +1,7 @@
 <div>
-  <h1 align="center"><a href="https://www.epicweb.dev/workshops">Workshop Title 🎃</a></h1>
+  <h1 align="center"><a href="https://www.epicweb.dev/workshops">React Router Fundamentals part 1 ⛓️</a></h1>
   <strong>
-    Workshop subtitle
+    Data reading and display
   </strong>
   <p>
     Workshop summary
@@ -13,7 +13,7 @@
 <div align="center">
   <a
     alt="Epic Web logo with the words Deployed Version"
-    href="https://epicweb-dev-workshop-template.fly.dev/"
+    href="https://epicweb-dev-react-router-fundamentals-pt-1.fly.dev/"
   >
     <img
       width="300px"
@@ -79,8 +79,8 @@ network connection before running the setup and grab a snack.
 Follow these steps to get this set up:
 
 ```sh nonumber
-git clone --depth 1 https://github.com/epicweb-dev/workshop-template.git
-cd workshop-template
+git clone --depth 1 https://github.com/epicweb-dev/react-router-fundamentals-pt-1.git
+cd react-router-fundamentals-pt-1
 npm run setup
 ```
 
@@ -98,13 +98,13 @@ Learn all about the workshop app on the
 [npm]: https://www.npmjs.com/
 [node]: https://nodejs.org
 [git]: https://git-scm.com/
-[build-badge]: https://img.shields.io/github/actions/workflow/status/epicweb-dev/workshop-template/validate.yml?branch=main&logo=github&style=flat-square
-[build]: https://github.com/epicweb-dev/workshop-template/actions?query=workflow%3Avalidate
+[build-badge]: https://img.shields.io/github/actions/workflow/status/epicweb-dev/react-router-fundamentals-pt-1/validate.yml?branch=main&logo=github&style=flat-square
+[build]: https://github.com/epicweb-dev/react-router-fundamentals-pt-1/actions?query=workflow%3Avalidate
 [license-badge]: https://img.shields.io/badge/license-GPL%203.0%20License-blue.svg?style=flat-square
-[license]: https://github.com/epicweb-dev/workshop-template/blob/main/LICENSE
+[license]: https://github.com/epicweb-dev/react-router-fundamentals-pt-1/blob/main/LICENSE
 [coc-badge]: https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat-square
 [coc]: https://kentcdodds.com/conduct
 [win-path]: https://www.howtogeek.com/118594/how-to-edit-your-system-path-for-easy-command-line-access/
 [mac-path]: http://stackoverflow.com/a/24322978/971592
-[issue]: https://github.com/epicweb-dev/workshop-template/issues/new
+[issue]: https://github.com/epicweb-dev/react-router-fundamentals-pt-1/issues/new
 <!-- prettier-ignore-end -->
