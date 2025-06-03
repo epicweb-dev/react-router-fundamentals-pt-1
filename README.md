@@ -1,7 +1,7 @@
 <div>
   <h1 align="center"><a href="https://www.epicweb.dev/workshops">React Router Fundamentals part 1 ⛓️</a></h1>
   <strong>
-    Data reading and display
+    First part of the react-router fundamentals workshop. We go over everything you need to know about data reading and display.
   </strong>
   <p>
     Workshop summary
