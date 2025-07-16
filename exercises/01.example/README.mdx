@@ -1,1 +1,36 @@
-# Simple Server
+# Routing
+
+<h2>This module is all about routing in React Router! </h2> 
+
+You will learn how to set up routes, register them manually, use third party libraries to 
+add custom conventions, and how you can use JavaScript to define your routes dynamically.
+
+To use routing effectively, you will need to understand how react-router framework picks up
+your routes and how you can define and structure them in your application.
+
+### Understanding the `app/routes` directory
+
+The crucial part of this module is understanding how to register routes, and that is done
+in the `app/routes.ts` file.
+
+This is a special file that the vite plugin from `@react-router/dev` uses to automatically
+register your routes by using the **default export** from this file.
+
+The general structure of this file is as follows:
+
+```ts
+import { type RouteConfig } from "@react-router/dev/routes";  
+
+// React Router uses this export to register your application routes
+export default [
+  // Defining routes here makes them available to react-router
+] satisfies RouteConfig;
+```
+
+When you define your routes, the react-router vite plugin will automatically 
+pick them up and make them available in your app, and it will also typegen 
+the types into `.react-router` directory, which you can use to get type 
+safety in your components (like type-safe params, etc.).
+
+What is important to note here is that this is **just a regular JavaScript file**,
+so you can use any JavaScript or TypeScript features to define your routes dynamically.

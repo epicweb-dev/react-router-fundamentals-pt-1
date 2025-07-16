@@ -3,7 +3,7 @@
   "private": true,
   "epicshop": {
     "title": "React Router Fundamentals part 1 ⛓️",
-    "subtitle": "First part of the react-router fundementals workshop. We go over everything you need to know about data reading and display.",
+    "subtitle": "First part of the react-router fundamentals workshop. We go over everything you need to know about data reading and display.",
     "githubRepo": "https://github.com/epicweb-dev/react-router-fundamentals-pt-1",
     "instructor": {
       "name": "Alem Tuzlak",

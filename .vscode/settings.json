@@ -7,5 +7,9 @@
   ],
   "workbench.editorAssociations": {
     "*.db": "sqlite-viewer.view"
-  }
+  },
+  "cSpell.words": [
+    "Kakariki",
+    "Kiira"
+  ]
 }
