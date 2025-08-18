@@ -15,7 +15,7 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "@epic-web/workshop-utils": "^6.20.6",
+    "@epic-web/workshop-utils": "^6.23.0",
     "@react-router/node": "^7.5.3",
     "@react-router/serve": "^7.5.3",
     "isbot": "^5.1.27",
