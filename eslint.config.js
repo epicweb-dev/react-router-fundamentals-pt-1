@@ -2,7 +2,11 @@ import defaultConfig from '@epic-web/config/eslint'
 
 /** @type {import("eslint").Linter.Config} */
 export default [
-	...defaultConfig,
+	...defaultConfig.map((config) => ({
+		...config,
+		ignores: [...(config.ignores ?? []), '**/.react-router/**/*'],
+	})),
+
 	{
 		rules: {
 			// we leave unused vars around for the exercises
