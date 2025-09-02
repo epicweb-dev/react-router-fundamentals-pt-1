@@ -1,12 +1,7 @@
 {
-  "name": "02.solution.automatic-routing",
+  "name": "exercises_01.routing_02.solution.automatic-routing",
   "private": true,
   "type": "module",
-  "kcd-workshop": {
-    "scripts": {
-      "test": "playwright test --trace=retain-on-failure"
-    }
-  },
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
