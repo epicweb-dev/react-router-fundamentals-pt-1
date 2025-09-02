@@ -1,4 +1,3 @@
-import { spawn } from 'node:child_process'
 import path from 'node:path'
 import { warm } from '@epic-web/workshop-cli/warm'
 import {
@@ -6,6 +5,7 @@ import {
 	isProblemApp,
 	setPlayground,
 } from '@epic-web/workshop-utils/apps.server'
+import { execa } from 'execa'
 import fsExtra from 'fs-extra'
 
 await warm()
@@ -14,41 +14,16 @@ const allApps = await getApps()
 
 console.log('🔗 Generating React Router types')
 for (const app of allApps) {
-	// run npx react-router typegen in app
-	await runWithOutputOnFailure('npx', ['react-router', 'typegen'], {
-		cwd: app.fullPath,
-	})
-}
-
-function runWithOutputOnFailure(command, args, options) {
-	// { type: 'stdout', data: Buffer }
-	const outputBuffer = []
-	return new Promise((resolve, reject) => {
-		const child = spawn(command, args, {
-			...options,
-			stdio: ['ignore', 'pipe', 'pipe'],
+	try {
+		await execa('react-router', ['typegen'], {
+			cwd: app.fullPath,
+			stdio: 'pipe',
 		})
-		child.stdout.on('data', (data) => {
-			outputBuffer.push({ type: 'stdout', data })
-		})
-		child.stderr.on('data', (data) => {
-			outputBuffer.push({ type: 'stderr', data })
-		})
-		child.on('close', (code) => {
-			if (code !== 0) {
-				for (const { type, data } of outputBuffer) {
-					if (type === 'stderr') {
-						process.stderr.write(data)
-					} else {
-						process.stdout.write(data)
-					}
-				}
-				reject(code)
-			} else {
-				resolve('ok')
-			}
-		})
-	})
+	} catch (error) {
+		if (error.stdout) process.stdout.write(error.stdout)
+		if (error.stderr) process.stderr.write(error.stderr)
+		throw error
+	}
 }
 
 const problemApps = allApps.filter(isProblemApp)
