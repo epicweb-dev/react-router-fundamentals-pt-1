@@ -15,6 +15,12 @@
     },
     {
       "path": "exercises/01.routing/02.solution.automatic-routing"
+    },
+    {
+      "path": "exercises/02.metadata/01.problem.styling"
+    },
+    {
+      "path": "exercises/02.metadata/01.solution.styling"
     }
   ]
 }
