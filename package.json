@@ -21,6 +21,8 @@
     "postinstall": "cd ./epicshop && npm install",
     "start": "npx --prefix ./epicshop epicshop start",
     "dev": "npx --prefix ./epicshop epicshop start",
+    "dev:i": "npm-run-all --parallel dev fix:watch",
+    "fix:watch": "node ./epicshop/fix-watch.js",
     "test": "npm run test --silent --prefix playground",
     "test:e2e": "npm run test:e2e --silent --prefix playground",
     "test:e2e:dev": "npm run test:e2e:dev --silent --prefix playground",
@@ -47,6 +49,7 @@
   "devDependencies": {
     "@epic-web/config": "^1.17.0",
     "eslint": "^9.21.0",
+    "npm-run-all": "^4.1.5",
     "prettier": "^3.5.2",
     "typescript": "^5.7.3"
   },
