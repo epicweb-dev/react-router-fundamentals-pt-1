@@ -1,6 +1,106 @@
-# Routing
+# Routing & Structure 
 
-<h2>This module is all about routing in React Router! </h2>
+## Structure 
+Before we dive into routing exercises we will first go over the basic structure of any
+React Router application.
+
+The minimal tree structure of a React Router application is as follows:
+
+```
+|-|app/ 
+|-|-routes.ts      <-- Your route definitions go here 
+|-|-root.tsx       <-- Your app entry point
+|-react-router.config.ts <-- Your react-router config
+|-vite.config.ts  <-- Your vite config 
+```
+
+Let's go over each of these files and what they do.
+
+### react-router.config.ts
+
+This file is used to configure the `@react-router/dev` vite plugin, which is responsible
+for picking up your routes from the `app/routes.ts` file and generating types for them,
+bundling your app and many other things.
+
+The general structure of this file is as follows:
+
+```ts
+import { type Config } from '@react-router/dev/config'
+
+export default {
+	// Config options...
+	// The directory where your app lives (this is the default)
+	appDirectory: 'app',
+	// If you want to change the build output directory (this is the default)
+	buildDirectory: 'build',
+	// Server-side render by default, to enable SPA mode set this to `false`
+	ssr: true,
+} satisfies Config
+```
+
+If you want to find all the config options and what they do you can find them here:
+📜 https://reactrouter.com/api/framework-conventions/react-router.config.ts
+
+### routes.ts
+
+This is a special file that the vite plugin from `@react-router/dev` uses to automatically
+register your routes by using the **default export** from this file.
+
+This file can contain any sort of JavaScript or TypeScript code, and you can use
+variables, functions, imports, etc. to define your routes dynamically.
+
+This file needs to live under your `app` directory, and it needs to be named `routes.ts`.
+The general structure of this file is as follows:
+
+```ts
+import { type RouteConfig } from '@react-router/dev/routes'
+
+// React Router uses this export to register your application routes
+export default [] satisfies RouteConfig
+```
+
+Find the following documentation for more information:
+📜 https://reactrouter.com/api/framework-conventions/routes.ts
+📜 https://api.reactrouter.com/v7/interfaces/_react_router_dev.routes.RouteConfigEntry.html
+
+
+### root.tsx
+
+This is the entry point of your application, and it is where you will set up your
+general HTML layout and structure and everything that is to be used by your whole
+application. This file is the equivalent of your entry point in a traditional React app
+created with Create React App or Vite and the index.html file that it uses to attach to.
+
+This file is special to all the other kinds of route entry files because this file can
+contain the special `Layout` export that will be used as the root layout for your
+application whether it's rendering the app UI or the error UI.
+
+More information on the `root.tsx` file can be found here:
+📜 https://reactrouter.com/api/framework-conventions/root.tsx
+
+More information on the `Layout` export can be found here:
+📜 https://reactrouter.com/api/framework-conventions/root.tsx#layout-export
+
+### vite.config.ts
+
+This is the vite config file, and it is where you will set up your vite plugins
+and other vite specific configuration.
+
+This is where we register the `react-router` vite plugin that is responsible for
+unlocking the full potential of React Router framework mode in your application.
+
+Here's a minimal vite config file that registers the `@react-router/dev` plugin:
+
+```ts
+import { defineConfig } from 'vite'
+import { reactRouter } from '@react-router/dev/vite'
+
+export default defineConfig({
+	plugins: [reactRouter()],
+})
+```
+
+## Routing
 
 You will learn how to set up routes, register them manually, use third party libraries to
 add custom conventions, and how you can use JavaScript to define your routes dynamically.

@@ -1,7 +1,12 @@
 # Using automatic route detection
 
+👨‍💼 Peter doesn't want us spending our precious development time doing tedious 
+manual work. He wants us to find a better way to register routes in our application and that
+is exactly what we are going to do in this exercise!
+
 Now that we understand how to define routes and use them effectively, let's use a package
-from the React Router team to automatically detect and register routes for us!
+from the React Router team to automatically detect and register routes for us so we can focus
+on building features instead of boilerplate.
 
 ## Exercise Overview
 
@@ -13,3 +18,15 @@ In this exercise, you will:
 ## Getting Started
 
 To get started, find our helpful assistants comments in the `app/routes.ts` file. (They include 🐨 emoji)
+
+You will need to install a new package to help you with automatic route detection:
+
+```sh
+npm install @react-router/fs-routes
+```
+
+Then, implement the following steps in the `app/routes.ts` file:
+
+1. Import the `flatRoutes` function from `@react-router/fs-routes`.
+2. Use the `flatRoutes` function to automatically detect and register all the routes in the
+   `app/routes` directory.
