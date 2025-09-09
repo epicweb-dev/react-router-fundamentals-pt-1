@@ -30,6 +30,9 @@
     },
     {
       "path": "exercises/02.metadata/03.problem.titles-with-meta"
+    },
+    {
+      "path": "exercises/02.metadata/03.solution.titles-with-meta"
     }
   ]
 }
