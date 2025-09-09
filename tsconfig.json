@@ -21,6 +21,15 @@
     },
     {
       "path": "exercises/02.metadata/01.solution.styling"
+    },
+    {
+      "path": "exercises/02.metadata/02.problem.titles-react"
+    },
+    {
+      "path": "exercises/02.metadata/02.solution.titles-react"
+    },
+    {
+      "path": "exercises/02.metadata/03.problem.titles-with-meta"
     }
   ]
 }

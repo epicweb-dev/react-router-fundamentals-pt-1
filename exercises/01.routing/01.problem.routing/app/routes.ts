@@ -13,6 +13,7 @@ import {
 // - Home page ("/")
 // - About page ("/about")
 // - Contact page ("/contact")
+// 💰 Create a products route with children here!
 // - Products page ("/products")
 // - Product details page ("/products/:productId")
 // - Terms of Use page ("/terms-of-use")

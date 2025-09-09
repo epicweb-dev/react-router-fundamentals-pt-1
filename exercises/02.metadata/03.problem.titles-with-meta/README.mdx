@@ -1,0 +1,34 @@
+# Metadata with the `meta` export
+
+👨‍💼 Our manager is not happy with us! We introduced a bug and we didn't add a prefix
+in the titles! He wants all our titles to start with `Epic Shop - <Page Specific Title>`.
+He also wants us to fix the bug with the doubled titles on the product pages!
+
+But, before we do that let's first understand how the React 19 JSX metadata tags work and
+why the bug happened in the first place.
+
+## The Hoisting Mechanism
+
+React 19 hoisting mechanism automatically moves certain elements from the body of your document
+to the head of your document. This includes elements like `<title>`, but the issue is it doesn't
+de-duplicate them if you already have a title in the head, which is what happened in our case.
+
+When we added titles using React 19 JSX metadata tags, they were hoisted to the head of the document,
+but since we already had titles defined in the head (defined by a route above the specific product route),
+we ended up with two titles in the head, which is not valid HTML and can cause issues with SEO and 
+accessibility.
+
+To fix this, we need to use the `meta` export provided by React Router, which allows us to define
+metadata for our routes in a more structured way. This way, we can ensure that we only have one title
+per page and we can also easily add a prefix to all our titles.
+
+## `meta` export
+
+The `meta` export is a function that returns an object containing metadata for the route.
+
+The cool thing about the `meta` export is that it allows us to define metadata for our routes
+in a more structured way by giving us the data returned from loaders, and also the parent 
+routes metadata, which allows us to easily create dynamic titles and other metadata based on the
+data returned from our loaders.
+
+In this exercise, we're going to use the `meta` export to add titles to our pages.

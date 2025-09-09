@@ -2,3 +2,73 @@
 
 <h2>This module is all about metadata in React Router! </h2>
  
+Metadata is an important part of any web application, and React Router provides
+powerful tools to manage it effectively. Metadata is all the information that describes
+your web page, such as titles, descriptions, social media tags, fonts, stylesheets and more.
+
+In this module you will learn all about how to add metadata to your app!
+
+We will cover the following topics:
+- Adding global styles and fonts
+- Managing document metadata
+- Using the `meta` export
+- Using the `links` export
+
+Before we actually start adding metadata to our app, let's take a look at two ways of adding metadata
+in `react-router`, through the `meta` and `links` exports or using React 19 directly.
+
+## Using React 19 to manage metadata
+
+From React 19 onwards, you can use JSX to hoist metadata directly into your documents head.
+Here's an example of how to use JSX to add metadata to your app:
+
+```tsx
+export default function SomeRoute() {
+  return (
+    <>
+      /** This gets hoisted into the document head */
+      <link rel="stylesheet" href="/styles/global.css" />
+    </>
+  )
+}
+```
+
+As you can see, you can add any valid HTML metadata tags directly in your component's JSX,
+and React will automatically hoist them into the document head for you. This is a great way
+to manage metadata in a more declarative way, and it works seamlessly with React Router.
+
+However, it has a few drawbacks and pitfalls which we will explore throughout this module together!
+
+## Using the `meta` and `links` exports
+
+React Router provides two special exports, `meta` and `links`, which allow you to manage metadata
+in a more structured way. The `meta` export is used to define metadata for a specific route, while 
+the `links` export is used to define global metadata for your app.
+
+Here's an example of how to use the `meta` and `links` exports:
+
+```tsx
+import { MetaFunction, LinksFunction } from 'react-router'
+import globalStylesUrl from '~/styles/global.css'
+
+export const meta: MetaFunction = () => {
+  return {
+    title: 'My App',
+    description: 'This is my app',
+  }
+}
+
+export const links: LinksFunction = () => {
+  return [{ rel: 'stylesheet', href: globalStylesUrl }]
+}
+```
+
+In this example, we're defining a title and description for our app using the `meta` export,
+and we're adding a global stylesheet using the `links` export. This is a more structured way
+to manage metadata in your app.
+
+Both methods have their pros and cons, and it's important to understand when to use each one.
+In the next exercises, we will explore both methods in more detail and learn how to use them 
+effectively.
+
+Take a deep breath, and let's continue once you're ready! 🚀

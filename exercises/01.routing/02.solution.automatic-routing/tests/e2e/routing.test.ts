@@ -5,14 +5,14 @@ test.describe('Routing E2E Tests', () => {
 		page,
 	}) => {
 		await page.goto('/')
-		await expect(page.getByRole('heading', { name: 'Step Into' })).toBeVisible()
+		await expect(page.getByText("Landing page!")).toBeVisible()
 	})
 
 	test('should navigate to about page and render correct content', async ({
 		page,
 	}) => {
 		await page.goto('/about')
-		await expect(page.getByRole('heading', { name: 'Our Story' })).toBeVisible()
+		await expect(page.getByText("About page!")).toBeVisible()
 	})
 
 	test('should navigate to contact page and render correct content', async ({
@@ -20,7 +20,7 @@ test.describe('Routing E2E Tests', () => {
 	}) => {
 		await page.goto('/contact')
 		await expect(
-			page.getByRole('heading', { name: 'Get in Touch' }),
+			page.getByText("Contact page!"),
 		).toBeVisible()
 	})
 
@@ -29,7 +29,7 @@ test.describe('Routing E2E Tests', () => {
 	}) => {
 		await page.goto('/products')
 		await expect(
-			page.getByRole('heading', { name: 'All Products' }),
+			page.getByText("Products page!"),
 		).toBeVisible()
 	})
 
@@ -38,7 +38,7 @@ test.describe('Routing E2E Tests', () => {
 	}) => {
 		await page.goto('/terms-of-service')
 		await expect(
-			page.getByRole('heading', { name: 'Terms of Service' }),
+			page.getByText("Terms of Service page!"),
 		).toBeVisible()
 	})
 
@@ -47,7 +47,7 @@ test.describe('Routing E2E Tests', () => {
 	}) => {
 		await page.goto('/terms-of-use')
 		await expect(
-			page.getByRole('heading', { name: 'Terms of Use' }),
+			page.getByText("Terms of Use page!"),
 		).toBeVisible()
 	})
 
@@ -56,7 +56,7 @@ test.describe('Routing E2E Tests', () => {
 	}) => {
 		await page.goto('/products/1')
 		await expect(
-			page.getByRole('heading', { name: 'Air Max Revolution' }),
+			page.getByText("Product Detail Page"),
 		).toBeVisible()
 	})
 })

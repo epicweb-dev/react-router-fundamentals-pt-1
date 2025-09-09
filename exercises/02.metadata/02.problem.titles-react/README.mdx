@@ -1,0 +1,79 @@
+# Adding Titles with React 19
+
+Now that we have the styling down, let's add some titles to our pages!
+
+For any sort of public, user-facing website it is of utmost importance to have proper titles
+and SEO metadata for your pages. This helps with search engine rankings, accessibility,
+and overall user experience.
+
+Ever since React 19 came out it has become trivial to add titles and other metadata
+to your pages using their hoisting mechanism that automatically collects metadata from
+all your JSX and hoists it into the documents head.
+
+This JSX:
+
+```jsx
+function SomeComponent() {
+  return (
+    <>
+      <h1>Hello World</h1>
+      <title>My Page Title</title>
+      <meta name="description" content="My Page Description" />
+    </>
+  )
+}
+```
+
+Would hoist the `<title>` and `<meta>` tags into the document head for you automatically,
+which would produce the following HTML:
+
+```html
+<head>
+  <title>My Page Title</title>
+  <meta name="description" content="My Page Description" />
+</head>
+<body>
+  <div id="root"> 
+    <h1>Hello World</h1>
+  </div>
+</body>
+```
+ 
+Now that you understand how the hoisting mechanism works, let's see how we can use
+this to our advantage by adding titles to our pages using React.
+
+Every route in the project has instructions on what you need to do, go Koala hunting
+and try to add titles to all the pages!
+
+
+📜 https://react.dev/blog/2024/12/05/react-19#support-for-metadata-tags
+
+
+
+
+
+
+
+
+
+
+
+
+In this exercise, we're going to use the `meta` export to add titles to our pages.
+
+Here's a quick overview of how the `meta` export works:
+- The `meta` export is a function that returns an object containing metadata for the route.
+- The keys of the object correspond to the metadata properties, such as `title`, `description`, etc.
+- The values of the object are the values of the metadata properties.
+Here's an example of how to use the `meta` export to add a title to a route:
+
+```tsx
+import { MetaFunction } from 'react-router'
+
+export const meta: MetaFunction = () => {
+  return {
+    title: 'My Page Title',
+    description: 'My Page Description',
+  }
+}
+```

@@ -3,9 +3,40 @@
 In this exercise we will learn how to add styles and fonts to our React Router apps 
 using the `links` export.
 
+## Using vite to import stylesheets and handle CSS
+
+Because react-router framework mode uses vite, we can take advantage of
+vite's ability to import stylesheets directly in our JavaScript and TypeScript files.
+
+This means that we can import our global stylesheets directly in our `root.tsx` file as
+side-effect imports, like so:
+
+```ts
+import './styles/global.css'
+```
+
+and this would work out of the box! Vite also supports a lot of other CSS styling approaches
+like CSS modules, PostCSS and more!
+
+To learn more about all the benefits you get by using Vite you can check out the vite documentation:
+
+📜 https://vite.dev/guide/features.html#css
+
+
 ## Understanding the `links` export
 
-Before you begin adding styles and fonts to your app, it's important to understand how the `links` export works. The `links` export is a function that returns an array of `<link>` elements to be included in the `<head>` of your document. This is where you can add your global stylesheets and font links.
+Before you begin adding styles and fonts to your app, it's important to understand how the `links` export works. 
+The `links` export is a function that returns an array of `<link>` elements to be included in the 
+`<head>` of your document. This is where you can add your global stylesheets and font links and whatever
+else you might need in the head of your document.
+
+What is important to know is the links export returns an array of object, where each object represents
+a single `<link>` element. The keys of the object correspond to the attributes of the `<link>` element.
+Where the values of the object are the values of the attributes.
+
+One last thing to keep in mind is that this export is just a regular JavaScript function, so you can use
+any JavaScript features you want to generate the array of link objects dynamically. You can include/exclude
+links based on environment variables, or any other logic you might need.
 
 Here's an example of how to use the `links` export:
 
@@ -29,5 +60,7 @@ export const links: LinksFunction = () => [
 ]
 ```
 
-In this example, we're adding a global stylesheet and a Google Fonts link to our app. 
-The `links` export is a powerful way to manage your app's styles and fonts in a centralized location.
+In this exercise, we're adding a global stylesheet and a Google Fonts link to our app.
+To get started head to the `root.tsx` and find the exercise instructions there!
+
+Bonus points if you preconnect to the Google Fonts domain to speed up font loading! 🚀
