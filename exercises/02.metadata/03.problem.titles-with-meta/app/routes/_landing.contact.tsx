@@ -1,6 +1,17 @@
 import { Mail, Phone, MapPin, Send, CheckCircle, Clock } from 'lucide-react'
 import React, { useState } from 'react'
+// 💰 You will need these utilities! Feel free to check their implementation first!
+import { getMetaFromMatches, getMetaTitle, constructPrefixedTitle } from '#app/utils/metadata.js';
+import type { Route } from './+types/_landing.contact';
 
+// 🐨 We want to include the root meta in the title to have Epic Shop | Contact Us
+export const meta: Route.MetaFunction = ({ matches }) => {
+	// 💰 You can use getMetaFromMatches and specify "root" to extract the meta information from root
+	// 💰 You can use getMetaTitle to extract the title from the root meta information
+	return [{
+		// 💰 You can use constructPrefixedTitle to create the title with the prefix you provide   
+	}]
+}
 export default function ContactPage() {
 	const [formData, setFormData] = useState({
 		name: '',
@@ -61,7 +72,6 @@ export default function ContactPage() {
 
 	return (
 		<div className="bg-stone-50 dark:bg-gray-900">
-			<title>Contact Us</title>
 			{/* Hero Section */}
 			<div className="bg-gradient-to-br from-stone-50 via-amber-50/30 to-stone-100 py-32 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
 				<div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">

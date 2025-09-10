@@ -24,8 +24,6 @@ export default function ProductDetailPage() {
 	if (!product) {
 		return (
 			<div className="flex min-h-screen items-center justify-center bg-stone-50 dark:bg-gray-900">
-
-				<title>Product Overview</title>
 				<div className="text-center">
 					<h2 className="mb-4 text-2xl font-light text-gray-900 dark:text-white">
 						Product not found

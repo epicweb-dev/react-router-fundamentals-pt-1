@@ -2,7 +2,18 @@ import { Filter, Grid, List, Star, Heart } from 'lucide-react'
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router'
 import { products, categories, brands } from '../../data/products'
+// 💰 You will need these utilities! Feel free to check their implementation first!
+import { getMetaFromMatches, getMetaTitle, constructPrefixedTitle } from '#app/utils/metadata.js';
+import type { Route } from './+types/_landing.products._index';
 
+// 🐨 We want to include the root meta in the title to have Epic Shop | All Products
+export const meta: Route.MetaFunction = ({ matches }) => {
+	// 💰 You can use getMetaFromMatches and specify "root" to extract the meta information from root
+	// 💰 You can use getMetaTitle to extract the title from the root meta information
+	return [{
+		// 💰 You can use constructPrefixedTitle to create the title with the prefix you provide   
+	}]
+}
 export default function ProductsPage() {
 	const [selectedCategory, setSelectedCategory] = useState('All')
 	const [selectedBrand, setBrand] = useState('All')
@@ -43,8 +54,6 @@ export default function ProductsPage() {
 
 	return (
 		<div className="min-h-screen bg-stone-50 dark:bg-gray-900">
-
-			<title>All Products</title>
 			{/* Header */}
 			<div className="border-b border-stone-200 bg-white dark:border-gray-700 dark:bg-gray-900">
 				<div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">

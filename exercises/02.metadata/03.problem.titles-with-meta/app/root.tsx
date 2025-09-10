@@ -25,6 +25,12 @@ export const links: Route.LinksFunction = () => [
 	},
 ]
 
+export const meta: Route.MetaFunction = () => {
+	// 🐨 Add the title to this page
+	// 💰 The title should be "Epic Shop" 
+	return []
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en">
