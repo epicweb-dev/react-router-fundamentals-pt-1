@@ -1,5 +1,16 @@
 import { Minus, Plus, Trash2, ArrowLeft, ShoppingBag } from 'lucide-react'
 import { Link } from 'react-router'
+import { constructPrefixedTitle, getMetaFromMatches, getMetaTitle } from '#app/utils/metadata.js'
+import type { Route } from '../+types/root'
+
+export const meta: Route.MetaFunction = ({ matches }) => {
+	const rootMeta = getMetaFromMatches(matches, 'root')
+	const prefix = getMetaTitle(rootMeta);
+	return [{
+		title: constructPrefixedTitle("Cart", prefix),
+	}]
+}
+
 
 export default function CartPage() {
 	const items: {
@@ -71,7 +82,6 @@ export default function CartPage() {
 		<div className="min-h-screen bg-stone-50 dark:bg-gray-900">
 			<div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
 				{/* Header */}
-				<title>Cart</title>
 				<div className="mb-8 flex items-center justify-between">
 					<div>
 						<h1 className="text-3xl font-light text-gray-900 dark:text-white">

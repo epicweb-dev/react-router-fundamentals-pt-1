@@ -2,6 +2,9 @@
   "name": "exercises_01.routing_01.solution.routing",
   "private": true,
   "type": "module",
+  "imports": {
+    "#app/*": "./app/*"
+  },
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
@@ -29,7 +32,6 @@
     "dotenv": "^16.3.1",
     "tailwindcss": "^4.1.4",
     "typescript": "^5.8.3",
-    "vite": "^6.3.3",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite": "^6.3.3"
   }
 }

@@ -1,5 +1,15 @@
 import { Mail, Phone, MapPin, Send, CheckCircle, Clock } from 'lucide-react'
 import React, { useState } from 'react'
+import { constructPrefixedTitle, getMetaFromMatches, getMetaTitle } from '#app/utils/metadata.js';
+import type { Route } from './+types/_landing.contact';
+
+export const meta: Route.MetaFunction = ({ matches }) => {
+	const rootMeta = getMetaFromMatches(matches, 'root')
+	const prefix = getMetaTitle(rootMeta);
+	return [{
+		title: constructPrefixedTitle("Contact Us", prefix),
+	}]
+}
 
 export default function ContactPage() {
 	const [formData, setFormData] = useState({
@@ -61,7 +71,6 @@ export default function ContactPage() {
 
 	return (
 		<div className="bg-stone-50 dark:bg-gray-900">
-			<title>Contact Us</title>
 			{/* Hero Section */}
 			<div className="bg-gradient-to-br from-stone-50 via-amber-50/30 to-stone-100 py-32 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
 				<div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">

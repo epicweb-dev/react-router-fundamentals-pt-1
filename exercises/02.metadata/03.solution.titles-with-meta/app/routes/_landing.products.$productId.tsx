@@ -8,9 +8,19 @@ import {
 	Plus,
 	Minus,
 } from 'lucide-react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useParams, Link } from 'react-router'
+import { getMetaFromMatches, getMetaTitle, constructPrefixedTitle } from '#app/utils/metadata.js'
 import { products } from '../../data/products'
+import type { Route } from './+types/_landing.products.$productId'
+
+export const meta: Route.MetaFunction = ({ matches }) => {
+	const rootMeta = getMetaFromMatches(matches, 'root')
+	const prefix = getMetaTitle(rootMeta);
+	return [{
+		title: constructPrefixedTitle("Product overview", prefix),
+	}]
+}
 
 export default function ProductDetailPage() {
 	const { productId } = useParams()
@@ -25,7 +35,6 @@ export default function ProductDetailPage() {
 		return (
 			<div className="flex min-h-screen items-center justify-center bg-stone-50 dark:bg-gray-900">
 
-				<title>Product Overview</title>
 				<div className="text-center">
 					<h2 className="mb-4 text-2xl font-light text-gray-900 dark:text-white">
 						Product not found
@@ -65,7 +74,6 @@ export default function ProductDetailPage() {
 	return (
 		<div className="min-h-screen bg-stone-50 dark:bg-gray-900">
 			<div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-				<title>Product Overview</title>
 				{/* Breadcrumb */}
 				<div className="mb-8 flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
 					<Link

@@ -2,6 +2,16 @@ import { Filter, Grid, List, Star, Heart } from 'lucide-react'
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router'
 import { products, categories, brands } from '../../data/products'
+import { getMetaFromMatches, getMetaTitle, constructPrefixedTitle } from '#app/utils/metadata.js'
+import type { Route } from './+types/_landing.products._index'
+
+export const meta: Route.MetaFunction = ({ matches }) => {
+	const rootMeta = getMetaFromMatches(matches, 'root')
+	const prefix = getMetaTitle(rootMeta);
+	return [{
+		title: constructPrefixedTitle("All Products", prefix),
+	}]
+}
 
 export default function ProductsPage() {
 	const [selectedCategory, setSelectedCategory] = useState('All')
@@ -43,8 +53,6 @@ export default function ProductsPage() {
 
 	return (
 		<div className="min-h-screen bg-stone-50 dark:bg-gray-900">
-
-			<title>All Products</title>
 			{/* Header */}
 			<div className="border-b border-stone-200 bg-white dark:border-gray-700 dark:bg-gray-900">
 				<div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">

@@ -1,9 +1,18 @@
 import { Shield, Mail } from 'lucide-react'
+import { getMetaFromMatches, getMetaTitle, constructPrefixedTitle } from '#app/utils/metadata.js';
+import type { Route } from './+types/_landing.terms-of-service';
+
+export const meta: Route.MetaFunction = ({ matches }) => {
+	const rootMeta = getMetaFromMatches(matches, 'root')
+	const prefix = getMetaTitle(rootMeta);
+	return [{
+		title: constructPrefixedTitle("Terms of Service", prefix),
+	}]
+}
 
 export default function TOSPage() {
 	return (
 		<div className="bg-stone-50 dark:bg-gray-900">
-			<title>Terms of Service</title>
 			{/* Hero Section */}
 			<div className="bg-gradient-to-br from-stone-50 via-amber-50/30 to-stone-100 py-32 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
 				<div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
