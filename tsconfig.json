@@ -33,6 +33,9 @@
     },
     {
       "path": "exercises/02.metadata/03.solution.titles-with-meta"
+    },
+    {
+      "path": "exercises/03.data-fetching/01.problem.fetching-with-loaders"
     }
   ]
 }
