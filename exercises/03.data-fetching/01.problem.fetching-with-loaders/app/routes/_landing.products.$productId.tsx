@@ -13,12 +13,11 @@ import { useParams, Link } from 'react-router'
 import { getMetaFromMatches, getMetaTitle, constructPrefixedTitle } from '#app/utils/metadata.js'
 import { products } from '../../data/products'
 import type { Route } from './+types/_landing.products.$productId'
-import { db } from '#app/db.server.js'
 
 export const meta: Route.MetaFunction = ({ matches }) => {
 	const rootMeta = getMetaFromMatches(matches, 'root')
 	const prefix = getMetaTitle(rootMeta);
-	db
+
 	return [{
 		title: constructPrefixedTitle("Product overview", prefix),
 	}]

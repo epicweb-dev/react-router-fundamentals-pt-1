@@ -1,8 +1,12 @@
-import { products } from '../../../data/products'
+import type { Product } from '#app/domain/products.server.js' 
 import { ArrowRight, Star } from 'lucide-react'
 import { Link } from 'react-router'
 
-export const FeaturedProductsSection = () => {
+interface FeaturedProductsSectionProps {
+	products: Product[]
+}
+
+export const FeaturedProductsSection = ({ products }: FeaturedProductsSectionProps) => {
 	const featuredProducts = products.slice(0, 4)
 
 	return (
@@ -26,7 +30,7 @@ export const FeaturedProductsSection = () => {
 						>
 							<div className="relative overflow-hidden">
 								<img
-									src={product.image}
+									src={product.imageUrl}
 									alt={product.name}
 									className="h-64 w-full object-cover transition-transform duration-500 group-hover:scale-110"
 								/>
@@ -34,24 +38,24 @@ export const FeaturedProductsSection = () => {
 									<div className="flex items-center space-x-1">
 										<Star className="h-4 w-4 fill-current text-amber-500" />
 										<span className="text-sm font-medium text-gray-900 dark:text-white">
-											{product.rating}
+											{product.reviews[0].rating}
 										</span>
 									</div>
 								</div>
 							</div>
 							<div className="p-6">
 								<div className="mb-2 text-sm font-medium text-amber-600 dark:text-amber-500">
-									{product.brand}
+									{product.brand.name}
 								</div>
 								<h3 className="mb-2 text-lg font-medium text-gray-900 transition-colors duration-300 group-hover:text-amber-600 dark:text-white dark:group-hover:text-amber-500">
 									{product.name}
 								</h3>
 								<div className="flex items-center justify-between">
 									<span className="text-xl font-bold text-gray-900 dark:text-white">
-										${product.price}
+										${product.variations[0].price}
 									</span>
 									<span className="text-sm text-gray-500 dark:text-gray-400">
-										{product.reviews} reviews
+										{product.reviews.length} reviews
 									</span>
 								</div>
 							</div>

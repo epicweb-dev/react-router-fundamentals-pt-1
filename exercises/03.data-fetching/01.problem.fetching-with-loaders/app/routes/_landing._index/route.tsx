@@ -1,3 +1,5 @@
+ 
+import { getProducts } from '#app/domain/products.server.js'
 import { getMetaFromMatches, getMetaTitle, } from '#app/utils/metadata.js'
 import type { Route } from './+types/route'
 import { CategoriesSection } from './categories-section'
@@ -12,13 +14,18 @@ export const meta: Route.MetaFunction = ({ matches }) => {
 	return [{ title }]
 }
 
-export default function HomePage() {
+export const loader = async ({}: Route.LoaderArgs) => {
+	const products = await  getProducts();
+	return { products }
+}
+
+export default function HomePage({ loaderData }: Route.ComponentProps) {
 	return (
 		<div className="bg-stone-50 dark:bg-gray-900">
 			<HeroSection />
 			<FeaturesSection />
 			<CategoriesSection />
-			<FeaturedProductsSection />
+			<FeaturedProductsSection products={loaderData.products} />
 			<NewsletterSection />
 		</div>
 	)
