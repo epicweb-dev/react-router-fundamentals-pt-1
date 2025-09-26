@@ -13,6 +13,7 @@ import { useParams, Link } from 'react-router'
 import { getMetaFromMatches, getMetaTitle, constructPrefixedTitle } from '#app/utils/metadata.js'
 import { products } from '../../data/products'
 import type { Route } from './+types/_landing.products.$productId'
+import { getProductById } from '#app/domain/products.server.js'
 
 export const meta: Route.MetaFunction = ({ matches }) => {
 	const rootMeta = getMetaFromMatches(matches, 'root')
@@ -23,14 +24,19 @@ export const meta: Route.MetaFunction = ({ matches }) => {
 	}]
 }
 
-export default function ProductDetailPage() {
-	const { productId } = useParams()
+export const loader = async ({ params }: Route.LoaderArgs) => {
+	const { productId } = params
+	const product = await getProductById(productId)
+	return { product }
+}
+
+export default function ProductDetailPage({ loaderData }: Route.ComponentProps) {
+	const { product } = loaderData 
 	const [selectedSize, setSelectedSize] = useState('')
 	const [selectedColor, setSelectedColor] = useState('')
 	const [quantity, setQuantity] = useState(1)
 	const [activeImage, setActiveImage] = useState(0)
 
-	const product = products.find((p) => p.id === productId)
 
 	if (!product) {
 		return (
@@ -62,14 +68,11 @@ export default function ProductDetailPage() {
 
 	// Mock additional images for gallery
 	const productImages = [
-		product.image,
-		product.image,
-		product.image,
-		product.image,
+		product.imageUrl,
 	]
 
 	const relatedProducts = products
-		.filter((p) => p.category === product.category && p.id !== product.id)
+		.filter((p) => p.category === product.category.name && p.id !== product.id)
 		.slice(0, 4)
 
 	return (
@@ -120,7 +123,7 @@ export default function ProductDetailPage() {
 					<div className="space-y-6">
 						<div>
 							<div className="mb-2 text-sm font-medium text-amber-600 dark:text-amber-500">
-								{product.brand}
+								{product.brand.name}
 							</div>
 							<h1 className="mb-4 text-3xl font-light text-gray-900 dark:text-white">
 								{product.name}
@@ -130,22 +133,22 @@ export default function ProductDetailPage() {
 									{[...Array(5)].map((_, i) => (
 										<Star
 											key={i}
-											className={`h-5 w-5 ${i < Math.floor(product.rating)
+											className={`h-5 w-5 ${i < Math.floor(product.reviews[0].rating)
 												? 'fill-current text-amber-500'
 												: 'text-gray-300 dark:text-gray-600'
 												}`}
 										/>
 									))}
 									<span className="ml-2 text-sm font-medium text-gray-900 dark:text-white">
-										{product.rating}
+										{product.reviews[0].rating}
 									</span>
 								</div>
 								<span className="text-sm text-gray-500 dark:text-gray-400">
-									({product.reviews} reviews)
+									({product.reviews.length} reviews)
 								</span>
 							</div>
 							<div className="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
-								${product.price}
+								${product.variations[0].price}
 							</div>
 							<p className="leading-relaxed text-gray-600 dark:text-gray-300">
 								{product.description}
@@ -158,16 +161,16 @@ export default function ProductDetailPage() {
 								Size
 							</h3>
 							<div className="grid grid-cols-6 gap-3">
-								{product.sizes.map((size) => (
+								{product.variations.map((variation) => (
 									<button
-										key={size}
-										onClick={() => setSelectedSize(size)}
-										className={`rounded-lg border px-4 py-3 text-center transition-colors duration-200 ${selectedSize === size
+										key={variation.id}
+										onClick={() => setSelectedSize(variation.size)}
+										className={`rounded-lg border px-4 py-3 text-center transition-colors duration-200 ${selectedSize === variation.size
 											? 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
 											: 'border-gray-300 text-gray-700 hover:border-amber-300 dark:border-gray-600 dark:text-gray-300 dark:hover:border-amber-700'
 											}`}
 									>
-										{size}
+										{variation.size}
 									</button>
 								))}
 							</div>
@@ -178,17 +181,17 @@ export default function ProductDetailPage() {
 							<h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">
 								Color
 							</h3>
-							<div className="flex space-x-3">
-								{product.colors.map((color) => (
+							<div className="flex flex-wrap space-x-3">
+								{product.variations.map((variation) => (
 									<button
-										key={color}
-										onClick={() => setSelectedColor(color)}
-										className={`rounded-lg border px-4 py-2 transition-colors duration-200 ${selectedColor === color
+										key={variation.id}
+										onClick={() => setSelectedColor(variation.color)}
+										className={`rounded-lg border px-4 py-2 transition-colors duration-200 ${selectedColor === variation.color
 											? 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
 											: 'border-gray-300 text-gray-700 hover:border-amber-300 dark:border-gray-600 dark:text-gray-300 dark:hover:border-amber-700'
 											}`}
 									>
-										{color}
+										{variation.color}
 									</button>
 								))}
 							</div>

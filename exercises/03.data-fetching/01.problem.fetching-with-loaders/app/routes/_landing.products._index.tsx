@@ -4,6 +4,10 @@ import { Link } from 'react-router'
 import { products, categories, brands } from '../../data/products'
 import { getMetaFromMatches, getMetaTitle, constructPrefixedTitle } from '#app/utils/metadata.js'
 import type { Route } from './+types/_landing.products._index'
+import { getProducts } from '#app/domain/products.server.js'
+import { ProductCard } from '#app/components/product-card.js'
+import { getAllCategories } from '#app/domain/category.server.js'
+import { getAllBrands } from '#app/domain/brand.server.js'
 
 export const meta: Route.MetaFunction = ({ matches }) => {
 	const rootMeta = getMetaFromMatches(matches, 'root')
@@ -13,7 +17,14 @@ export const meta: Route.MetaFunction = ({ matches }) => {
 	}]
 }
 
-export default function ProductsPage() {
+export const loader = async ({}: Route.LoaderArgs) => {
+	const products = await getProducts()
+	const categories = await getAllCategories()
+	const brands = await getAllBrands()
+	return { products, categories, brands }
+}
+
+export default function ProductsPage({ loaderData }: Route.ComponentProps) {
 	const [selectedCategory, setSelectedCategory] = useState('All')
 	const [selectedBrand, setBrand] = useState('All')
 	const [priceRange, setPriceRange] = useState([0, 300])
@@ -114,16 +125,16 @@ export default function ProductsPage() {
 									Category
 								</h3>
 								<div className="space-y-2">
-									{categories.map((category) => (
+									{loaderData.categories.map((category) => (
 										<button
-											key={category}
-											onClick={() => setSelectedCategory(category)}
-											className={`block w-full rounded-lg px-3 py-2 text-left transition-colors duration-200 ${selectedCategory === category
+											key={category.id}
+											onClick={() => setSelectedCategory(category.name)}
+											className={`block w-full rounded-lg px-3 py-2 text-left transition-colors duration-200 ${selectedCategory === category.name
 												? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
 												: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
 												}`}
 										>
-											{category}
+											{category.name}
 										</button>
 									))}
 								</div>
@@ -134,16 +145,16 @@ export default function ProductsPage() {
 									Brand
 								</h3>
 								<div className="space-y-2">
-									{brands.map((brand) => (
+									{loaderData.brands.map((brand) => (
 										<button
-											key={brand}
-											onClick={() => setBrand(brand)}
-											className={`block w-full rounded-lg px-3 py-2 text-left transition-colors duration-200 ${selectedBrand === brand
+											key={brand.id}
+											onClick={() => setBrand(brand.name)}
+											className={`block w-full rounded-lg px-3 py-2 text-left transition-colors duration-200 ${selectedBrand === brand.name
 												? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
 												: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
 												}`}
 										>
-											{brand}
+											{brand.name}
 										</button>
 									))}
 								</div>
@@ -177,110 +188,14 @@ export default function ProductsPage() {
 					<div className="flex-1">
 						{viewMode === 'grid' ? (
 							<div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-								{filteredProducts.map((product) => (
-									<div
-										key={product.id}
-										className="group overflow-hidden rounded-lg bg-white transition-all duration-300 hover:scale-105 hover:transform hover:shadow-xl dark:bg-gray-800"
-									>
-										<div className="relative overflow-hidden">
-											<Link to={`/products/${product.id}`}>
-												<img
-													src={product.image}
-													alt={product.name}
-													className="h-64 w-full object-cover transition-transform duration-500 group-hover:scale-110"
-												/>
-											</Link>
-											<button className="absolute top-4 right-4 rounded-full bg-white p-2 shadow-lg transition-colors duration-200 hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800">
-												<Heart className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-											</button>
-											<div className="absolute top-4 left-4 rounded-full bg-white px-3 py-1 dark:bg-gray-900">
-												<div className="flex items-center space-x-1">
-													<Star className="h-4 w-4 fill-current text-amber-500" />
-													<span className="text-sm font-medium text-gray-900 dark:text-white">
-														{product.rating}
-													</span>
-												</div>
-											</div>
-										</div>
-										<div className="p-6">
-											<div className="mb-2 text-sm font-medium text-amber-600 dark:text-amber-500">
-												{product.brand}
-											</div>
-											<Link to={`/products/${product.id}`}>
-												<h3 className="mb-2 text-lg font-medium text-gray-900 transition-colors duration-300 group-hover:text-amber-600 dark:text-white dark:group-hover:text-amber-500">
-													{product.name}
-												</h3>
-											</Link>
-											<p className="mb-4 line-clamp-2 text-sm text-gray-600 dark:text-gray-300">
-												{product.description}
-											</p>
-											<div className="flex items-center justify-between">
-												<span className="text-xl font-bold text-gray-900 dark:text-white">
-													${product.price}
-												</span>
-												<span className="text-sm text-gray-500 dark:text-gray-400">
-													{product.reviews} reviews
-												</span>
-											</div>
-										</div>
-									</div>
+								{loaderData.products.map((product) => (
+									<ProductCard key={product.id} product={product} />
 								))}
 							</div>
 						) : (
 							<div className="space-y-6">
-								{filteredProducts.map((product) => (
-									<div
-										key={product.id}
-										className="overflow-hidden rounded-lg bg-white transition-shadow duration-300 hover:shadow-lg dark:bg-gray-800"
-									>
-										<div className="flex flex-col md:flex-row">
-											<div className="relative overflow-hidden md:w-64">
-												<Link to={`/products/${product.id}`}>
-													<img
-														src={product.image}
-														alt={product.name}
-														className="h-48 w-full object-cover transition-transform duration-300 hover:scale-105 md:h-full"
-													/>
-												</Link>
-											</div>
-											<div className="flex-1 p-6">
-												<div className="flex items-start justify-between">
-													<div className="flex-1">
-														<div className="mb-2 text-sm font-medium text-amber-600 dark:text-amber-500">
-															{product.brand}
-														</div>
-														<Link to={`/products/${product.id}`}>
-															<h3 className="mb-2 text-xl font-medium text-gray-900 transition-colors duration-300 hover:text-amber-600 dark:text-white dark:hover:text-amber-500">
-																{product.name}
-															</h3>
-														</Link>
-														<p className="mb-4 text-gray-600 dark:text-gray-300">
-															{product.description}
-														</p>
-														<div className="mb-4 flex items-center space-x-4">
-															<div className="flex items-center space-x-1">
-																<Star className="h-4 w-4 fill-current text-amber-500" />
-																<span className="text-sm font-medium text-gray-900 dark:text-white">
-																	{product.rating}
-																</span>
-																<span className="text-sm text-gray-500 dark:text-gray-400">
-																	({product.reviews} reviews)
-																</span>
-															</div>
-														</div>
-													</div>
-													<div className="ml-6 text-right">
-														<div className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
-															${product.price}
-														</div>
-														<button className="rounded-full bg-gray-100 p-2 transition-colors duration-200 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600">
-															<Heart className="h-5 w-5 text-gray-600 dark:text-gray-400" />
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
+								{loaderData.products.map((product) => (
+									<ProductCard key={product.id} product={product} />
 								))}
 							</div>
 						)}
