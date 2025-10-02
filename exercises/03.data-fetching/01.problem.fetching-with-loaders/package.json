@@ -14,10 +14,10 @@
     "test": "playwright test",
     "db:gen": "prisma generate",
     "db:studio": "prisma studio",
-    "db:migrate": "dotenvx run  -f .env.migrate -- prisma migrate dev",
+    "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
     "db:reset": "prisma migrate reset",
-    "db:seed": "dotenvx run -- tsx prisma/seed.ts"
+    "db:seed": "DATABASE_URL=file:./prisma/data.db tsx prisma/seed.ts"
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.51.0",

@@ -1,67 +1,57 @@
-import { Filter, Grid, List, Star, Heart } from 'lucide-react'
-import { useState, useMemo } from 'react'
-import { Link } from 'react-router'
-import { products, categories, brands } from '../../data/products'
-import { getMetaFromMatches, getMetaTitle, constructPrefixedTitle } from '#app/utils/metadata.js'
-import type { Route } from './+types/_landing.products._index'
-import { getProducts } from '#app/domain/products.server.js'
+import { Filter, Grid, List } from 'lucide-react'
+import { useState } from 'react'
+import { Form, useSearchParams, useNavigation } from 'react-router'
 import { ProductCard } from '#app/components/product-card.js'
-import { getAllCategories } from '#app/domain/category.server.js'
 import { getAllBrands } from '#app/domain/brand.server.js'
+import { getAllCategories } from '#app/domain/category.server.js'
+import { getProducts } from '#app/domain/products.server.js'
+import {
+	getMetaFromMatches,
+	getMetaTitle,
+	constructPrefixedTitle,
+} from '#app/utils/metadata.js'
+import { type Route } from './+types/_landing.products._index'
 
 export const meta: Route.MetaFunction = ({ matches }) => {
 	const rootMeta = getMetaFromMatches(matches, 'root')
-	const prefix = getMetaTitle(rootMeta);
-	return [{
-		title: constructPrefixedTitle("All Products", prefix),
-	}]
+	const prefix = getMetaTitle(rootMeta)
+	return [
+		{
+			title: constructPrefixedTitle('All Products', prefix),
+		},
+	]
 }
 
-export const loader = async ({}: Route.LoaderArgs) => {
-	const products = await getProducts()
+export const loader = async ({ request }: Route.LoaderArgs) => {
+	const url = new URL(request.url)
+	const searchParams = url.searchParams
+	const category = searchParams.getAll('category') || []
+	const brand = searchParams.getAll('brand') || []
+	const priceMin = parseFloat(searchParams.get('priceMin') || '0')
+	const priceMax = parseFloat(searchParams.get('priceMax') || '300')
+	const sortBy = searchParams.get('sortBy') || 'name'
+	// Here you could handle query parameters for filtering, sorting, etc.
+	const products = await getProducts({
+		category,
+		brand,
+		priceMin,
+		priceMax,
+		sortBy: sortBy as 'name' | 'price-low' | 'price-high' | 'rating',
+	})
 	const categories = await getAllCategories()
 	const brands = await getAllBrands()
 	return { products, categories, brands }
 }
 
 export default function ProductsPage({ loaderData }: Route.ComponentProps) {
-	const [selectedCategory, setSelectedCategory] = useState('All')
-	const [selectedBrand, setBrand] = useState('All')
-	const [priceRange, setPriceRange] = useState([0, 300])
-	const [sortBy, setSortBy] = useState('name')
+	const [searchParams, setSearchParams] = useSearchParams()
+	const navigation = useNavigation()
+	const isPageLoading = navigation.state !== 'idle'
 	const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
 	const [showFilters, setShowFilters] = useState(false)
-
-	const filteredProducts = useMemo(() => {
-		let filtered = products.filter((product) => {
-			const categoryMatch =
-				selectedCategory === 'All' || product.category === selectedCategory
-			const brandMatch =
-				selectedBrand === 'All' || product.brand === selectedBrand
-			const priceMatch =
-				product.price >= priceRange[0] && product.price <= priceRange[1]
-
-			return categoryMatch && brandMatch && priceMatch
-		})
-
-		// Sort products
-		filtered.sort((a, b) => {
-			switch (sortBy) {
-				case 'price-low':
-					return a.price - b.price
-				case 'price-high':
-					return b.price - a.price
-				case 'rating':
-					return b.rating - a.rating
-				case 'name':
-				default:
-					return a.name.localeCompare(b.name)
-			}
-		})
-
-		return filtered
-	}, [selectedCategory, selectedBrand, priceRange, sortBy])
-
+	const priceMin = searchParams.get('priceMin') || ''
+	const priceMax = searchParams.get('priceMax') || ''
+	const products = loaderData.products
 	return (
 		<div className="min-h-screen bg-stone-50 dark:bg-gray-900">
 			{/* Header */}
@@ -73,7 +63,7 @@ export default function ProductsPage({ loaderData }: Route.ComponentProps) {
 								All Products
 							</h1>
 							<p className="mt-2 text-gray-600 dark:text-gray-300">
-								{filteredProducts.length} products found
+								{products.length} products found
 							</p>
 						</div>
 						<div className="mt-4 flex items-center space-x-4 md:mt-0">
@@ -85,8 +75,15 @@ export default function ProductsPage({ loaderData }: Route.ComponentProps) {
 								<span>Filters</span>
 							</button>
 							<select
-								value={sortBy}
-								onChange={(e) => setSortBy(e.target.value)}
+								name="sortBy"
+								onChange={(e) =>
+									setSearchParams((prev) => {
+										const newParams = new URLSearchParams(prev)
+										newParams.set('sortBy', e.target.value)
+										return newParams
+									})
+								}
+								defaultValue={searchParams.get('sortBy') || 'name'}
 								className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white"
 							>
 								<option value="name">Sort by Name</option>
@@ -119,88 +116,119 @@ export default function ProductsPage({ loaderData }: Route.ComponentProps) {
 					<div
 						className={`lg:w-64 ${showFilters ? 'block' : 'hidden lg:block'}`}
 					>
-						<div className="space-y-6 rounded-lg bg-white p-6 dark:bg-gray-800">
-							<div>
-								<h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">
-									Category
-								</h3>
-								<div className="space-y-2">
-									{loaderData.categories.map((category) => (
-										<button
-											key={category.id}
-											onClick={() => setSelectedCategory(category.name)}
-											className={`block w-full rounded-lg px-3 py-2 text-left transition-colors duration-200 ${selectedCategory === category.name
-												? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
-												: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
-												}`}
-										>
-											{category.name}
-										</button>
-									))}
-								</div>
-							</div>
-
-							<div>
-								<h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">
-									Brand
-								</h3>
-								<div className="space-y-2">
-									{loaderData.brands.map((brand) => (
-										<button
-											key={brand.id}
-											onClick={() => setBrand(brand.name)}
-											className={`block w-full rounded-lg px-3 py-2 text-left transition-colors duration-200 ${selectedBrand === brand.name
-												? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
-												: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
-												}`}
-										>
-											{brand.name}
-										</button>
-									))}
-								</div>
-							</div>
-
-							<div>
-								<h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">
-									Price Range
-								</h3>
-								<div className="space-y-4">
-									<input
-										type="range"
-										min="0"
-										max="300"
-										value={priceRange[1]}
-										onChange={(e) =>
-											setPriceRange([priceRange[0], parseInt(e.target.value)])
-										}
-										className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200 dark:bg-gray-700"
-									/>
-									<div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-										<span>$0</span>
-										<span>${priceRange[1]}</span>
+						<Form>
+							<div className="space-y-6 rounded-lg bg-white p-6 dark:bg-gray-800">
+								<div>
+									<h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">
+										Category
+									</h3>
+									<div className="space-y-2">
+										{loaderData.categories.map((category) => (
+											<div key={category.id} className="flex items-center">
+												<input
+													className="peer hidden"
+													type="checkbox"
+													id={category.id}
+													disabled={isPageLoading}
+													name="category"
+													value={category.name}
+												/>
+												<label
+													className={`block w-full rounded-lg px-3 py-2 text-left text-gray-700 transition-colors duration-200 peer-checked:bg-amber-100 peer-checked:text-amber-800 hover:bg-gray-100 dark:text-gray-300 dark:peer-checked:bg-amber-900/30 dark:peer-checked:text-amber-200 dark:hover:bg-gray-700`}
+													htmlFor={category.id}
+												>
+													{category.name}
+												</label>
+											</div>
+										))}
 									</div>
 								</div>
+
+								<div>
+									<h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">
+										Brand
+									</h3>
+									<div className="space-y-2">
+										{loaderData.brands.map((brand) => (
+											<div key={brand.id} className="flex items-center">
+												<input
+													className="peer hidden"
+													type="checkbox"
+													id={brand.id}
+													disabled={isPageLoading}
+													name="brand"
+													value={brand.name}
+												/>
+												<label
+													className={`block w-full rounded-lg px-3 py-2 text-left text-gray-700 transition-colors duration-200 peer-checked:bg-amber-100 peer-checked:text-amber-800 hover:bg-gray-100 dark:text-gray-300 dark:peer-checked:bg-amber-900/30 dark:peer-checked:text-amber-200 dark:hover:bg-gray-700`}
+													htmlFor={brand.id}
+												>
+													{brand.name}
+												</label>
+											</div>
+										))}
+									</div>
+								</div>
+
+								<div>
+									<h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">
+										Price Range
+									</h3>
+									<div className="flex items-center justify-center gap-2">
+										<input
+											type="number"
+											name="priceMin"
+											defaultValue={priceMin}
+											disabled={isPageLoading}
+											className="w-1/2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+										/>
+
+										<input
+											type="number"
+											name="priceMax"
+											defaultValue={priceMax}
+											disabled={isPageLoading}
+											className="w-1/2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+										/>
+									</div>
+								</div>
+
+								<button
+									disabled={isPageLoading}
+									type="submit"
+									className="w-full rounded-lg bg-amber-600 px-4 py-2 font-medium text-white transition-colors duration-300 hover:bg-amber-700 disabled:opacity-50"
+								>
+									Apply Filters
+								</button>
 							</div>
-						</div>
+						</Form>
 					</div>
 
 					{/* Products Grid/List */}
 					<div className="flex-1">
-						{viewMode === 'grid' ? (
-							<div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-								{loaderData.products.map((product) => (
-									<ProductCard key={product.id} product={product} />
-								))}
+						{isPageLoading ? (
+							<div className="mb-4 text-center text-gray-500 dark:text-gray-400">
+								Loading...
 							</div>
 						) : (
-							<div className="space-y-6">
-								{loaderData.products.map((product) => (
-									<ProductCard key={product.id} product={product} />
-								))}
-							</div>
+							<>
+								{viewMode === 'grid' ? (
+									<div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+										{loaderData.products.map((product) => (
+											<ProductCard key={product.id} product={product} />
+										))}
+									</div>
+								) : (
+									<div className="space-y-6">
+										{loaderData.products.map((product) => (
+											<ProductCard key={product.id} product={product} />
+										))}
+									</div>
+								)}
+							</>
 						)}
 
-						{filteredProducts.length === 0 && (
+						{products.length === 0 && (
 							<div className="py-16 text-center">
 								<div className="mb-4 text-gray-400 dark:text-gray-600">
 									<Filter className="mx-auto h-16 w-16" />

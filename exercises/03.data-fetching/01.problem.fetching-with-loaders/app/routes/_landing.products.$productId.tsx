@@ -9,19 +9,24 @@ import {
 	Minus,
 } from 'lucide-react'
 import { useState } from 'react'
-import { useParams, Link } from 'react-router'
-import { getMetaFromMatches, getMetaTitle, constructPrefixedTitle } from '#app/utils/metadata.js'
-import { products } from '../../data/products'
-import type { Route } from './+types/_landing.products.$productId'
+import { Link } from 'react-router'
 import { getProductById } from '#app/domain/products.server.js'
+import {
+	getMetaFromMatches,
+	getMetaTitle,
+	constructPrefixedTitle,
+} from '#app/utils/metadata.js'
+import { type Route } from './+types/_landing.products.$productId'
 
 export const meta: Route.MetaFunction = ({ matches }) => {
 	const rootMeta = getMetaFromMatches(matches, 'root')
-	const prefix = getMetaTitle(rootMeta);
+	const prefix = getMetaTitle(rootMeta)
 
-	return [{
-		title: constructPrefixedTitle("Product overview", prefix),
-	}]
+	return [
+		{
+			title: constructPrefixedTitle('Product overview', prefix),
+		},
+	]
 }
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
@@ -30,18 +35,18 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 	return { product }
 }
 
-export default function ProductDetailPage({ loaderData }: Route.ComponentProps) {
-	const { product } = loaderData 
+export default function ProductDetailPage({
+	loaderData,
+}: Route.ComponentProps) {
+	const { product } = loaderData
 	const [selectedSize, setSelectedSize] = useState('')
 	const [selectedColor, setSelectedColor] = useState('')
 	const [quantity, setQuantity] = useState(1)
 	const [activeImage, setActiveImage] = useState(0)
 
-
 	if (!product) {
 		return (
 			<div className="flex min-h-screen items-center justify-center bg-stone-50 dark:bg-gray-900">
-
 				<div className="text-center">
 					<h2 className="mb-4 text-2xl font-light text-gray-900 dark:text-white">
 						Product not found
@@ -67,13 +72,9 @@ export default function ProductDetailPage({ loaderData }: Route.ComponentProps) 
 	}
 
 	// Mock additional images for gallery
-	const productImages = [
-		product.imageUrl,
-	]
+	const productImages = [product.imageUrl]
 
-	const relatedProducts = products
-		.filter((p) => p.category === product.category.name && p.id !== product.id)
-		.slice(0, 4)
+	const relatedProducts: any[] = []
 
 	return (
 		<div className="min-h-screen bg-stone-50 dark:bg-gray-900">
@@ -104,10 +105,11 @@ export default function ProductDetailPage({ loaderData }: Route.ComponentProps) 
 								<button
 									key={index}
 									onClick={() => setActiveImage(index)}
-									className={`aspect-w-1 aspect-h-1 overflow-hidden rounded-lg border-2 bg-white transition-colors duration-200 dark:bg-gray-800 ${activeImage === index
-										? 'border-amber-500'
-										: 'border-transparent hover:border-gray-300 dark:hover:border-gray-600'
-										}`}
+									className={`aspect-w-1 aspect-h-1 overflow-hidden rounded-lg border-2 bg-white transition-colors duration-200 dark:bg-gray-800 ${
+										activeImage === index
+											? 'border-amber-500'
+											: 'border-transparent hover:border-gray-300 dark:hover:border-gray-600'
+									}`}
 								>
 									<img
 										src={image}
@@ -133,14 +135,15 @@ export default function ProductDetailPage({ loaderData }: Route.ComponentProps) 
 									{[...Array(5)].map((_, i) => (
 										<Star
 											key={i}
-											className={`h-5 w-5 ${i < Math.floor(product.reviews[0].rating)
-												? 'fill-current text-amber-500'
-												: 'text-gray-300 dark:text-gray-600'
-												}`}
+											className={`h-5 w-5 ${
+												i < Math.floor(product.reviews[0]?.rating ?? 0)
+													? 'fill-current text-amber-500'
+													: 'text-gray-300 dark:text-gray-600'
+											}`}
 										/>
 									))}
 									<span className="ml-2 text-sm font-medium text-gray-900 dark:text-white">
-										{product.reviews[0].rating}
+										{product.reviews[0]?.rating}
 									</span>
 								</div>
 								<span className="text-sm text-gray-500 dark:text-gray-400">
@@ -148,7 +151,7 @@ export default function ProductDetailPage({ loaderData }: Route.ComponentProps) 
 								</span>
 							</div>
 							<div className="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
-								${product.variations[0].price}
+								${product.price}
 							</div>
 							<p className="leading-relaxed text-gray-600 dark:text-gray-300">
 								{product.description}
@@ -165,10 +168,11 @@ export default function ProductDetailPage({ loaderData }: Route.ComponentProps) 
 									<button
 										key={variation.id}
 										onClick={() => setSelectedSize(variation.size)}
-										className={`rounded-lg border px-4 py-3 text-center transition-colors duration-200 ${selectedSize === variation.size
-											? 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
-											: 'border-gray-300 text-gray-700 hover:border-amber-300 dark:border-gray-600 dark:text-gray-300 dark:hover:border-amber-700'
-											}`}
+										className={`rounded-lg border px-4 py-3 text-center transition-colors duration-200 ${
+											selectedSize === variation.size
+												? 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
+												: 'border-gray-300 text-gray-700 hover:border-amber-300 dark:border-gray-600 dark:text-gray-300 dark:hover:border-amber-700'
+										}`}
 									>
 										{variation.size}
 									</button>
@@ -186,10 +190,11 @@ export default function ProductDetailPage({ loaderData }: Route.ComponentProps) 
 									<button
 										key={variation.id}
 										onClick={() => setSelectedColor(variation.color)}
-										className={`rounded-lg border px-4 py-2 transition-colors duration-200 ${selectedColor === variation.color
-											? 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
-											: 'border-gray-300 text-gray-700 hover:border-amber-300 dark:border-gray-600 dark:text-gray-300 dark:hover:border-amber-700'
-											}`}
+										className={`rounded-lg border px-4 py-2 transition-colors duration-200 ${
+											selectedColor === variation.color
+												? 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
+												: 'border-gray-300 text-gray-700 hover:border-amber-300 dark:border-gray-600 dark:text-gray-300 dark:hover:border-amber-700'
+										}`}
 									>
 										{variation.color}
 									</button>
