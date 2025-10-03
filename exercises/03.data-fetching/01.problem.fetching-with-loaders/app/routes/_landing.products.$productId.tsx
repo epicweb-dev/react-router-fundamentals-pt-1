@@ -159,12 +159,12 @@ export default function ProductDetailPage({
 			}
 			const size = newParams.get('size')
 			// If the selected size is not available for the new color, remove it
-			if (
+			const noQuantityForSize =
 				size &&
 				product.variations.some(
 					(v) => v.color === color && v.size === size && v.quantity === 0,
 				)
-			) {
+			if (noQuantityForSize) {
 				newParams.delete('size')
 			}
 			return newParams
