@@ -45,7 +45,7 @@ export function ProductCard({ product }: { product: Product }) {
 						${product.price}
 					</span>
 					<span className="text-sm text-gray-500 dark:text-gray-400">
-						{product.reviews.length} reviews
+						{product._count.reviews} reviews
 					</span>
 				</div>
 			</div>

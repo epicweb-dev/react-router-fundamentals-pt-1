@@ -1,41 +1,81 @@
+import { faker } from '@faker-js/faker';
 import { db } from '#app/db.server.js'
-import { brands, categories, products } from '../data/products.js'
+import { type ProductUncheckedCreateInput, } from '#app/generated/prisma/models.js';
 
-function buildProductCatalog(targetCount: number) {
-	const extendedProducts = [...products]
 
-	if (extendedProducts.length >= targetCount) {
-		return extendedProducts.slice(0, targetCount)
+const categories = [
+	'Running',
+	'Casual',
+	'Athletic',
+	'Lifestyle',
+	'Hiking',
+	'Comfort',
+	'Formal',
+]
+
+const brands = [
+
+	'SkyStep',
+	'StreetWalk',
+	'ProAthlete',
+	'TimelessStep',
+	'OutdoorPro',
+	'VelocityRun',
+	'SoftStep',
+	'ExecutiveWear',
+]
+
+const sneakerImages = [
+	'https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=600',
+	'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=600',
+	'https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg?auto=compress&cs=tinysrgb&w=600',
+	'https://images.pexels.com/photos/1456706/pexels-photo-1456706.jpeg?auto=compress&cs=tinysrgb&w=600',
+	'https://images.pexels.com/photos/1598508/pexels-photo-1598508.jpeg?auto=compress&cs=tinysrgb&w=600',
+	'https://images.pexels.com/photos/2529157/pexels-photo-2529157.jpeg?auto=compress&cs=tinysrgb&w=600',
+	'https://images.pexels.com/photos/1456705/pexels-photo-1456705.jpeg?auto=compress&cs=tinysrgb&w=600',
+	'https://images.pexels.com/photos/1598507/pexels-photo-1598507.jpeg?auto=compress&cs=tinysrgb&w=600',
+]
+const productNames = [
+	'Air Zoom Pegasus 38',
+	'Ultraboost 21',
+	'Gel-Kayano 27',
+	'React Infinity Run Flyknit',
+	'Fresh Foam 1080v11',
+	'Speedcross 5',
+	'Cloudswift',
+	'Chuck Taylor All Star',
+	'Samba OG',
+	'Sneaker X Pro',
+	'Runner Max',
+	'Street Style',
+	'Urban Walk',
+	'Trail Blazer',
+	'Comfy Step',
+	'Flex Runner',
+	'Power Boost',
+	'Elite Trainer',
+	'Comfort Cloud',
+	'Business Elite',
+]
+
+function buildProductCatalog(targetCount: number, categoryMap: Map<string, string>, brandMap: Map<string, string>): ProductUncheckedCreateInput[] {
+	const products: ProductUncheckedCreateInput[] = [];
+	for (let i = 0; i < targetCount; i++) {
+		products.push({
+			name: faker.helpers.arrayElement(productNames) + ' ' + faker.commerce.productAdjective(),
+			description: faker.lorem.paragraphs(),
+			imageUrl: faker.helpers.arrayElement(sneakerImages),
+			price: parseFloat(faker.commerce.price({ min: 20, max: 500, dec: 2 })),
+			reviewScore: faker.number.int({ min: 1, max: 5, }),
+			categoryId: categoryMap.get(faker.helpers.arrayElement(categories))!,
+			brandId: brandMap.get(faker.helpers.arrayElement(brands))!,
+		});
 	}
 
-	const suffixes = ['Pulse', 'Edge', 'Flex', 'Prime', 'Lite']
-	let cloneIndex = 0
-
-	while (extendedProducts.length < targetCount) {
-		const template = products[cloneIndex % products.length]!
-		const suffix = suffixes[cloneIndex % suffixes.length]
-		const nextId = (extendedProducts.length + 1).toString()
-		const priceOffset = ((cloneIndex % 5) - 2) * 5
-		const baseRating = template.rating - 0.1 * (cloneIndex % 3)
-
-		const clonedProduct = {
-			...template,
-			id: nextId,
-			name: `${template.name} ${suffix}`,
-			price: Number((template.price + priceOffset).toFixed(2)),
-			rating: Math.max(3.5, Math.min(5, Number(baseRating.toFixed(1)))),
-			reviewScore: Math.max(3.5, Math.min(5, Number(baseRating.toFixed(1)))),
-			description: `${template.description} ${suffix} edition.`,
-			sizes: [...template.sizes],
-			colors: [...template.colors],
-		}
-
-		extendedProducts.push(clonedProduct)
-		cloneIndex += 1
-	}
-
-	return extendedProducts
+	return products
 }
+
+
 
 async function seed() {
 	console.log('Seeding database...')
@@ -62,60 +102,43 @@ async function seed() {
 		brandMap.set(name, brand.id)
 	}
 
-	const catalog = buildProductCatalog(20)
+	const catalog = buildProductCatalog(100, categoryMap, brandMap)
 
-	let productIndex = 0
+
 	for (const product of catalog) {
-		const categoryId = categoryMap.get(product.category)
-		const brandId = brandMap.get(product.brand)
-
-		if (!categoryId || !brandId) {
-			throw new Error(`Missing category or brand for product ${product.name}`)
-		}
 
 		const createdProduct = await db.product.create({
-			data: {
-				id: product.id,
-				name: product.name,
-				description: product.description,
-				price: product.price,
-				imageUrl: product.image,
-				categoryId,
-				brandId,
-			},
+			data: product,
 		})
 
-		const baseQuantity = product.inStock ? 15 + (productIndex % 4) * 5 : 0
+		const colors = ["Red", "Blue", "Black", "White",]
+		const sizes = ['9', '10', '11', '12']
 		const variations = []
 
-		for (const color of product.colors) {
-			for (const size of product.sizes) {
+		for (const color of colors) {
+			for (const size of sizes) {
 				variations.push({
 					productId: createdProduct.id,
 					color,
 					size,
-					quantity: baseQuantity,
+					quantity: faker.number.int({ min: 0, max: 2 }),
 				})
 			}
 		}
 
-		if (variations.length > 0) {
-			await db.variation.createMany({ data: variations })
-			const createdVariations = await db.variation.findMany({
-				where: { productId: createdProduct.id },
+		await db.variation.createMany({ data: variations })
+		const createdVariations = await db.variation.findMany({
+			where: { productId: createdProduct.id },
+		})
+		for (const v of createdVariations) {
+			await db.productReview.create({
+				data: {
+					productId: createdProduct.id,
+					rating: faker.number.int({ min: 1, max: 5, }),
+					variationId: v.id,
+				},
 			})
-			for (const v of createdVariations) {
-				await db.productReview.create({
-					data: {
-						productId: createdProduct.id,
-						rating: Math.ceil(Math.random() * 4 + 1),
-						variationId: v.id,
-					},
-				})
-			}
 		}
-
-		productIndex += 1
 	}
 
 	console.timeEnd('Database seeded')

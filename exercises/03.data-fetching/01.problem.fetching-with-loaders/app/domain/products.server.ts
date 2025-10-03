@@ -1,4 +1,5 @@
 import { db } from "#app/db.server.js";
+import { type ProductSelect } from "#app/generated/prisma/models.ts";
 
 interface ProductFilters {
   category?: string[];
@@ -7,6 +8,27 @@ interface ProductFilters {
   priceMax?: number;
   sortBy?: 'name' | 'price-low' | 'price-high' | 'rating';
 }
+
+// Prisma select for selecting short info about products for product listings
+const productShortInfoSelect = {
+  id: true,
+  name: true,
+  description: true,
+  imageUrl: true,
+  price: true,
+  brand: {
+    select: {
+      id: true,
+      name: true
+    },
+  },
+  reviewScore: true,
+  _count: {
+    select: {
+      reviews: true,
+    }
+  },
+} as const satisfies ProductSelect
 
 export async function getProducts(filters?: ProductFilters) {
   const products = await db.product.findMany({
@@ -22,36 +44,8 @@ export async function getProducts(filters?: ProductFilters) {
       name: filters?.sortBy === 'name' ? 'asc' : undefined,
       price: filters?.sortBy === 'price-low' ? 'asc' : filters?.sortBy === 'price-high' ? 'desc' : undefined,
     },
-    select: {
-      id: true,
-      name: true,
-      description: true,
-      imageUrl: true,
-      price: true,
-      brand: {
-        select: {
-          id: true,
-          name: true
-        },
-      },
-      reviewScore: true,
-      reviews: {
-        select: {
-          id: true,
-          rating: true,
-        },
-      },
-      variations: {
-        select: {
+    select: productShortInfoSelect
 
-          color: true,
-          size: true,
-          id: true,
-          quantity: true,
-
-        }
-      }
-    }
   });
   return products;
 }
@@ -65,6 +59,7 @@ export async function getProductById(id: string) {
       description: true,
       imageUrl: true,
       price: true,
+      reviewScore: true,
       category: {
         select: {
           id: true,
@@ -81,6 +76,7 @@ export async function getProductById(id: string) {
         select: {
           id: true,
           rating: true,
+          comment: true,
         }
       },
       variations: {
@@ -96,6 +92,21 @@ export async function getProductById(id: string) {
     }
   });
   return product;
+}
+
+export async function getRelatedProducts(productId: string, categoryId: string | undefined, brandId: string | undefined) {
+  const products = await db.product.findMany({
+    where: {
+      id: { not: productId },
+      OR: [
+        { categoryId: categoryId },
+        { brandId: brandId }
+      ]
+    },
+    select: productShortInfoSelect,
+    take: 4
+  });
+  return products;
 }
 
 export type Product = Awaited<ReturnType<typeof getProducts>>[number];

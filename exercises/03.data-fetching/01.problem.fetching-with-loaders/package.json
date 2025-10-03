@@ -14,7 +14,7 @@
     "test": "playwright test",
     "db:gen": "prisma generate",
     "db:studio": "prisma studio",
-    "db:migrate": "prisma migrate dev",
+    "db:migrate": "DATABASE_URL=file:./data.db prisma migrate dev",
     "db:push": "prisma db push",
     "db:reset": "prisma migrate reset",
     "db:seed": "DATABASE_URL=file:./prisma/data.db tsx prisma/seed.ts"
@@ -33,6 +33,7 @@
     "react-router": "^7.5.3"
   },
   "devDependencies": {
+    "@faker-js/faker": "^10.0.0",
     "@playwright/test": "^1.39.0",
     "@react-router/dev": "^7.5.3",
     "@react-router/fs-routes": "^7.8.2",

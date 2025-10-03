@@ -9,8 +9,12 @@ import {
 	Minus,
 } from 'lucide-react'
 import { useState } from 'react'
-import { Link } from 'react-router'
-import { getProductById } from '#app/domain/products.server.js'
+import { Link, useSearchParams } from 'react-router'
+import { ProductCard } from '#app/components/product-card.tsx'
+import {
+	getProductById,
+	getRelatedProducts,
+} from '#app/domain/products.server.js'
 import {
 	getMetaFromMatches,
 	getMetaTitle,
@@ -29,21 +33,71 @@ export const meta: Route.MetaFunction = ({ matches }) => {
 	]
 }
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
 	const { productId } = params
 	const product = await getProductById(productId)
-	return { product }
+	const relatedProducts = await getRelatedProducts(
+		productId,
+		product?.category.id,
+		product?.brand.id,
+	)
+	const uniqueSizes = Array.from(
+		new Set(product?.variations.map((v) => v.size) || []),
+	)
+	const uniqueColors = Array.from(
+		new Set(product?.variations.map((v) => v.color) || []),
+	)
+
+	const url = new URL(request.url)
+	const searchParams = url.searchParams
+	// Get the selected size and color from the search params
+	const selectedSize = searchParams.get('size') || ''
+	const selectedColor = searchParams.get('color') || ''
+	// Determine available sizes for the currently selected color
+	const availableSizes = selectedColor
+		? product?.variations
+				.filter((v) => v.color === selectedColor && v.quantity > 0)
+				.map((v) => v.size) || []
+		: uniqueSizes
+	// Determine available colors for the currently selected size
+	const availableColors = selectedSize
+		? product?.variations
+				.filter((v) => v.size === selectedSize && v.quantity > 0)
+				.map((v) => v.color) || []
+		: uniqueColors
+
+	const selectedVariation = product?.variations.find(
+		(v) => v.size === selectedSize && v.color === selectedColor,
+	)
+
+	return {
+		product,
+		uniqueSizes,
+		uniqueColors,
+		availableSizes,
+		availableColors,
+		selectedVariation,
+		relatedProducts,
+	}
 }
 
 export default function ProductDetailPage({
 	loaderData,
 }: Route.ComponentProps) {
-	const { product } = loaderData
-	const [selectedSize, setSelectedSize] = useState('')
-	const [selectedColor, setSelectedColor] = useState('')
+	const {
+		product,
+		selectedVariation,
+		uniqueColors,
+		uniqueSizes,
+		availableColors,
+		availableSizes,
+		relatedProducts,
+	} = loaderData
+	const [searchParams, setSearchParams] = useSearchParams()
 	const [quantity, setQuantity] = useState(1)
 	const [activeImage, setActiveImage] = useState(0)
-
+	const selectedSize = searchParams.get('size') || ''
+	const selectedColor = searchParams.get('color') || ''
 	if (!product) {
 		return (
 			<div className="flex min-h-screen items-center justify-center bg-stone-50 dark:bg-gray-900">
@@ -71,10 +125,55 @@ export default function ProductDetailPage({
 		alert('Added to cart!')
 	}
 
+	const handleSizeChange = (size: string) => () => {
+		setSearchParams((prev) => {
+			const newParams = new URLSearchParams(prev)
+			if (size === selectedSize) {
+				newParams.delete('size')
+			} else {
+				newParams.set('size', size)
+			}
+			const color = newParams.get('color')
+			// If the selected color is not available for the new size, remove it
+			const noQuantityForColor =
+				color &&
+				product.variations.some(
+					(v) => v.size === size && v.color === color && v.quantity === 0,
+				)
+
+			if (noQuantityForColor) {
+				newParams.delete('color')
+			}
+			return newParams
+		})
+		setQuantity(1)
+	}
+
+	const handleColorChange = (color: string) => () => {
+		setSearchParams((prev) => {
+			const newParams = new URLSearchParams(prev)
+			if (color === selectedColor) {
+				newParams.delete('color')
+			} else {
+				newParams.set('color', color)
+			}
+			const size = newParams.get('size')
+			// If the selected size is not available for the new color, remove it
+			if (
+				size &&
+				product.variations.some(
+					(v) => v.color === color && v.size === size && v.quantity === 0,
+				)
+			) {
+				newParams.delete('size')
+			}
+			return newParams
+		})
+		setQuantity(1)
+	}
+
 	// Mock additional images for gallery
 	const productImages = [product.imageUrl]
-
-	const relatedProducts: any[] = []
 
 	return (
 		<div className="min-h-screen bg-stone-50 dark:bg-gray-900">
@@ -136,14 +235,14 @@ export default function ProductDetailPage({
 										<Star
 											key={i}
 											className={`h-5 w-5 ${
-												i < Math.floor(product.reviews[0]?.rating ?? 0)
+												i < Math.floor(product.reviewScore ?? 0)
 													? 'fill-current text-amber-500'
 													: 'text-gray-300 dark:text-gray-600'
 											}`}
 										/>
 									))}
 									<span className="ml-2 text-sm font-medium text-gray-900 dark:text-white">
-										{product.reviews[0]?.rating}
+										{product.reviewScore}
 									</span>
 								</div>
 								<span className="text-sm text-gray-500 dark:text-gray-400">
@@ -164,17 +263,19 @@ export default function ProductDetailPage({
 								Size
 							</h3>
 							<div className="grid grid-cols-6 gap-3">
-								{product.variations.map((variation) => (
+								{uniqueSizes.map((size) => (
 									<button
-										key={variation.id}
-										onClick={() => setSelectedSize(variation.size)}
-										className={`rounded-lg border px-4 py-3 text-center transition-colors duration-200 ${
-											selectedSize === variation.size
+										key={size}
+										disabled={!availableSizes.includes(size)}
+										onClick={handleSizeChange(size)}
+										title={!availableSizes.includes(size) ? 'Out of stock' : ''}
+										className={`rounded-lg border px-4 py-3 text-center transition-colors duration-200 disabled:opacity-20 ${
+											selectedSize === size
 												? 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
 												: 'border-gray-300 text-gray-700 hover:border-amber-300 dark:border-gray-600 dark:text-gray-300 dark:hover:border-amber-700'
 										}`}
 									>
-										{variation.size}
+										{size}
 									</button>
 								))}
 							</div>
@@ -186,52 +287,63 @@ export default function ProductDetailPage({
 								Color
 							</h3>
 							<div className="flex flex-wrap space-x-3">
-								{product.variations.map((variation) => (
+								{uniqueColors.map((color) => (
 									<button
-										key={variation.id}
-										onClick={() => setSelectedColor(variation.color)}
-										className={`rounded-lg border px-4 py-2 transition-colors duration-200 ${
-											selectedColor === variation.color
+										key={color}
+										disabled={!availableColors.includes(color)}
+										onClick={handleColorChange(color)}
+										title={
+											!availableColors.includes(color) ? 'Out of stock' : ''
+										}
+										className={`rounded-lg border px-4 py-2 transition-colors duration-200 disabled:opacity-20 ${
+											selectedColor === color
 												? 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
 												: 'border-gray-300 text-gray-700 hover:border-amber-300 dark:border-gray-600 dark:text-gray-300 dark:hover:border-amber-700'
 										}`}
 									>
-										{variation.color}
+										{color}
 									</button>
 								))}
 							</div>
 						</div>
 
 						{/* Quantity */}
-						<div>
-							<h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">
-								Quantity
-							</h3>
-							<div className="flex items-center space-x-4">
-								<div className="flex items-center rounded-lg border border-gray-300 dark:border-gray-600">
-									<button
-										onClick={() => setQuantity(Math.max(1, quantity - 1))}
-										className="p-2 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-									>
-										<Minus className="h-4 w-4" />
-									</button>
-									<span className="px-4 py-2 font-medium text-gray-900 dark:text-white">
-										{quantity}
-									</span>
-									<button
-										onClick={() => setQuantity(quantity + 1)}
-										className="p-2 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-									>
-										<Plus className="h-4 w-4" />
-									</button>
+						{selectedVariation ? (
+							<div>
+								<h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">
+									Quantity
+								</h3>
+								<div className="flex items-center space-x-4">
+									<div className="flex items-center rounded-lg border border-gray-300 dark:border-gray-600">
+										<button
+											onClick={() => setQuantity(Math.max(1, quantity - 1))}
+											disabled={quantity === 1}
+											className="p-2 transition-colors duration-200 hover:bg-gray-100 disabled:opacity-20 disabled:hover:bg-transparent dark:hover:bg-gray-700"
+										>
+											<Minus className="h-4 w-4" />
+										</button>
+										<span className="px-4 py-2 font-medium text-gray-900 dark:text-white">
+											{quantity}
+										</span>
+										<button
+											onClick={() => setQuantity(quantity + 1)}
+											disabled={quantity === selectedVariation.quantity}
+											className="p-2 transition-colors duration-200 hover:bg-gray-100 disabled:opacity-20 disabled:hover:bg-transparent dark:hover:bg-gray-700"
+										>
+											<Plus className="h-4 w-4" />
+										</button>
+									</div>
 								</div>
 							</div>
-						</div>
+						) : null}
 
 						{/* Add to Cart */}
 						<div className="flex space-x-4">
 							<button
 								onClick={handleAddToCart}
+								disabled={
+									!selectedVariation || selectedVariation.quantity === 0
+								}
 								className="flex-1 rounded-lg bg-amber-600 px-6 py-4 font-medium text-white transition-colors duration-300 hover:bg-amber-700 hover:shadow-lg"
 							>
 								Add to Cart
@@ -275,43 +387,7 @@ export default function ProductDetailPage({
 						</h2>
 						<div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
 							{relatedProducts.map((relatedProduct) => (
-								<Link
-									key={relatedProduct.id}
-									to={`/products/${relatedProduct.id}`}
-									className="group overflow-hidden rounded-lg bg-white transition-all duration-300 hover:scale-105 hover:transform hover:shadow-xl dark:bg-gray-800"
-								>
-									<div className="relative overflow-hidden">
-										<img
-											src={relatedProduct.image}
-											alt={relatedProduct.name}
-											className="h-64 w-full object-cover transition-transform duration-500 group-hover:scale-110"
-										/>
-										<div className="absolute top-4 right-4 rounded-full bg-white px-3 py-1 dark:bg-gray-900">
-											<div className="flex items-center space-x-1">
-												<Star className="h-4 w-4 fill-current text-amber-500" />
-												<span className="text-sm font-medium text-gray-900 dark:text-white">
-													{relatedProduct.rating}
-												</span>
-											</div>
-										</div>
-									</div>
-									<div className="p-6">
-										<div className="mb-2 text-sm font-medium text-amber-600 dark:text-amber-500">
-											{relatedProduct.brand}
-										</div>
-										<h3 className="mb-2 text-lg font-medium text-gray-900 transition-colors duration-300 group-hover:text-amber-600 dark:text-white dark:group-hover:text-amber-500">
-											{relatedProduct.name}
-										</h3>
-										<div className="flex items-center justify-between">
-											<span className="text-xl font-bold text-gray-900 dark:text-white">
-												${relatedProduct.price}
-											</span>
-											<span className="text-sm text-gray-500 dark:text-gray-400">
-												{relatedProduct.reviews} reviews
-											</span>
-										</div>
-									</div>
-								</Link>
+								<ProductCard key={relatedProduct.id} product={relatedProduct} />
 							))}
 						</div>
 					</div>
