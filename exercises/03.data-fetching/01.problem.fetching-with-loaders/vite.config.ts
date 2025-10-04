@@ -4,7 +4,7 @@ import { reactRouterDevTools } from "react-router-devtools"
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-	plugins: [reactRouterDevTools(), tailwindcss(), reactRouter(),],
+	plugins: [reactRouterDevTools(), tailwindcss(), reactRouter()],
 	server: {
 		port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
 	},

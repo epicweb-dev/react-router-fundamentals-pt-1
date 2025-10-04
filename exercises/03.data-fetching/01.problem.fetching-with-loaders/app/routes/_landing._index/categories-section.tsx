@@ -1,11 +1,33 @@
 import { Link } from 'react-router'
-import { type Category } from '#app/domain/category.server.ts'
 
-export const CategoriesSection = ({
-	categories,
-}: {
-	categories: Category[]
-}) => {
+const categories = [
+	{
+		name: 'Running',
+		image:
+			'https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=400',
+		count: '25+ styles',
+	},
+	{
+		name: 'Casual',
+		image:
+			'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=400',
+		count: '30+ styles',
+	},
+	{
+		name: 'Athletic',
+		image:
+			'https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg?auto=compress&cs=tinysrgb&w=400',
+		count: '20+ styles',
+	},
+	{
+		name: 'Formal',
+		image:
+			'https://images.pexels.com/photos/1598507/pexels-photo-1598507.jpeg?auto=compress&cs=tinysrgb&w=400',
+		count: '15+ styles',
+	},
+]
+
+export const CategoriesSection = () => {
 	return (
 		<div className="bg-stone-50 py-32 dark:bg-gray-800">
 			<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -27,7 +49,7 @@ export const CategoriesSection = ({
 						>
 							<div className="aspect-w-1 aspect-h-1">
 								<img
-									src={category.imageUrl}
+									src={category.image}
 									alt={category.name}
 									className="h-64 w-full object-cover transition-transform duration-500 group-hover:scale-110"
 								/>
@@ -35,6 +57,7 @@ export const CategoriesSection = ({
 							<div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
 							<div className="absolute bottom-6 left-6 text-white">
 								<h3 className="mb-1 text-2xl font-light">{category.name}</h3>
+								<p className="text-sm opacity-90">{category.count}</p>
 							</div>
 						</Link>
 					))}

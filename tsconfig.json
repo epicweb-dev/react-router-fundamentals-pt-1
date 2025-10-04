@@ -36,6 +36,9 @@
     },
     {
       "path": "exercises/03.data-fetching/01.problem.fetching-with-loaders"
+    },
+    {
+      "path": "exercises/03.data-fetching/04.solution.fetching-with-loaders"
     }
   ]
 }

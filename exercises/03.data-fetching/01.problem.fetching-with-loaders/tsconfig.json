@@ -11,6 +11,7 @@
 		"rootDirs": [".", "./.react-router/types"],
 		"paths": {
 			"#app/*": ["./app/*"]
-		}
+		},
+		"noUncheckedIndexedAccess": false
 	}
 }
