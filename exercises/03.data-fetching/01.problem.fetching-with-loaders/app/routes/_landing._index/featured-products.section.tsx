@@ -1,15 +1,15 @@
-import { ProductCard } from '#app/components/product-card.js'
-import type { Product } from '#app/domain/products.server.js' 
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router'
+import { ProductCard } from '#app/components/product-card.js'
+import { type ProductCardInfo } from '#app/domain/products.server.js'
 
 interface FeaturedProductsSectionProps {
-	products: Product[]
+	products: ProductCardInfo[]
 }
 
-export const FeaturedProductsSection = ({ products }: FeaturedProductsSectionProps) => {
-	const featuredProducts = products.slice(0, 4)
-
+export const FeaturedProductsSection = ({
+	products,
+}: FeaturedProductsSectionProps) => {
 	return (
 		<div className="bg-white py-32 dark:bg-gray-900">
 			<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -23,7 +23,7 @@ export const FeaturedProductsSection = ({ products }: FeaturedProductsSectionPro
 				</div>
 
 				<div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-					{featuredProducts.map((product) => (
+					{products.map((product) => (
 						<ProductCard key={product.id} product={product} />
 					))}
 				</div>

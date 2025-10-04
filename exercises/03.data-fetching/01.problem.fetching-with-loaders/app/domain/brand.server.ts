@@ -5,5 +5,5 @@ export const getAllBrands = async () => {
     orderBy: { name: "asc" },
     select: { id: true, name: true },
   });
-  return brands;
+  return { brands };
 }

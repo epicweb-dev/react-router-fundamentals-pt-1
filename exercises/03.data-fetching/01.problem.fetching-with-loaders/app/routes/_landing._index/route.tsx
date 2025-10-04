@@ -1,3 +1,5 @@
+import { getAllBrands } from '#app/domain/brand.server.ts'
+import { getAllCategories } from '#app/domain/category.server.ts'
 import { getProducts } from '#app/domain/products.server.js'
 import { getMetaFromMatches, getMetaTitle } from '#app/utils/metadata.js'
 import { type Route } from './+types/route'
@@ -14,8 +16,10 @@ export const meta: Route.MetaFunction = ({ matches }) => {
 }
 
 export const loader = async ({}: Route.LoaderArgs) => {
-	const products = await getProducts()
-	return { products }
+	const { products } = await getProducts()
+	const { categories } = await getAllCategories()
+	const { brands } = await getAllBrands()
+	return { products, categories, brands }
 }
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {

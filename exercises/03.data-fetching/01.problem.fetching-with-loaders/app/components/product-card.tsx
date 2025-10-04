@@ -1,8 +1,8 @@
 import { Heart, Star } from 'lucide-react'
 import { Link } from 'react-router'
-import { type Product } from '#app/domain/products.server.js'
+import { type ProductCardInfo } from '#app/domain/products.server.js'
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({ product }: { product: ProductCardInfo }) {
 	return (
 		<div
 			key={product.id}
