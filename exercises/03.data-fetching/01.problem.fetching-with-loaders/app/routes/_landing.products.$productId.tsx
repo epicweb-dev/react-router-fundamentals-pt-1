@@ -10,6 +10,13 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 import { useParams, Link } from 'react-router'
+// 🐨 You should use the ProductCard component to render each product instead of the JSX
+// that is currently in place
+import { ProductCard } from '#app/components/product-card.js'
+import {
+	getProductById,
+	getRelatedProducts,
+} from '#app/domain/products.server.ts'
 import {
 	getMetaFromMatches,
 	getMetaTitle,
@@ -28,10 +35,29 @@ export const meta: Route.MetaFunction = ({ matches }) => {
 	]
 }
 
-export default function ProductDetailPage() {
+// 🐨 You should fetch the product by its ID in the loader, then fetch related products!
+// 🐨 Let's actually use the current route params to fetch the product and related products
+export const loader = async ({ params }: Route.LoaderArgs) => {
+	// 💰 You can use the function 🧝‍♀️ prepared for us above called `getProductById`
+	// 💰 Don't forget that you have access to the current routes params from above!
+
+	// 💰 You can use the function 🧝‍♀️ prepared for us above called `getRelatedProducts`
+	// 💰 Don't forget, you have the product's category and brand from fetching it above
+
+	// 💰 These return just empty objects/arrays, these should return actual data from the DB
+	return {
+		product: {},
+		relatedProducts: [],
+	}
+}
+
+// 🐨 Let's use the loaderData and swap our hardcoded values with real ones!
+export default function ProductDetailPage({
+	loaderData,
+}: Route.ComponentProps) {
 	const { productId } = useParams()
-	const [selectedSize, setSelectedSize] = useState('')
-	const [selectedColor, setSelectedColor] = useState('')
+	const [selectedSize] = useState('')
+	const [selectedColor] = useState('')
 	const [quantity, setQuantity] = useState(1)
 	const [activeImage, setActiveImage] = useState(0)
 
@@ -66,14 +92,17 @@ export default function ProductDetailPage() {
 
 	// Mock additional images for gallery
 	const productImages = [
-		product.image,
-		product.image,
-		product.image,
-		product.image,
+		product.imageUrl,
+		product.imageUrl,
+		product.imageUrl,
+		product.imageUrl,
 	]
-
+	// 🐨 Let's access the loaderData and swap this out with actual data!
+	// 💰 We are using the hardcoded products data to simulate related products
 	const relatedProducts = products
-		.filter((p) => p.category === product.category && p.id !== product.id)
+		.filter(
+			(p) => p.category.name === product.category.name && p.id !== product.id,
+		)
 		.slice(0, 4)
 
 	return (
@@ -125,7 +154,7 @@ export default function ProductDetailPage() {
 					<div className="space-y-6">
 						<div>
 							<div className="mb-2 text-sm font-medium text-amber-600 dark:text-amber-500">
-								{product.brand}
+								{product.brand.name}
 							</div>
 							<h1 className="mb-4 text-3xl font-light text-gray-900 dark:text-white">
 								{product.name}
@@ -136,18 +165,18 @@ export default function ProductDetailPage() {
 										<Star
 											key={i}
 											className={`h-5 w-5 ${
-												i < Math.floor(product.rating)
+												i < Math.floor(product.reviewScore)
 													? 'fill-current text-amber-500'
 													: 'text-gray-300 dark:text-gray-600'
 											}`}
 										/>
 									))}
 									<span className="ml-2 text-sm font-medium text-gray-900 dark:text-white">
-										{product.rating}
+										{product.reviewScore}
 									</span>
 								</div>
 								<span className="text-sm text-gray-500 dark:text-gray-400">
-									({product.reviews} reviews)
+									({product.reviews.length} reviews)
 								</span>
 							</div>
 							<div className="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
@@ -164,7 +193,7 @@ export default function ProductDetailPage() {
 								Size
 							</h3>
 							<div className="grid grid-cols-6 gap-3">
-								{product.sizes.map((size) => (
+								{/* {product.sizes.map((size) => (
 									<button
 										key={size}
 										onClick={() => setSelectedSize(size)}
@@ -176,7 +205,7 @@ export default function ProductDetailPage() {
 									>
 										{size}
 									</button>
-								))}
+								))} */}
 							</div>
 						</div>
 
@@ -186,7 +215,7 @@ export default function ProductDetailPage() {
 								Color
 							</h3>
 							<div className="flex space-x-3">
-								{product.colors.map((color) => (
+								{/* {product.colors.map((color) => (
 									<button
 										key={color}
 										onClick={() => setSelectedColor(color)}
@@ -198,7 +227,7 @@ export default function ProductDetailPage() {
 									>
 										{color}
 									</button>
-								))}
+								))} */}
 							</div>
 						</div>
 
@@ -275,6 +304,7 @@ export default function ProductDetailPage() {
 						</h2>
 						<div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
 							{relatedProducts.map((relatedProduct) => (
+								// 🐨 Let's replace with the ProductCard component
 								<Link
 									key={relatedProduct.id}
 									to={`/products/${relatedProduct.id}`}
@@ -282,7 +312,7 @@ export default function ProductDetailPage() {
 								>
 									<div className="relative overflow-hidden">
 										<img
-											src={relatedProduct.image}
+											src={relatedProduct.imageUrl}
 											alt={relatedProduct.name}
 											className="h-64 w-full object-cover transition-transform duration-500 group-hover:scale-110"
 										/>
@@ -290,14 +320,14 @@ export default function ProductDetailPage() {
 											<div className="flex items-center space-x-1">
 												<Star className="h-4 w-4 fill-current text-amber-500" />
 												<span className="text-sm font-medium text-gray-900 dark:text-white">
-													{relatedProduct.rating}
+													{relatedProduct.reviewScore}
 												</span>
 											</div>
 										</div>
 									</div>
 									<div className="p-6">
 										<div className="mb-2 text-sm font-medium text-amber-600 dark:text-amber-500">
-											{relatedProduct.brand}
+											{relatedProduct.brand.name}
 										</div>
 										<h3 className="mb-2 text-lg font-medium text-gray-900 transition-colors duration-300 group-hover:text-amber-600 dark:text-white dark:group-hover:text-amber-500">
 											{relatedProduct.name}
@@ -307,7 +337,7 @@ export default function ProductDetailPage() {
 												${relatedProduct.price}
 											</span>
 											<span className="text-sm text-gray-500 dark:text-gray-400">
-												{relatedProduct.reviews} reviews
+												{relatedProduct.reviews.length} reviews
 											</span>
 										</div>
 									</div>

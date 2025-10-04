@@ -1,11 +1,19 @@
 import { Filter, Grid, List, Star, Heart } from 'lucide-react'
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router'
+// 🐨 You should use the ProductCard component to render each product instead of the JSX
+// that is currently in place
+import { ProductCard } from '#app/components/product-card.js'
+import { getAllBrands } from '#app/domain/brand.server.ts'
+import { getAllCategories } from '#app/domain/category.server.ts'
+import { getProducts } from '#app/domain/products.server.ts'
+
 import {
 	getMetaFromMatches,
 	getMetaTitle,
 	constructPrefixedTitle,
 } from '#app/utils/metadata.js'
+//  💣 we want to completely remove this after we're done
 import { products, categories, brands } from '../../../data/products'
 import { type Route } from './+types/route'
 
@@ -19,7 +27,22 @@ export const meta: Route.MetaFunction = ({ matches }) => {
 	]
 }
 
-export default function ProductsPage() {
+// 🐨 You should fetch the data directly from the DB here, we need products, brands and categories!
+export const loader = async ({}: Route.LoaderArgs) => {
+	// 💰 You can use the functions 🧝‍♀️ prepared for us above called `getProducts`,
+	// 💰 `getAllCategories`, and `getAllBrands` to fetch the data.
+
+	// 💰 Bonus points if you fetch them in parallel!
+
+	// 💰 Return them here and replace the empty arrays!
+	return {
+		products: [],
+		categories: [],
+		brands: [],
+	}
+}
+
+export default function ProductsPage({ loaderData }: Route.ComponentProps) {
 	const [selectedCategory, setSelectedCategory] = useState('All')
 	const [selectedBrand, setBrand] = useState('All')
 	const [priceRange, setPriceRange] = useState([0, 300])
@@ -27,12 +50,15 @@ export default function ProductsPage() {
 	const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
 	const [showFilters, setShowFilters] = useState(false)
 
+	// 🐨 Let's replace these with the actual products for now, we will do filtering later!
+	// 💣 You can completely remove this useMemo and hardcode it to be the products for now
+	// 💰 You can just do loaderData.products, this will be completely removed later!
 	const filteredProducts = useMemo(() => {
 		let filtered = products.filter((product) => {
 			const categoryMatch =
-				selectedCategory === 'All' || product.category === selectedCategory
+				selectedCategory === 'All' || product.category.name === selectedCategory
 			const brandMatch =
-				selectedBrand === 'All' || product.brand === selectedBrand
+				selectedBrand === 'All' || product.brand.name === selectedBrand
 			const priceMatch =
 				product.price >= priceRange[0] && product.price <= priceRange[1]
 
@@ -47,7 +73,7 @@ export default function ProductsPage() {
 				case 'price-high':
 					return b.price - a.price
 				case 'rating':
-					return b.rating - a.rating
+					return b.reviewScore - a.reviewScore
 				case 'name':
 				default:
 					return a.name.localeCompare(b.name)
@@ -121,6 +147,8 @@ export default function ProductsPage() {
 								</h3>
 								<div className="space-y-2">
 									{categories.map((category) => (
+										// 🐨 Let's replace these with the actual category from the backend
+										// 💰 You can just use category.id and category.name here!
 										<button
 											key={category}
 											onClick={() => setSelectedCategory(category)}
@@ -142,6 +170,8 @@ export default function ProductsPage() {
 								</h3>
 								<div className="space-y-2">
 									{brands.map((brand) => (
+										// 🐨 Let's replace these with the actual new brands from the backend
+										// 💰 You can just use brand.id and brand.name here!
 										<button
 											key={brand}
 											onClick={() => setBrand(brand)}
@@ -186,6 +216,7 @@ export default function ProductsPage() {
 						{viewMode === 'grid' ? (
 							<div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
 								{filteredProducts.map((product) => (
+									// 🐨 Let's replace these with the ProductCard again!
 									<div
 										key={product.id}
 										className="group overflow-hidden rounded-lg bg-white transition-all duration-300 hover:scale-105 hover:transform hover:shadow-xl dark:bg-gray-800"
@@ -193,7 +224,7 @@ export default function ProductsPage() {
 										<div className="relative overflow-hidden">
 											<Link to={`/products/${product.id}`}>
 												<img
-													src={product.image}
+													src={product.imageUrl}
 													alt={product.name}
 													className="h-64 w-full object-cover transition-transform duration-500 group-hover:scale-110"
 												/>
@@ -205,14 +236,14 @@ export default function ProductsPage() {
 												<div className="flex items-center space-x-1">
 													<Star className="h-4 w-4 fill-current text-amber-500" />
 													<span className="text-sm font-medium text-gray-900 dark:text-white">
-														{product.rating}
+														{product.reviewScore}
 													</span>
 												</div>
 											</div>
 										</div>
 										<div className="p-6">
 											<div className="mb-2 text-sm font-medium text-amber-600 dark:text-amber-500">
-												{product.brand}
+												{product.brand.name}
 											</div>
 											<Link to={`/products/${product.id}`}>
 												<h3 className="mb-2 text-lg font-medium text-gray-900 transition-colors duration-300 group-hover:text-amber-600 dark:text-white dark:group-hover:text-amber-500">
@@ -227,7 +258,7 @@ export default function ProductsPage() {
 													${product.price}
 												</span>
 												<span className="text-sm text-gray-500 dark:text-gray-400">
-													{product.reviews} reviews
+													{product.reviews.length} reviews
 												</span>
 											</div>
 										</div>
@@ -237,6 +268,7 @@ export default function ProductsPage() {
 						) : (
 							<div className="space-y-6">
 								{filteredProducts.map((product) => (
+									// 🐨 Let's replace these with the ProductCard again!
 									<div
 										key={product.id}
 										className="overflow-hidden rounded-lg bg-white transition-shadow duration-300 hover:shadow-lg dark:bg-gray-800"
@@ -245,7 +277,7 @@ export default function ProductsPage() {
 											<div className="relative overflow-hidden md:w-64">
 												<Link to={`/products/${product.id}`}>
 													<img
-														src={product.image}
+														src={product.imageUrl}
 														alt={product.name}
 														className="h-48 w-full object-cover transition-transform duration-300 hover:scale-105 md:h-full"
 													/>
@@ -255,7 +287,7 @@ export default function ProductsPage() {
 												<div className="flex items-start justify-between">
 													<div className="flex-1">
 														<div className="mb-2 text-sm font-medium text-amber-600 dark:text-amber-500">
-															{product.brand}
+															{product.brand.name}
 														</div>
 														<Link to={`/products/${product.id}`}>
 															<h3 className="mb-2 text-xl font-medium text-gray-900 transition-colors duration-300 hover:text-amber-600 dark:text-white dark:hover:text-amber-500">
@@ -269,10 +301,10 @@ export default function ProductsPage() {
 															<div className="flex items-center space-x-1">
 																<Star className="h-4 w-4 fill-current text-amber-500" />
 																<span className="text-sm font-medium text-gray-900 dark:text-white">
-																	{product.rating}
+																	{product.reviewScore}
 																</span>
 																<span className="text-sm text-gray-500 dark:text-gray-400">
-																	({product.reviews} reviews)
+																	({product.reviews.length} reviews)
 																</span>
 															</div>
 														</div>
