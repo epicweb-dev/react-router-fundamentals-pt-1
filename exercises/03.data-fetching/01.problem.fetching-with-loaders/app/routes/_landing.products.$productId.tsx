@@ -22,6 +22,7 @@ import {
 	getMetaTitle,
 	constructPrefixedTitle,
 } from '#app/utils/metadata.js'
+//  💣 We will remove this completely by the end
 import { products } from '../../data/products'
 import { type Route } from './+types/_landing.products.$productId'
 
@@ -60,7 +61,7 @@ export default function ProductDetailPage({
 	const [selectedColor] = useState('')
 	const [quantity, setQuantity] = useState(1)
 	const [activeImage, setActiveImage] = useState(0)
-
+	// 🐨 Let's replace this with the actual product data from the loader
 	const product = products.find((p) => p.id === productId)
 
 	if (!product) {
@@ -99,6 +100,7 @@ export default function ProductDetailPage({
 	]
 	// 🐨 Let's access the loaderData and swap this out with actual data!
 	// 💰 We are using the hardcoded products data to simulate related products
+	// 💣 Feel free to completely delete this and use the loaderData
 	const relatedProducts = products
 		.filter(
 			(p) => p.category.name === product.category.name && p.id !== product.id,

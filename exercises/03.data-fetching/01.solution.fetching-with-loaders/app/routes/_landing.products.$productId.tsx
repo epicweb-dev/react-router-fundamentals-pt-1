@@ -9,13 +9,17 @@ import {
 	Minus,
 } from 'lucide-react'
 import { useState } from 'react'
-import { useParams, Link } from 'react-router'
+import { Link } from 'react-router'
+import { ProductCard } from '#app/components/product-card.js'
+import {
+	getProductById,
+	getRelatedProducts,
+} from '#app/domain/products.server.ts'
 import {
 	getMetaFromMatches,
 	getMetaTitle,
 	constructPrefixedTitle,
 } from '#app/utils/metadata.js'
-import { products } from '../../data/products'
 import { type Route } from './+types/_landing.products.$productId'
 
 export const meta: Route.MetaFunction = ({ matches }) => {
@@ -28,14 +32,29 @@ export const meta: Route.MetaFunction = ({ matches }) => {
 	]
 }
 
-export default function ProductDetailPage() {
-	const { productId } = useParams()
-	const [selectedSize, setSelectedSize] = useState('')
-	const [selectedColor, setSelectedColor] = useState('')
+export const loader = async ({ params }: Route.LoaderArgs) => {
+	const { productId } = params
+	const product = await getProductById(productId)
+	const relatedProducts = await getRelatedProducts(
+		productId,
+		product?.category.id,
+		product?.brand.id,
+	)
+
+	return {
+		product,
+		relatedProducts,
+	}
+}
+
+export default function ProductDetailPage({
+	loaderData,
+}: Route.ComponentProps) {
+	const { product, relatedProducts } = loaderData
+	const [selectedSize] = useState('')
+	const [selectedColor] = useState('')
 	const [quantity, setQuantity] = useState(1)
 	const [activeImage, setActiveImage] = useState(0)
-
-	const product = products.find((p) => p.id === productId)
 
 	if (!product) {
 		return (
@@ -66,15 +85,11 @@ export default function ProductDetailPage() {
 
 	// Mock additional images for gallery
 	const productImages = [
-		product.image,
-		product.image,
-		product.image,
-		product.image,
+		product.imageUrl,
+		product.imageUrl,
+		product.imageUrl,
+		product.imageUrl,
 	]
-
-	const relatedProducts = products
-		.filter((p) => p.category === product.category && p.id !== product.id)
-		.slice(0, 4)
 
 	return (
 		<div className="min-h-screen bg-stone-50 dark:bg-gray-900">
@@ -125,7 +140,7 @@ export default function ProductDetailPage() {
 					<div className="space-y-6">
 						<div>
 							<div className="mb-2 text-sm font-medium text-amber-600 dark:text-amber-500">
-								{product.brand}
+								{product.brand.name}
 							</div>
 							<h1 className="mb-4 text-3xl font-light text-gray-900 dark:text-white">
 								{product.name}
@@ -136,18 +151,18 @@ export default function ProductDetailPage() {
 										<Star
 											key={i}
 											className={`h-5 w-5 ${
-												i < Math.floor(product.rating)
+												i < Math.floor(product.reviewScore)
 													? 'fill-current text-amber-500'
 													: 'text-gray-300 dark:text-gray-600'
 											}`}
 										/>
 									))}
 									<span className="ml-2 text-sm font-medium text-gray-900 dark:text-white">
-										{product.rating}
+										{product.reviewScore}
 									</span>
 								</div>
 								<span className="text-sm text-gray-500 dark:text-gray-400">
-									({product.reviews} reviews)
+									({product.reviews.length} reviews)
 								</span>
 							</div>
 							<div className="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
@@ -164,7 +179,7 @@ export default function ProductDetailPage() {
 								Size
 							</h3>
 							<div className="grid grid-cols-6 gap-3">
-								{product.sizes.map((size) => (
+								{/* {product.sizes.map((size) => (
 									<button
 										key={size}
 										onClick={() => setSelectedSize(size)}
@@ -176,7 +191,7 @@ export default function ProductDetailPage() {
 									>
 										{size}
 									</button>
-								))}
+								))} */}
 							</div>
 						</div>
 
@@ -186,7 +201,7 @@ export default function ProductDetailPage() {
 								Color
 							</h3>
 							<div className="flex space-x-3">
-								{product.colors.map((color) => (
+								{/* {product.colors.map((color) => (
 									<button
 										key={color}
 										onClick={() => setSelectedColor(color)}
@@ -198,7 +213,7 @@ export default function ProductDetailPage() {
 									>
 										{color}
 									</button>
-								))}
+								))} */}
 							</div>
 						</div>
 
@@ -275,43 +290,7 @@ export default function ProductDetailPage() {
 						</h2>
 						<div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
 							{relatedProducts.map((relatedProduct) => (
-								<Link
-									key={relatedProduct.id}
-									to={`/products/${relatedProduct.id}`}
-									className="group overflow-hidden rounded-lg bg-white transition-all duration-300 hover:scale-105 hover:transform hover:shadow-xl dark:bg-gray-800"
-								>
-									<div className="relative overflow-hidden">
-										<img
-											src={relatedProduct.image}
-											alt={relatedProduct.name}
-											className="h-64 w-full object-cover transition-transform duration-500 group-hover:scale-110"
-										/>
-										<div className="absolute top-4 right-4 rounded-full bg-white px-3 py-1 dark:bg-gray-900">
-											<div className="flex items-center space-x-1">
-												<Star className="h-4 w-4 fill-current text-amber-500" />
-												<span className="text-sm font-medium text-gray-900 dark:text-white">
-													{relatedProduct.rating}
-												</span>
-											</div>
-										</div>
-									</div>
-									<div className="p-6">
-										<div className="mb-2 text-sm font-medium text-amber-600 dark:text-amber-500">
-											{relatedProduct.brand}
-										</div>
-										<h3 className="mb-2 text-lg font-medium text-gray-900 transition-colors duration-300 group-hover:text-amber-600 dark:text-white dark:group-hover:text-amber-500">
-											{relatedProduct.name}
-										</h3>
-										<div className="flex items-center justify-between">
-											<span className="text-xl font-bold text-gray-900 dark:text-white">
-												${relatedProduct.price}
-											</span>
-											<span className="text-sm text-gray-500 dark:text-gray-400">
-												{relatedProduct.reviews} reviews
-											</span>
-										</div>
-									</div>
-								</Link>
+								<ProductCard key={relatedProduct.id} product={relatedProduct} />
 							))}
 						</div>
 					</div>

@@ -46,18 +46,21 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 	const page = parseInt(searchParams.get('page') || '1')
 	const limit = parseInt(searchParams.get('perPage') || '9')
 
-	const { products, pagination } = await getProducts({
-		category,
-		brand,
-		priceMin,
-		priceMax,
-		sortBy,
-		page,
-		limit,
-		search,
-	})
-	const { categories } = await getAllCategories()
-	const { brands } = await getAllBrands()
+	const [{ products, pagination }, { categories }, { brands }] =
+		await Promise.all([
+			getProducts({
+				category,
+				brand,
+				priceMin,
+				priceMax,
+				sortBy,
+				page,
+				limit,
+				search,
+			}),
+			getAllCategories(),
+			getAllBrands(),
+		])
 
 	return {
 		products,

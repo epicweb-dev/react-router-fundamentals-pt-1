@@ -1,4 +1,4 @@
-import { getProductById, ProductCardInfo } from "#app/domain/products.server.ts"
+import { type getProductById, } from "#app/domain/products.server.ts"
 
 export const products: NonNullable<Awaited<ReturnType<typeof getProductById>>>[] = [
 	{
