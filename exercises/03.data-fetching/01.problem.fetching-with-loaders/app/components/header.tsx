@@ -1,6 +1,6 @@
 import { ShoppingBag, Search, Menu, X } from 'lucide-react'
 import { useState } from 'react'
-import { Link, useLocation } from 'react-router'
+import { Link, useLocation, Form, useSearchParams } from 'react-router'
 
 export const Header = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -10,9 +10,10 @@ export const Header = () => {
 		{ name: 'About', href: '/about' },
 		{ name: 'Contact', href: '/contact' },
 	]
+	const [searchParams] = useSearchParams()
 	const location = useLocation()
 	const isActive = (href: string) => location.pathname === href
-
+	const q = searchParams.get('q') || ''
 	return (
 		<nav className="sticky top-0 z-50 border-b border-stone-200 bg-white/95 backdrop-blur-md dark:border-gray-700 dark:bg-gray-900/95">
 			<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -29,11 +30,23 @@ export const Header = () => {
 					<div className="mx-8 hidden max-w-lg flex-1 md:block">
 						<div className="relative">
 							<Search className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 transform text-gray-400" />
-							<input
-								type="text"
-								placeholder="Search for products..."
-								className="w-full rounded-full border border-gray-200 bg-gray-50 py-3 pr-4 pl-10 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white"
-							/>
+							<Form method="GET" action="/products">
+								<input
+									type="text"
+									name="q"
+									defaultValue={q}
+									onKeyDown={(e) => {
+										if (e.key === 'Enter') {
+											const form = e.currentTarget.form
+											if (form) {
+												form.submit()
+											}
+										}
+									}}
+									placeholder="Search for products..."
+									className="w-full rounded-full border border-gray-200 bg-gray-50 py-3 pr-4 pl-10 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+								/>
+							</Form>
 						</div>
 					</div>
 

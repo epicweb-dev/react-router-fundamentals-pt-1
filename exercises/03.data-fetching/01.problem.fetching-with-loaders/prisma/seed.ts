@@ -2,7 +2,6 @@ import { faker } from '@faker-js/faker';
 import { db } from '#app/db.server.js'
 import { type ProductUncheckedCreateInput, } from '#app/generated/prisma/models.js';
 
-
 const categories = [
 	'Running',
 	'Casual',
@@ -33,7 +32,6 @@ const sneakerImages = [
 	'https://images.pexels.com/photos/1598508/pexels-photo-1598508.jpeg?auto=compress&cs=tinysrgb&w=600',
 	'https://images.pexels.com/photos/2529157/pexels-photo-2529157.jpeg?auto=compress&cs=tinysrgb&w=600',
 	'https://images.pexels.com/photos/1456705/pexels-photo-1456705.jpeg?auto=compress&cs=tinysrgb&w=600',
-	'https://images.pexels.com/photos/1598507/pexels-photo-1598507.jpeg?auto=compress&cs=tinysrgb&w=600',
 ]
 const productNames = [
 	'Air Zoom Pegasus 38',
@@ -92,7 +90,7 @@ async function seed() {
 
 	const categoryMap = new Map<string, string>()
 	for (const name of categoryNames) {
-		const category = await db.category.create({ data: { name } })
+		const category = await db.category.create({ data: { name, imageUrl: faker.helpers.arrayElement(sneakerImages) } })
 		categoryMap.set(name, category.id)
 	}
 

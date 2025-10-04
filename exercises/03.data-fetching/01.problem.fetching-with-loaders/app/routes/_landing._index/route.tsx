@@ -17,7 +17,7 @@ export const meta: Route.MetaFunction = ({ matches }) => {
 
 export const loader = async ({}: Route.LoaderArgs) => {
 	const { products } = await getProducts()
-	const { categories } = await getAllCategories()
+	const { categories } = await getAllCategories({ perPage: 4 })
 	const { brands } = await getAllBrands()
 	return { products, categories, brands }
 }
@@ -27,7 +27,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
 		<div className="bg-stone-50 dark:bg-gray-900">
 			<HeroSection />
 			<FeaturesSection />
-			<CategoriesSection />
+			<CategoriesSection categories={loaderData.categories} />
 			<FeaturedProductsSection products={loaderData.products} />
 			<NewsletterSection />
 		</div>

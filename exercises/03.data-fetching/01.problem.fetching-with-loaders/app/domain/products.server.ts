@@ -9,6 +9,7 @@ interface ProductFilters {
   sortBy?: 'name' | 'price-low' | 'price-high' | 'rating';
   page?: number;
   limit?: number;
+  search?: string;
 }
 
 // Define select object without strict typing for _count support
@@ -52,7 +53,10 @@ function createProductWhereClause(filters?: ProductFilters): ProductWhereInput {
   return {
     category: filters?.category && filters.category.length > 0 ? { name: { in: filters.category } } : undefined,
     brand: filters?.brand && filters.brand.length > 0 ? { name: { in: filters.brand } } : undefined,
-
+    OR: filters?.search ? [
+      { name: filters.search ? { contains: filters.search, } : undefined },
+      { description: filters.search ? { contains: filters.search, } : undefined },
+    ] : undefined,
     price: {
       gte: filters?.priceMin ?? 0,
       lte: filters?.priceMax ?? 300,

@@ -29,6 +29,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 	const url = new URL(request.url)
 	const searchParams = url.searchParams
 
+	const search = searchParams.get('q') || undefined
 	const category = searchParams.getAll('category') || []
 	const brand = searchParams.getAll('brand') || []
 	const priceMin = searchParams.get('priceMin')
@@ -53,6 +54,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 		sortBy,
 		page,
 		limit,
+		search,
 	})
 	const { categories } = await getAllCategories()
 	const { brands } = await getAllBrands()
