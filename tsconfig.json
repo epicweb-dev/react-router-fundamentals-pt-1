@@ -53,10 +53,13 @@
       "path": "exercises/03.data-fetching/03.solution.filtering-and-pagination"
     },
     {
-      "path": "exercises/03.data-fetching/03.solution.filtering-and-pagination copy"
+      "path": "exercises/03.data-fetching/04.problem.infinite-fetching-with-fetchers"
     },
     {
-      "path": "exercises/03.data-fetching/04.solution.fetching-with-loaders"
+      "path": "exercises/03.data-fetching/04.solution.infinite-fetching-with-fetchers"
+    },
+    {
+      "path": "exercises/03.data-fetching/05.solution.product-variations"
     }
   ]
 }

@@ -1,12 +1,22 @@
-## Filtering, sorting and pagination
+## Infinite Scrolling with `useFetcher` hook
 
-Well done! You have successfully added filtering, sorting, and pagination to your product listing page.
-This allows your users to easily find and navigate through products based on their preferences.
+Now that we have everything in place, the lest step in improving our products listing page is to implement infinite scrolling.
+This will allow us to load more products as the user scrolls down the page, providing a seamless browsing experience.
 
-Now with that out of the way, you might've noticed that the pagination works, but it doesn't load more products!
-Let's fix that in the next exercise by using fetchers and infinite scrolling.
+### `useFetcher` hook
+The `useFetcher` hook from React Router is a powerful tool that allows you to perform data fetching and mutations without causing a full page navigation.
+When you call `useFetcher`, it returns an object that contains several properties and methods to help you manage data fetching. 
+One of the key properties is `load`, which is a function that you can call to fetch data from a specified URL.
 
-🧝‍♀️ I'm going to help you out for the next exercise, I'll create an intersection observer hook to let us listen
-to when the user scrolls to the bottom of the page so we can load more products automatically! The rest is up to you!
+By using the `load` method, you can fetch additional data (like more products) and update your component's state accordingly. We will explore this 
+hook further in upcoming workshops, but for now, it's important to understand that it allows us to fetch data without navigating away from the current page.
 
-You're doing great! 🚀
+You typically use this hook when you don't want to add an event to the browsers `history` stack, for example when implementing infinite scrolling.
+
+### Exercise Goals
+
+- Add infinite scrolling to the products listing page using the `useFetcher` hook.
+- Use an intersection observer to detect when the user has scrolled to the bottom of the page.
+- Fetch and append more products to the existing list as the user scrolls down.
+- Ensure that the infinite scrolling works seamlessly with the existing filtering, sorting, and pagination features.
+- Provide feedback to the user when new products are being loaded (e.g., a loading spinner).

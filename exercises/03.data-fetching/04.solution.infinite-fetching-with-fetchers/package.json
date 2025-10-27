@@ -1,5 +1,5 @@
 {
-  "name": "exercises_03.data-fetching_04.solution.fetching-with-loaders",
+  "name": "exercises_03.data-fetching_04.solution.infinite-fetching-with-fetchers",
   "private": true,
   "type": "module",
   "imports": {
