@@ -1,6 +1,9 @@
 import { db } from "#app/db.server.js";
-import { type ProductSelect } from "#app/generated/prisma/models.ts";
+import { type ProductWhereInput, type ProductSelect } from "#app/generated/prisma/models.ts";
 
+interface ProductFilters {
+  search?: string;
+}
 
 const productShortInfoSelect = {
   id: true,
@@ -22,11 +25,21 @@ const productShortInfoSelect = {
   },
 } as const satisfies ProductSelect
 
+function createProductWhereClause(filters?: ProductFilters): ProductWhereInput {
+  return {
+    OR: filters?.search ? [
+      { name: filters.search ? { contains: filters.search, } : undefined },
+      { description: filters.search ? { contains: filters.search, } : undefined },
+    ] : undefined,
 
-export async function getProducts() {
+  }
+}
 
-  // Get products with pagination
+
+export async function getProducts(filters?: ProductFilters) {
+  const whereClause = createProductWhereClause(filters);
   const products = await db.product.findMany({
+    where: whereClause,
     select: productShortInfoSelect,
   });
 

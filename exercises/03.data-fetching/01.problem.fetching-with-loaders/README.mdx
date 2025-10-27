@@ -1,22 +1,58 @@
 ## Data fetching with loaders
 
-Well done! You have successfully added metadata to your routes using the `meta` export. 
-This allows you to set dynamic titles for each page in your application by merging 
-the parent route's metadata with the current route's metadata.
+Amazing work so far! Now is the time for us to dive deep into data fetching using
+loaders in React Router. Loaders are a powerful feature that allows us to fetch
+data before rendering a route, ensuring that our components have the data they need
+right from the start.
 
-You have also ensured that all titles have a consistent prefix, "Epic Shop -", which
-improves the branding and recognition of your application.
+### Loaders Overview
 
-Another benefit of the approach we just implemented is that if you add a new route
-and you forget to add a title there, it will fallback to the closest parent route's title,
-which is a nice safety net to have.
+Loaders are functions that run on the server (or during the build process in SPA mode) 
+before a route is rendered. (Keep this in mind if you want navigations to be instant)
+They can fetch data from APIs, databases, or any other source, and the data they return
+is made available to the route's component via the `useLoaderData` hook or the
+`loaderData` prop on the route component. First is used in components far from the route
+definition, second is used in the route definition itself, as a rule-of-thumb, prefer the 
+second one.
 
-Now that you fully understand the `meta` export and how to use it effectively, let's
-move onto the next module when you're ready!
+Loaders return serialized data using `turbo-stream` which means you can return complex
+data structures, including nested objects and arrays, without worrying about serialization
+issues. (Think of promises and how you could optimize your loaders by returning slow fetches)
 
-🧝‍♀️ I'm going to help you out for the next exercise, from what I understand it's all about
-data fetching and loaders, so I'm going to set up a database for you to use in the next exercise
-and also add some utilities to help you out with fetching data from the database! I hope
-this helps you out!
+Loaders can also redirect the user to different routes based on certain conditions,
+such as authentication status or data availability. This allows us to handle routing
+logic in a centralized manner, improving the overall structure of our application.
 
-You're doing great! 🚀
+If a loader throws an error, React Router will catch it and render the nearest
+error boundary, otherwise if a response is thrown it will either redirect if it's a 
+redirect response (status 302) or also go to the nearest ErrorBoundary.
+
+Because they run on a server you can cache their results using HTTP caching headers,
+which can significantly improve the performance of your application by reducing
+the number of requests made to your backend services, or improving the response of
+the loaders themselves, this is useful for data that doesn't change often.
+
+### Exercise Goals
+
+
+In this exercise, we will set up loaders for our routes to fetch product data from
+a database. 
+
+🧝‍♀️ Has already set up a database for us! 
+
+The point of this exercise is to get comfortable with loaders, understand how they work,
+and how we can optimize them to perform faster when it comes to fetching the data itself.
+
+We have 3 different routes that will require data fetching, and each aims to teach you
+a different concept of data fetching with loaders:
+
+1. **Basic Data Fetching**: In the first route, we will implement a simple loader that fetches
+   all products from the database and displays them on the page. This will help you understand
+   the basics of setting up a loader and using the fetched data in your components.
+2. **Using URL Parameters**: The second route will introduce URL parameters. We will create a loader
+   that fetches a product based on the ID provided in the URL. This will teach you how to read
+   URL parameters in loaders and use them to fetch specific data.
+3. **Optimizing Data Fetching**: In the final route, we will focus on optimizing our data fetching.
+   We will use a simple trick of parallelizing multiple data fetches to improve performance. This will help you
+   understand how to make your loaders more efficient.
+

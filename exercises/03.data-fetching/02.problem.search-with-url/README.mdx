@@ -1,22 +1,43 @@
-## Data fetching with loaders
+## URL as the source of truth & Progressive enhancement
 
-Well done! You have successfully added metadata to your routes using the `meta` export. 
-This allows you to set dynamic titles for each page in your application by merging 
-the parent route's metadata with the current route's metadata.
+One of the terms tied strongly with React Router is "Progressive Enhancement".
+Progressive enhancement is the idea of building web applications that work for
+all users, regardless of their browser capabilities or network conditions. This
+means that even if a user has JavaScript disabled, they should still be able to
+access the core functionality of the application.
 
-You have also ensured that all titles have a consistent prefix, "Epic Shop -", which
-improves the branding and recognition of your application.
+To achieve this, React Router encourages developers to use the Web API's. 
+This means, for example, that instead of relying solely on JavaScript to 
+manage application state, we can use the URL to store and retrieve state information.
 
-Another benefit of the approach we just implemented is that if you add a new route
-and you forget to add a title there, it will fallback to the closest parent route's title,
-which is a nice safety net to have.
+This approach allows your users to have your website work without JavaScript,
+as the URL is always accessible, and servers can render pages based on the URL alone.
 
-Now that you fully understand the `meta` export and how to use it effectively, let's
-move onto the next module when you're ready!
+### `Form` component
 
-🧝‍♀️ I'm going to help you out for the next exercise, from what I understand it's all about
-data fetching and loaders, so I'm going to set up a database for you to use in the next exercise
-and also add some utilities to help you out with fetching data from the database! I hope
-this helps you out!
+If you've heard of React Router before, you might be familiar with their `Form` component.
+This is a wrapper around the native HTML `<form>` element that enhances its functionality
+by integrating it with React Router's navigation system. The `Form` component allows you 
+to submit forms without a full page reload, providing a smoother user experience.
 
-You're doing great! 🚀
+The reason it wraps the native `<form>` element is to ensure that the form can still 
+be submitted and processed by the server if JavaScript is disabled in the user's browser.
+This allows us to build user interfaces that work for everyone!
+
+By default the `Form` component does a `GET` request to the current URL,
+including all form fields as query parameters. This means that the form data is appended
+to the URL as key-value pairs, making it easy to grab the data from the URL.
+
+You can also change the method to `POST` if you want to submit the form data, this
+will submit the data to an `action` function defined on the route instead of the `loader`.
+
+
+### Exercise Goals
+
+
+In this exercise, we will implement a search functionality for our product listing
+page. The search term will be stored in the URL as a query parameter, allowing users
+to share links to specific search results and bookmark their searches for later.
+
+The header component will have a search input field where users can type their search queries.
+When the form is submitted, the search term will be added to the URL as a query parameter.

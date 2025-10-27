@@ -1,4 +1,4 @@
-import { ShoppingBag, Search, Menu, X } from 'lucide-react'
+import { ShoppingBag, Search, Menu, X, SearchIcon } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useLocation, Form, useSearchParams } from 'react-router'
 
@@ -29,8 +29,8 @@ export const Header = () => {
 
 					<div className="mx-8 hidden max-w-lg flex-1 md:block">
 						<div className="relative">
-							<Search className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 transform text-gray-400" />
-							<Form method="GET" action="/products">
+							<Form method="GET" action="/products" className="relative">
+								<Search className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 transform text-gray-400" />
 								<input
 									type="text"
 									name="q"
@@ -44,8 +44,15 @@ export const Header = () => {
 										}
 									}}
 									placeholder="Search for products..."
-									className="w-full rounded-full border border-gray-200 bg-gray-50 py-3 pr-4 pl-10 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+									className="w-full rounded-full border border-gray-200 bg-gray-50 py-3 pr-24 pl-10 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white"
 								/>
+								<button
+									type="submit"
+									className="absolute top-1/2 right-2 flex -translate-y-1/2 items-center space-x-1 rounded-full bg-amber-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-300 hover:bg-amber-700 dark:bg-amber-500 dark:hover:bg-amber-600"
+								>
+									<SearchIcon className="h-4 w-4" />
+									<span>Search</span>
+								</button>
 							</Form>
 						</div>
 					</div>

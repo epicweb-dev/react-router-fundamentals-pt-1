@@ -21,9 +21,13 @@ export const meta: Route.MetaFunction = ({ matches }) => {
 	]
 }
 
-export const loader = async ({}: Route.LoaderArgs) => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
+	const url = new URL(request.url)
+	const searchParams = url.searchParams
+
+	const search = searchParams.get('q') || undefined
 	const [{ products }, { categories }, { brands }] = await Promise.all([
-		getProducts(),
+		getProducts({ search }),
 		getAllCategories(),
 		getAllBrands(),
 	])

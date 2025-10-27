@@ -20,10 +20,19 @@ export const meta: Route.MetaFunction = ({ matches }) => {
 		},
 	]
 }
-
-export const loader = async ({}: Route.LoaderArgs) => {
+// 🐨 Update the loader to accept a search parameter and pass it to getProducts
+export const loader = async ({ request }: Route.LoaderArgs) => {
+	// 🐨 Get the search parameter from the URL
+	// 💰 You can use the URL constructor to parse the request URL in loaders
+	const url = new URL(request.url)
+	// 🐨 Get the searchParameters from the URL
+	// 💰 The URL class has a searchParams property that returns a URLSearchParams object
+	const searchParams = undefined
+	// 🐨 Get the 'q' parameter from the search parameters
+	const search = undefined
 	const [{ products }, { categories }, { brands }] = await Promise.all([
-		getProducts(),
+		// 🐨 Pass the search into getProducts
+		getProducts({}),
 		getAllCategories(),
 		getAllBrands(),
 	])

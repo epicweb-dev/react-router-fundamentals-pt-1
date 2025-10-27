@@ -1,6 +1,9 @@
 import { db } from "#app/db.server.js";
-import { type ProductSelect } from "#app/generated/prisma/models.ts";
+import { type ProductWhereInput, type ProductSelect } from "#app/generated/prisma/models.ts";
 
+interface ProductFilters {
+  search?: string;
+}
 
 const productShortInfoSelect = {
   id: true,
@@ -22,12 +25,25 @@ const productShortInfoSelect = {
   },
 } as const satisfies ProductSelect
 
+function createProductWhereClause(filters?: ProductFilters): ProductWhereInput {
+  // 💰 We use an OR where we search either the name or description for the search term
+  return {
+    OR: filters?.search ? [
+      { name: filters.search ? { contains: filters.search, } : undefined },
+      { description: filters.search ? { contains: filters.search, } : undefined },
+    ] : undefined,
 
-export async function getProducts() {
+  }
+}
 
-  // Get products with pagination
+
+export async function getProducts(filters?: ProductFilters) {
+  // 🐨 Let's create the where clause using the filters passed in
+  const whereClause = createProductWhereClause();
   const products = await db.product.findMany({
     select: productShortInfoSelect,
+    // 🐨 Let's pass in the where clause to filter our products here
+    where: undefined
   });
 
   return {
