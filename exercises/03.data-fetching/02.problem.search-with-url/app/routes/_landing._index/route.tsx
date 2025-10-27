@@ -23,9 +23,6 @@ export const loader = async () => {
 	return { products, categories }
 }
 
-// 🐨 Let's access the data we have sent from the server and use it in the components
-// 💰 You can access the data directly from the loader as a prop of the component
-// 💰 Try using `loaderData` to access the data
 export default function HomePage({ loaderData }: Route.ComponentProps) {
 	return (
 		<div className="bg-stone-50 dark:bg-gray-900">

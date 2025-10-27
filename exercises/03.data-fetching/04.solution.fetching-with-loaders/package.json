@@ -36,7 +36,7 @@
     "@faker-js/faker": "^10.0.0",
     "@playwright/test": "^1.39.0",
     "@react-router/dev": "^7.9.3",
-    "@react-router/fs-routes": "^7.8.2",
+    "@react-router/fs-routes": "^7.9.3",
     "@tailwindcss/vite": "^4.1.4",
     "@types/node": "^20",
     "@types/react": "^19.1.2",

@@ -5,7 +5,7 @@ import { ProductCard } from '#app/components/product-card.js'
 import { getAllBrands } from '#app/domain/brand.server.js'
 import { getAllCategories } from '#app/domain/category.server.js'
 import { getProducts } from '#app/domain/products.server.js'
-import { useIntersectionObserver } from '#app/hooks/use-intersection-observer.ts'
+import { useIntersectionObserver } from '#app/hooks/use-intersection-observer.js'
 import {
 	getMetaFromMatches,
 	getMetaTitle,
