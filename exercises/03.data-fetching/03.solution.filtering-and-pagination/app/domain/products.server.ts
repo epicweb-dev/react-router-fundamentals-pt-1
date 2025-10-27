@@ -34,6 +34,28 @@ const productShortInfoSelect = {
 } as const satisfies ProductSelect
 
 
+export const extractProductFiltersFromSearchParams = (
+  searchParams: URLSearchParams,
+): ProductFilters => {
+  const search = searchParams.get('q') || undefined
+  const category = searchParams.getAll('category') || []
+  const brand = searchParams.getAll('brand') || []
+  const priceMin = searchParams.get('priceMin')
+    ? parseFloat(searchParams.get('priceMin')!)
+    : undefined
+  const priceMax = searchParams.get('priceMax')
+    ? parseFloat(searchParams.get('priceMax')!)
+    : undefined
+  const sortBy = (searchParams.get('sortBy') || 'name') as
+    | 'name'
+    | 'price-low'
+    | 'price-high'
+    | 'rating'
+  const page = parseInt(searchParams.get('page') || '1')
+  const limit = parseInt(searchParams.get('perPage') || '9')
+  return { search, category, brand, priceMin, priceMax, sortBy, page, limit }
+}
+
 function createProductOrderBy(sortBy: ProductFilters['sortBy']): ProductOrderByWithRelationInput | undefined {
   switch (sortBy) {
     case 'name':

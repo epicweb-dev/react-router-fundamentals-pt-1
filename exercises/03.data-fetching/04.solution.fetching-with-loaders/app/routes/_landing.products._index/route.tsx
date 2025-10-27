@@ -4,7 +4,10 @@ import { useSearchParams, useNavigation } from 'react-router'
 import { ProductCard } from '#app/components/product-card.js'
 import { getAllBrands } from '#app/domain/brand.server.js'
 import { getAllCategories } from '#app/domain/category.server.js'
-import { getProducts } from '#app/domain/products.server.js'
+import {
+	extractProductFiltersFromSearchParams,
+	getProducts,
+} from '#app/domain/products.server.js'
 import { useIntersectionObserver } from '#app/hooks/use-intersection-observer.js'
 import {
 	getMetaFromMatches,
@@ -28,36 +31,11 @@ export const meta: Route.MetaFunction = ({ matches }) => {
 export const loader = async ({ request }: Route.LoaderArgs) => {
 	const url = new URL(request.url)
 	const searchParams = url.searchParams
-
-	const search = searchParams.get('q') || undefined
-	const category = searchParams.getAll('category') || []
-	const brand = searchParams.getAll('brand') || []
-	const priceMin = searchParams.get('priceMin')
-		? parseFloat(searchParams.get('priceMin')!)
-		: undefined
-	const priceMax = searchParams.get('priceMax')
-		? parseFloat(searchParams.get('priceMax')!)
-		: undefined
-	const sortBy = (searchParams.get('sortBy') || 'name') as
-		| 'name'
-		| 'price-low'
-		| 'price-high'
-		| 'rating'
-	const page = parseInt(searchParams.get('page') || '1')
-	const limit = parseInt(searchParams.get('perPage') || '9')
+	const filters = extractProductFiltersFromSearchParams(searchParams)
 
 	const [{ products, pagination }, { categories }, { brands }] =
 		await Promise.all([
-			getProducts({
-				category,
-				brand,
-				priceMin,
-				priceMax,
-				sortBy,
-				page,
-				limit,
-				search,
-			}),
+			getProducts(filters),
 			getAllCategories(),
 			getAllBrands(),
 		])
