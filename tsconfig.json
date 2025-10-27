@@ -47,6 +47,9 @@
       "path": "exercises/03.data-fetching/02.solution.search-with-url"
     },
     {
+      "path": "exercises/03.data-fetching/03.solution.filtering-and-pagination"
+    },
+    {
       "path": "exercises/03.data-fetching/04.solution.fetching-with-loaders"
     }
   ]

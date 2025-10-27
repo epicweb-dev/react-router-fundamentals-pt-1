@@ -1,7 +1,6 @@
 import { db } from "#app/db.server.js";
 import { type ProductWhereInput, type ProductSelect, type ProductOrderByWithRelationInput } from "#app/generated/prisma/models.ts";
 
-
 interface ProductFilters {
   category?: string[];
   brand?: string[];
@@ -50,6 +49,7 @@ function createProductOrderBy(sortBy: ProductFilters['sortBy']): ProductOrderByW
   }
 }
 
+
 function createProductWhereClause(filters?: ProductFilters): ProductWhereInput {
   return {
     OR: filters?.search ? [
@@ -58,7 +58,6 @@ function createProductWhereClause(filters?: ProductFilters): ProductWhereInput {
     ] : undefined,
     category: filters?.category && filters.category.length > 0 ? { name: { in: filters.category } } : undefined,
     brand: filters?.brand && filters.brand.length > 0 ? { name: { in: filters.brand } } : undefined,
-
     price: {
       gte: filters?.priceMin ?? 0,
       lte: filters?.priceMax ?? 300,
@@ -66,16 +65,16 @@ function createProductWhereClause(filters?: ProductFilters): ProductWhereInput {
   }
 }
 
+
 export async function getProducts(filters?: ProductFilters) {
   const page = filters?.page ?? 1;
   const limit = filters?.limit ?? 4; // Default to 9 products per page
   const skip = (page - 1) * limit;
-
   const whereClause = createProductWhereClause(filters);
 
   const orderByClause = createProductOrderBy(filters?.sortBy);
 
-  // Get products with pagination
+  // Get products with pagination 
   const products = await db.product.findMany({
     where: whereClause,
     orderBy: orderByClause,
@@ -90,6 +89,7 @@ export async function getProducts(filters?: ProductFilters) {
   });
 
   const hasMore = skip + products.length < totalCount;
+
 
   return {
     products,
