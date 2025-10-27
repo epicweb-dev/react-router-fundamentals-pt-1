@@ -1,5 +1,5 @@
 import { Filter, Grid, List } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useSearchParams, useNavigation } from 'react-router'
 import { ProductCard } from '#app/components/product-card.js'
 import { getAllBrands } from '#app/domain/brand.server.js'
@@ -8,6 +8,7 @@ import {
 	extractProductFiltersFromSearchParams,
 	getProducts,
 } from '#app/domain/products.server.js'
+import { useIntersectionObserver } from '#app/hooks/use-intersection-observer.js'
 import {
 	getMetaFromMatches,
 	getMetaTitle,
@@ -15,6 +16,7 @@ import {
 } from '#app/utils/metadata.js'
 import { type Route } from './+types/route'
 import { ProductFilters } from './product-filters'
+import { useInfiniteProductFetcher } from './use-infinite-product-fetcher'
 
 export const meta: Route.MetaFunction = ({ matches }) => {
 	const rootMeta = getMetaFromMatches(matches, 'root')
@@ -49,11 +51,18 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 export default function ProductsPage({ loaderData }: Route.ComponentProps) {
 	const [searchParams, setSearchParams] = useSearchParams()
 	const navigation = useNavigation()
+	// 🐨 use the useInfiniteProductFetcher returned properties to fetch infinite data
+	const { loadMoreProducts, allProducts, hasMore, isLoadingMore } =
+		useInfiniteProductFetcher(loaderData)
 	const isPageLoading = navigation.state !== 'idle'
+	// 💣 We won't be needing this when we finish pagination
 	const { products } = loaderData
 	const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
 	const [showFilters, setShowFilters] = useState(false)
-
+	const observerRef = useRef<HTMLDivElement>(null)
+	// 🐨 use the useIntersectionObserver to call a load of more products when end of screen is reached
+	// 💰 pass in loadMoreProducts instead of the arrow function
+	useIntersectionObserver(observerRef, () => {})
 	return (
 		<div className="min-h-screen bg-stone-50 dark:bg-gray-900">
 			{/* Header */}
@@ -66,6 +75,7 @@ export default function ProductsPage({ loaderData }: Route.ComponentProps) {
 							</h1>
 							<p className="mt-2 text-gray-600 dark:text-gray-300">
 								{loaderData.pagination.totalCount} products total (
+								{/** 🐨 use the allProducts variable instead of products to show the number of allProducts */}
 								{products.length} shown)
 							</p>
 						</div>
@@ -144,20 +154,50 @@ export default function ProductsPage({ loaderData }: Route.ComponentProps) {
 
 					{/* Products Grid/List */}
 					<div className="flex-1">
-						{viewMode === 'grid' ? (
-							<div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-								{products.map((product) => (
-									<ProductCard key={product.id} product={product} />
-								))}
+						{/** 🐨 we should show a loading UI when needed */}
+						{/** 💰 use isPageLoading */}
+						{false ? (
+							<div className="mb-4 text-center text-gray-500 dark:text-gray-400">
+								Loading...
 							</div>
 						) : (
-							<div className="space-y-6">
-								{products.map((product) => (
-									<ProductCard key={product.id} product={product} />
-								))}
-							</div>
-						)}
+							<>
+								<div
+									className={
+										viewMode === 'grid'
+											? 'grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'
+											: 'space-y-6'
+									}
+								>
+									{/** 🐨 we should use allProducts instead of products to show all fetched products */}
+									{products.map((product) => (
+										<ProductCard key={product.id} product={product} />
+									))}
+								</div>
 
+								{/* Intersection observer target */}
+								{hasMore && (
+									<div ref={observerRef} className="mt-8 flex justify-center">
+										{isLoadingMore ? (
+											<div className="text-center text-gray-500 dark:text-gray-400">
+												<div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-amber-600 border-t-transparent"></div>
+												<p className="mt-2">Loading more products...</p>
+											</div>
+										) : (
+											<div className="h-4 w-full"></div>
+										)}
+									</div>
+								)}
+
+								{/* End of results message */}
+								{!hasMore && allProducts.length > 0 && (
+									<div className="mt-8 text-center text-gray-500 dark:text-gray-400">
+										<p>You've reached the end of the product list!</p>
+									</div>
+								)}
+							</>
+						)}
+						{/** 🐨 we should use allProducts instead of products to show no products found */}
 						{products.length === 0 && (
 							<div className="py-16 text-center">
 								<div className="mb-4 text-gray-400 dark:text-gray-600">
