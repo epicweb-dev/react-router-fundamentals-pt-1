@@ -10,11 +10,11 @@ export const Header = () => {
 		{ name: 'About', href: '/about' },
 		{ name: 'Contact', href: '/contact' },
 	]
-	const location = useLocation()
-	const isActive = (href: string) => location.pathname === href
 	// 🐨 Let's use these search params to set the default value on the input
 	// 💰 This is done so when there is no javascript the input is preserved between pages
 	const [searchParams] = useSearchParams()
+	const location = useLocation()
+	const isActive = (href: string) => location.pathname === href
 	// 🐨 Get the "q" search Param here or leave it as an empty string if not defined
 	const q = ''
 	return (
@@ -39,7 +39,6 @@ export const Header = () => {
 								<Search className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 transform text-gray-400" />
 								<input
 									type="text"
-									placeholder="Search for products..."
 									// 🐨 Let's set the default value to the "q" search param we got earlier
 									// 💰 This will make sure we retain the input from the url when navigating to a different page
 									defaultValue={undefined}
@@ -61,6 +60,7 @@ export const Header = () => {
 											}
 										}
 									}}
+									placeholder="Search for products..."
 									className="w-full rounded-full border border-gray-200 bg-gray-50 py-3 pr-4 pl-10 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white"
 								/>
 								{/** 💰 Submit button submits the form with the current values as the default behavior */}
