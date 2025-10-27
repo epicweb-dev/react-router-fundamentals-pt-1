@@ -2,6 +2,7 @@ import { db } from "#app/db.server.js";
 import { type ProductWhereInput, type ProductSelect, type ProductOrderByWithRelationInput } from "#app/generated/prisma/models.ts";
 
 interface ProductFilters {
+  // 💰 we add the new types for the filters
   category?: string[];
   brand?: string[];
   priceMin?: number;
@@ -33,9 +34,11 @@ const productShortInfoSelect = {
   },
 } as const satisfies ProductSelect
 
-
+// 💰 We have learned how to use searchParams, now we have a utility method to extract all
+// 💰 the filters from the URLSearchParams for us
 export const extractProductFiltersFromSearchParams = (
   searchParams: URLSearchParams,
+  // 💰 we tell the function what the return type is so we don't accidentally make a mistake
 ): ProductFilters => {
   const search = searchParams.get('q') || undefined
   const category = searchParams.getAll('category') || []
@@ -56,6 +59,7 @@ export const extractProductFiltersFromSearchParams = (
   return { search, category, brand, priceMin, priceMax, sortBy, page, limit }
 }
 
+// 💰 We use this utility method to help us sort the products by price/name/rating
 function createProductOrderBy(sortBy: ProductFilters['sortBy']): ProductOrderByWithRelationInput | undefined {
   switch (sortBy) {
     case 'name':
@@ -71,13 +75,13 @@ function createProductOrderBy(sortBy: ProductFilters['sortBy']): ProductOrderByW
   }
 }
 
-
 function createProductWhereClause(filters?: ProductFilters): ProductWhereInput {
   return {
     OR: filters?.search ? [
       { name: filters.search ? { contains: filters.search, } : undefined },
       { description: filters.search ? { contains: filters.search, } : undefined },
     ] : undefined,
+    // 💰 We add the new where clauses for category, brand, priceMin and priceMax
     category: filters?.category && filters.category.length > 0 ? { name: { in: filters.category } } : undefined,
     brand: filters?.brand && filters.brand.length > 0 ? { name: { in: filters.brand } } : undefined,
     price: {
@@ -89,14 +93,14 @@ function createProductWhereClause(filters?: ProductFilters): ProductWhereInput {
 
 
 export async function getProducts(filters?: ProductFilters) {
-  const page = filters?.page ?? 1;
-  const limit = filters?.limit ?? 4;
+  // 🐨 Let's fix up the hardcoded values for page and limit to make it work!
+  const page = 1;
+  const limit = 4;
   const skip = (page - 1) * limit;
   const whereClause = createProductWhereClause(filters);
-
-  const orderByClause = createProductOrderBy(filters?.sortBy);
-
-  // Get products with pagination 
+  // 🐨 Let's pass our sorting value into this function
+  const orderByClause = createProductOrderBy(undefined);
+  // 💰 We pass in the orderBy, skip and take to our ORM to make everything work
   const products = await db.product.findMany({
     where: whereClause,
     orderBy: orderByClause,
@@ -105,16 +109,18 @@ export async function getProducts(filters?: ProductFilters) {
     take: limit,
   });
 
-  // Get total count for pagination metadata
+  // 💰 This returns the total count of our query
   const totalCount = await db.product.count({
     where: whereClause,
   });
-
+  // 💰 We figure out if there are more products to load
   const hasMore = skip + products.length < totalCount;
 
 
   return {
     products,
+    hasMore,
+    // 💰 We return the pagination object to be consumed by the client
     pagination: {
       page,
       limit,
