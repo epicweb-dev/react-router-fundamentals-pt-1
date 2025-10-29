@@ -10,7 +10,7 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
-import { ProductCard } from '#app/components/product-card.tsx'
+import { ProductCard } from '#app/components/product-card.js'
 import {
 	getProductById,
 	getRelatedProducts,
@@ -173,7 +173,12 @@ export default function ProductDetailPage({
 	}
 
 	// Mock additional images for gallery
-	const productImages = [product.imageUrl]
+	const productImages = [
+		product.imageUrl,
+		product.imageUrl,
+		product.imageUrl,
+		product.imageUrl,
+	]
 
 	return (
 		<div className="min-h-screen bg-stone-50 dark:bg-gray-900">
@@ -235,7 +240,7 @@ export default function ProductDetailPage({
 										<Star
 											key={i}
 											className={`h-5 w-5 ${
-												i < Math.floor(product.reviewScore ?? 0)
+												i < Math.floor(product.reviewScore)
 													? 'fill-current text-amber-500'
 													: 'text-gray-300 dark:text-gray-600'
 											}`}
@@ -267,8 +272,8 @@ export default function ProductDetailPage({
 									<button
 										key={size}
 										disabled={!availableSizes.includes(size)}
-										onClick={handleSizeChange(size)}
 										title={!availableSizes.includes(size) ? 'Out of stock' : ''}
+										onClick={handleSizeChange(size)}
 										className={`rounded-lg border px-4 py-3 text-center transition-colors duration-200 disabled:opacity-20 ${
 											selectedSize === size
 												? 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
@@ -291,10 +296,10 @@ export default function ProductDetailPage({
 									<button
 										key={color}
 										disabled={!availableColors.includes(color)}
-										onClick={handleColorChange(color)}
 										title={
 											!availableColors.includes(color) ? 'Out of stock' : ''
 										}
+										onClick={handleColorChange(color)}
 										className={`rounded-lg border px-4 py-2 transition-colors duration-200 disabled:opacity-20 ${
 											selectedColor === color
 												? 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'

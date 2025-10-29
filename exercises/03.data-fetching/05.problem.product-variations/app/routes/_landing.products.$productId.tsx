@@ -9,12 +9,12 @@ import {
 	Minus,
 } from 'lucide-react'
 import { useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useSearchParams } from 'react-router'
 import { ProductCard } from '#app/components/product-card.js'
 import {
 	getProductById,
 	getRelatedProducts,
-} from '#app/domain/products.server.ts'
+} from '#app/domain/products.server.js'
 import {
 	getMetaFromMatches,
 	getMetaTitle,
@@ -32,7 +32,7 @@ export const meta: Route.MetaFunction = ({ matches }) => {
 	]
 }
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
 	const { productId } = params
 	const product = await getProductById(productId)
 	const relatedProducts = await getRelatedProducts(
@@ -40,22 +40,53 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 		product?.category.id,
 		product?.brand.id,
 	)
-
+	const uniqueSizes = Array.from(
+		new Set(product?.variations.map((v) => v.size) || []),
+	)
+	const uniqueColors = Array.from(
+		new Set(product?.variations.map((v) => v.color) || []),
+	)
+	const url = new URL(request.url)
+	const searchParams = url.searchParams
+	// 💰 We need to find the selectColor and selectedSize from the url search params
+	const selectedSize = undefined
+	const selectedColor = undefined
+	// 💰 Here's the code to determine available sizes and colors!
+	// const availableSizes = selectedColor
+	// 	? product?.variations
+	// 			.filter((v) => v.color === selectedColor && v.quantity > 0)
+	// 			.map((v) => v.size) || []
+	// 	: uniqueSizes
+	// const availableColors = selectedSize
+	// 	? product?.variations
+	// 			.filter((v) => v.size === selectedSize && v.quantity > 0)
+	// 			.map((v) => v.color) || []
+	// 	: uniqueColors
+	// 🐨 Let's determine the selected variation based on the selectedSize and selectedColor
+	// 💰 You can use the find method on the product.variations array
+	const selectedVariation = undefined
 	return {
 		product,
 		relatedProducts,
+		uniqueSizes,
+		uniqueColors,
+		// 💰 We need to return availableSizes, availableColors and selectedVariation here
 	}
 }
 
 export default function ProductDetailPage({
 	loaderData,
 }: Route.ComponentProps) {
-	const { product, relatedProducts } = loaderData
-	const [selectedSize] = useState('')
-	const [selectedColor] = useState('')
+	// 💣 remove this in favor of loaderData
+	const selectedVariation = undefined
+	const { product, relatedProducts, uniqueColors, uniqueSizes } = loaderData
+	const [searchParams, setSearchParams] = useSearchParams()
+
 	const [quantity, setQuantity] = useState(1)
 	const [activeImage, setActiveImage] = useState(0)
-
+	// 💰 We need to get size and color from the URL search params
+	const selectedSize = undefined
+	const selectedColor = undefined
 	if (!product) {
 		return (
 			<div className="flex min-h-screen items-center justify-center bg-stone-50 dark:bg-gray-900">
@@ -81,6 +112,50 @@ export default function ProductDetailPage({
 		}
 
 		alert('Added to cart!')
+	}
+
+	const handleSizeChange = (size: string) => () => {
+		setSearchParams((prev) => {
+			const newParams = new URLSearchParams(prev)
+			// 🐨 Let's either remove or set the size depending if this size was selected or not!
+			// 💰 You can use size and the selectedSize for the comparison
+
+			// 🐨 After that, let's get the color from the url
+			const color = undefined
+			// 💰  If the selected color is not available for the new size, remove it
+			// const noQuantityForColor =
+			// 	color &&
+			// 	product.variations.some(
+			// 		(v) => v.size === size && v.color === color && v.quantity === 0,
+			// 	)
+			//if (noQuantityForColor) {
+			//	newParams.delete('color')
+			//}
+			return newParams
+		})
+		setQuantity(1)
+	}
+
+	const handleColorChange = (color: string) => () => {
+		setSearchParams((prev) => {
+			const newParams = new URLSearchParams(prev)
+			// 🐨 Let's either remove or set the color depending if this color was selected or not!
+			// 💰 You can use color and the selectedColor for the comparison
+
+			// 🐨 After that, let's get the size from the url
+			const size = undefined
+			// 💰  If the selected size is not available for the new size, remove it
+			// const noQuantityForSize =
+			// 	size &&
+			// 	product.variations.some(
+			// 		(v) => v.size === size && v.size === size && v.quantity === 0,
+			// 	)
+			//if (noQuantityForSize) {
+			//	newParams.delete('size')
+			//}
+			return newParams
+		})
+		setQuantity(1)
 	}
 
 	// Mock additional images for gallery
@@ -179,11 +254,15 @@ export default function ProductDetailPage({
 								Size
 							</h3>
 							<div className="grid grid-cols-6 gap-3">
-								{/* {product.sizes.map((size) => (
+								{uniqueSizes.map((size) => (
 									<button
 										key={size}
-										onClick={() => setSelectedSize(size)}
-										className={`rounded-lg border px-4 py-3 text-center transition-colors duration-200 ${
+										// 🐨 Let's add a title to the button when it's out of stock and disable it!
+										// 💰 check the availableSizes and if it includes the size
+										disabled={false}
+										title={false ? 'Out of stock' : ''}
+										onClick={handleSizeChange(size)}
+										className={`rounded-lg border px-4 py-3 text-center transition-colors duration-200 disabled:opacity-20 ${
 											selectedSize === size
 												? 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
 												: 'border-gray-300 text-gray-700 hover:border-amber-300 dark:border-gray-600 dark:text-gray-300 dark:hover:border-amber-700'
@@ -191,7 +270,7 @@ export default function ProductDetailPage({
 									>
 										{size}
 									</button>
-								))} */}
+								))}
 							</div>
 						</div>
 
@@ -200,12 +279,16 @@ export default function ProductDetailPage({
 							<h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">
 								Color
 							</h3>
-							<div className="flex space-x-3">
-								{/* {product.colors.map((color) => (
+							<div className="flex flex-wrap space-x-3">
+								{uniqueColors.map((color) => (
 									<button
 										key={color}
-										onClick={() => setSelectedColor(color)}
-										className={`rounded-lg border px-4 py-2 transition-colors duration-200 ${
+										// 🐨 Let's add a title to the button when it's out of stock and disable it!
+										// 💰 check the availableColors and if it includes the color
+										disabled={false}
+										title={false ? 'Out of stock' : ''}
+										onClick={handleColorChange(color)}
+										className={`rounded-lg border px-4 py-2 transition-colors duration-200 disabled:opacity-20 ${
 											selectedColor === color
 												? 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
 												: 'border-gray-300 text-gray-700 hover:border-amber-300 dark:border-gray-600 dark:text-gray-300 dark:hover:border-amber-700'
@@ -213,40 +296,48 @@ export default function ProductDetailPage({
 									>
 										{color}
 									</button>
-								))} */}
+								))}
 							</div>
 						</div>
 
 						{/* Quantity */}
-						<div>
-							<h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">
-								Quantity
-							</h3>
-							<div className="flex items-center space-x-4">
-								<div className="flex items-center rounded-lg border border-gray-300 dark:border-gray-600">
-									<button
-										onClick={() => setQuantity(Math.max(1, quantity - 1))}
-										className="p-2 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-									>
-										<Minus className="h-4 w-4" />
-									</button>
-									<span className="px-4 py-2 font-medium text-gray-900 dark:text-white">
-										{quantity}
-									</span>
-									<button
-										onClick={() => setQuantity(quantity + 1)}
-										className="p-2 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-									>
-										<Plus className="h-4 w-4" />
-									</button>
+						{selectedVariation ? (
+							<div>
+								<h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">
+									Quantity
+								</h3>
+								<div className="flex items-center space-x-4">
+									<div className="flex items-center rounded-lg border border-gray-300 dark:border-gray-600">
+										<button
+											onClick={() => setQuantity(Math.max(1, quantity - 1))}
+											// 🐨 Let's disable this button if the quantity is equal to 1
+											disabled={false}
+											className="p-2 transition-colors duration-200 hover:bg-gray-100 disabled:opacity-20 disabled:hover:bg-transparent dark:hover:bg-gray-700"
+										>
+											<Minus className="h-4 w-4" />
+										</button>
+										<span className="px-4 py-2 font-medium text-gray-900 dark:text-white">
+											{quantity}
+										</span>
+										<button
+											onClick={() => setQuantity(quantity + 1)}
+											// 🐨 Let's disable this button if the quantity is equal to the selected variation quantity
+											disabled={false}
+											className="p-2 transition-colors duration-200 hover:bg-gray-100 disabled:opacity-20 disabled:hover:bg-transparent dark:hover:bg-gray-700"
+										>
+											<Plus className="h-4 w-4" />
+										</button>
+									</div>
 								</div>
 							</div>
-						</div>
+						) : null}
 
 						{/* Add to Cart */}
 						<div className="flex space-x-4">
 							<button
 								onClick={handleAddToCart}
+								// 🐨 Let's disable this button if there is no selectedVariation or it's quantity is equal to 0
+								disabled={false}
 								className="flex-1 rounded-lg bg-amber-600 px-6 py-4 font-medium text-white transition-colors duration-300 hover:bg-amber-700 hover:shadow-lg"
 							>
 								Add to Cart
