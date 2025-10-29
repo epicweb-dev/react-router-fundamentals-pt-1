@@ -10,7 +10,9 @@ export function useInfiniteProductFetcher(
 ) {
   // 💰 we are fetching from the same loader, so we can type this fetcher with the same type as loader-data
   const fetcher = useFetcher<any>({
-    key: 'infinite-product-fetcher',
+    // 🐨 Let's define a fetcher key for this fetch
+    // 💰 key should be infinite-product-fetcher
+
   })
   // 💰 we are extracting the initial data we fetched and then we will load more from the server
   const { products, pagination } = loaderData
