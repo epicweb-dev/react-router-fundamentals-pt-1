@@ -1,9 +1,9 @@
-## Infinite Scrolling with `useFetcher` hook
+# Infinite Scrolling with useFetcher hook
 
 Now that we have everything in place, the lest step in improving our products listing page is to implement infinite scrolling.
 This will allow us to load more products as the user scrolls down the page, providing a seamless browsing experience.
 
-### `useFetcher` hook
+## `useFetcher` hook
 The `useFetcher` hook from React Router is a powerful tool that allows you to perform data fetching and mutations without causing a full page navigation.
 When you call `useFetcher`, it returns an object that contains several properties and methods to help you manage data fetching. 
 One of the key properties is `load`, which is a function that you can call to fetch data from a specified URL.
@@ -13,7 +13,7 @@ hook further in upcoming workshops, but for now, it's important to understand th
 
 You typically use this hook when you don't want to add an event to the browsers `history` stack, for example when implementing infinite scrolling.
 
-### Exercise Goals
+## Exercise Goals
 
 - Add infinite scrolling to the products listing page using the `useFetcher` hook.
 - Use an intersection observer to detect when the user has scrolled to the bottom of the page.

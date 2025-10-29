@@ -57,12 +57,6 @@
     },
     {
       "path": "exercises/03.data-fetching/04.solution.infinite-fetching-with-fetchers"
-    },
-    {
-      "path": "exercises/03.data-fetching/05.problem.product-variations"
-    },
-    {
-      "path": "exercises/03.data-fetching/05.solution.product-variations"
     }
   ]
 }
