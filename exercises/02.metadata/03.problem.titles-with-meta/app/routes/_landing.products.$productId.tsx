@@ -10,18 +10,24 @@ import {
 } from 'lucide-react'
 import React, { useState } from 'react'
 import { useParams, Link } from 'react-router'
+import {
+	getMetaFromMatches,
+	getMetaTitle,
+	constructPrefixedTitle,
+} from '#app/utils/metadata.js'
 import { products } from '../../data/products'
 // 💰 You will need these utilities! Feel free to check their implementation first!
-import { getMetaFromMatches, getMetaTitle, constructPrefixedTitle } from '#app/utils/metadata.js';
-import type { Route } from './+types/_landing.products.$productId';
+import { type Route } from './+types/_landing.products.$productId'
 
 // 🐨 We want to include the root meta in the title to have Epic Shop | Product overview
 export const meta: Route.MetaFunction = ({ matches }) => {
 	// 💰 You can use getMetaFromMatches and specify "root" to extract the meta information from root
 	// 💰 You can use getMetaTitle to extract the title from the root meta information
-	return [{
-		// 💰 You can use constructPrefixedTitle to create the title with the prefix you provide   
-	}]
+	return [
+		{
+			// 💰 You can use constructPrefixedTitle to create the title with the prefix you provide
+		},
+	]
 }
 
 export default function ProductDetailPage() {
@@ -36,7 +42,6 @@ export default function ProductDetailPage() {
 	if (!product) {
 		return (
 			<div className="flex min-h-screen items-center justify-center bg-stone-50 dark:bg-gray-900">
-
 				<div className="text-center">
 					<h2 className="mb-4 text-2xl font-light text-gray-900 dark:text-white">
 						Product not found
@@ -102,10 +107,11 @@ export default function ProductDetailPage() {
 								<button
 									key={index}
 									onClick={() => setActiveImage(index)}
-									className={`aspect-w-1 aspect-h-1 overflow-hidden rounded-lg border-2 bg-white transition-colors duration-200 dark:bg-gray-800 ${activeImage === index
-										? 'border-amber-500'
-										: 'border-transparent hover:border-gray-300 dark:hover:border-gray-600'
-										}`}
+									className={`aspect-w-1 aspect-h-1 overflow-hidden rounded-lg border-2 bg-white transition-colors duration-200 dark:bg-gray-800 ${
+										activeImage === index
+											? 'border-amber-500'
+											: 'border-transparent hover:border-gray-300 dark:hover:border-gray-600'
+									}`}
 								>
 									<img
 										src={image}
@@ -131,10 +137,11 @@ export default function ProductDetailPage() {
 									{[...Array(5)].map((_, i) => (
 										<Star
 											key={i}
-											className={`h-5 w-5 ${i < Math.floor(product.rating)
-												? 'fill-current text-amber-500'
-												: 'text-gray-300 dark:text-gray-600'
-												}`}
+											className={`h-5 w-5 ${
+												i < Math.floor(product.rating)
+													? 'fill-current text-amber-500'
+													: 'text-gray-300 dark:text-gray-600'
+											}`}
 										/>
 									))}
 									<span className="ml-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -163,10 +170,11 @@ export default function ProductDetailPage() {
 									<button
 										key={size}
 										onClick={() => setSelectedSize(size)}
-										className={`rounded-lg border px-4 py-3 text-center transition-colors duration-200 ${selectedSize === size
-											? 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
-											: 'border-gray-300 text-gray-700 hover:border-amber-300 dark:border-gray-600 dark:text-gray-300 dark:hover:border-amber-700'
-											}`}
+										className={`rounded-lg border px-4 py-3 text-center transition-colors duration-200 ${
+											selectedSize === size
+												? 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
+												: 'border-gray-300 text-gray-700 hover:border-amber-300 dark:border-gray-600 dark:text-gray-300 dark:hover:border-amber-700'
+										}`}
 									>
 										{size}
 									</button>
@@ -184,10 +192,11 @@ export default function ProductDetailPage() {
 									<button
 										key={color}
 										onClick={() => setSelectedColor(color)}
-										className={`rounded-lg border px-4 py-2 transition-colors duration-200 ${selectedColor === color
-											? 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
-											: 'border-gray-300 text-gray-700 hover:border-amber-300 dark:border-gray-600 dark:text-gray-300 dark:hover:border-amber-700'
-											}`}
+										className={`rounded-lg border px-4 py-2 transition-colors duration-200 ${
+											selectedColor === color
+												? 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
+												: 'border-gray-300 text-gray-700 hover:border-amber-300 dark:border-gray-600 dark:text-gray-300 dark:hover:border-amber-700'
+										}`}
 									>
 										{color}
 									</button>

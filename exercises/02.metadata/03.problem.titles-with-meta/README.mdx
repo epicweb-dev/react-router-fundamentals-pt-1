@@ -15,7 +15,7 @@ de-duplicate them if you already have a title in the head, which is what happene
 
 When we added titles using React 19 JSX metadata tags, they were hoisted to the head of the document,
 but since we already had titles defined in the head (defined by a route above the specific product route),
-we ended up with two titles in the head, which is not valid HTML and can cause issues with SEO and 
+we ended up with two titles in the head, which is not valid HTML and can cause issues with SEO and
 accessibility.
 
 To fix this, we need to use the `meta` export provided by React Router, which allows us to define
@@ -27,7 +27,7 @@ per page and we can also easily add a prefix to all our titles.
 The `meta` export is a function that returns an object containing metadata for the route.
 
 The cool thing about the `meta` export is that it allows us to define metadata for our routes
-in a more structured way by giving us the data returned from loaders, and also the parent 
+in a more structured way by giving us the data returned from loaders, and also the parent
 routes metadata, which allows us to easily create dynamic titles and other metadata based on the
 data returned from our loaders.
 
@@ -38,7 +38,5 @@ In this exercise, we're going to use the `meta` export to add titles to our page
 1. Go to the `root.tsx` file and find Kody there, he will help you add the first SEO title in the root.
 2. Once you have that in place visit each route and add the `meta` export to add titles to each page.
 3. Make sure to include the root meta in the title to have `Epic Shop - <Page Specific Title>`.
-4. Kelly has helped us with utilities for metadata parsing and reading! You can find them in 
+4. Kelly has helped us with utilities for metadata parsing and reading! You can find them in
    `app/utils/metadata.ts`. Feel free to check their implementation first!
-
-  

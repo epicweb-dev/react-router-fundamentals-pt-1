@@ -4,11 +4,12 @@ Now that we have everything in place, the lest step in improving our products li
 This will allow us to load more products as the user scrolls down the page, providing a seamless browsing experience.
 
 ## `useFetcher` hook
+
 The `useFetcher` hook from React Router is a powerful tool that allows you to perform data fetching and mutations without causing a full page navigation.
-When you call `useFetcher`, it returns an object that contains several properties and methods to help you manage data fetching. 
+When you call `useFetcher`, it returns an object that contains several properties and methods to help you manage data fetching.
 One of the key properties is `load`, which is a function that you can call to fetch data from a specified URL.
 
-By using the `load` method, you can fetch additional data (like more products) and update your component's state accordingly. We will explore this 
+By using the `load` method, you can fetch additional data (like more products) and update your component's state accordingly. We will explore this
 hook further in upcoming workshops, but for now, it's important to understand that it allows us to fetch data without navigating away from the current page.
 
 You typically use this hook when you don't want to add an event to the browsers `history` stack, for example when implementing infinite scrolling.

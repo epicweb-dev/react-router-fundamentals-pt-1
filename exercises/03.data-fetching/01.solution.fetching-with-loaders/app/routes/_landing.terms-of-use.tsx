@@ -1,13 +1,19 @@
 import { FileText, Mail } from 'lucide-react'
-import type { Route } from './+types/_landing.terms-of-use';
-import { getMetaFromMatches, getMetaTitle, constructPrefixedTitle } from '#app/utils/metadata.js';
+import {
+	getMetaFromMatches,
+	getMetaTitle,
+	constructPrefixedTitle,
+} from '#app/utils/metadata.js'
+import { type Route } from './+types/_landing.terms-of-use'
 
 export const meta: Route.MetaFunction = ({ matches }) => {
 	const rootMeta = getMetaFromMatches(matches, 'root')
-	const prefix = getMetaTitle(rootMeta);
-	return [{
-		title: constructPrefixedTitle("Terms of Use", prefix),
-	}]
+	const prefix = getMetaTitle(rootMeta)
+	return [
+		{
+			title: constructPrefixedTitle('Terms of Use', prefix),
+		},
+	]
 }
 
 export default function TOUPage() {

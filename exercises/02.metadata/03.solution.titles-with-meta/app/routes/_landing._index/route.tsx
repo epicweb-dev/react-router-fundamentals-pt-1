@@ -1,5 +1,5 @@
-import { getMetaFromMatches, getMetaTitle, } from '#app/utils/metadata.js'
-import type { Route } from './+types/route'
+import { getMetaFromMatches, getMetaTitle } from '#app/utils/metadata.js'
+import { type Route } from './+types/route'
 import { CategoriesSection } from './categories-section'
 import { FeaturedProductsSection } from './featured-products.section'
 import { FeaturesSection } from './features-section'
@@ -8,7 +8,7 @@ import { NewsletterSection } from './newsletter-section'
 
 export const meta: Route.MetaFunction = ({ matches }) => {
 	const rootMeta = getMetaFromMatches(matches, 'root')
-	const title = getMetaTitle(rootMeta);
+	const title = getMetaTitle(rootMeta)
 	return [{ title }]
 }
 

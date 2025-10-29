@@ -1,6 +1,6 @@
 Congratulations! You've successfully added styles and fonts to your React Router application! 🎉
 
-In this exercise, you have used the `links` export to include a global stylesheet and a 
+In this exercise, you have used the `links` export to include a global stylesheet and a
 Google Fonts link in your app.
 
 Before we head on further, let's briefly go over when to use which approach when dealing with
@@ -11,8 +11,8 @@ styles
 ### Vite side-effect imports vs `links` export
 
 I personally always use the `links` export for stylesheets and fonts for two reasons, first one
-being that it's closer to the react-router way of doing things which means less friction, 
-in the past there were some issues with HMR and side-effect imports for example, 
+being that it's closer to the react-router way of doing things which means less friction,
+in the past there were some issues with HMR and side-effect imports for example,
 but those have been mostly resolved now.
 
 The second reason is the separation of concerns, by using the `links` export you can keep all your
@@ -25,7 +25,7 @@ code itself.
 
 But a good place to consider using side-effect imports is for component-level styles,
 like CSS modules or styled-components, where the styles are tightly coupled to the component itself.
-This of course depends on the styling solution you use but the general rule of thumb is if 
+This of course depends on the styling solution you use but the general rule of thumb is if
 you can keep it on the route level use the `links` export, if it's component level styles
 use side-effect imports or whatever approach your styling solution recommends.
 
@@ -37,9 +37,9 @@ which makes it easier to reason about and manage. But again, when we compare it 
 `links` export, I prefer using the `links` export for route-level stylesheets and fonts,
 for the same reasons mentioned in the previous section.
 
-## Summary 
+## Summary
 
-There is no silver bullet here, but in general I 
+There is no silver bullet here, but in general I
 recommend using the `links` export for route-level stylesheets and fonts,
 and using side-effect imports or JSX metadata tags for component-level styles.
 

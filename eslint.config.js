@@ -4,7 +4,12 @@ import defaultConfig from '@epic-web/config/eslint'
 export default [
 	...defaultConfig.map((config) => ({
 		...config,
-		ignores: [...(config.ignores ?? []), '**/.react-router/**/*'],
+		ignores: [
+			...(config.ignores ?? []),
+			'**/.react-router/**/*',
+			'**/generated/**/*',
+			'**/tests/e2e/**/*',
+		],
 	})),
 
 	{

@@ -1,16 +1,22 @@
 import { Filter, Grid, List, Star, Heart } from 'lucide-react'
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router'
+import {
+	getMetaFromMatches,
+	getMetaTitle,
+	constructPrefixedTitle,
+} from '#app/utils/metadata.js'
 import { products, categories, brands } from '../../data/products'
-import { getMetaFromMatches, getMetaTitle, constructPrefixedTitle } from '#app/utils/metadata.js'
-import type { Route } from './+types/_landing.products._index'
+import { type Route } from './+types/_landing.products._index'
 
 export const meta: Route.MetaFunction = ({ matches }) => {
 	const rootMeta = getMetaFromMatches(matches, 'root')
-	const prefix = getMetaTitle(rootMeta);
-	return [{
-		title: constructPrefixedTitle("All Products", prefix),
-	}]
+	const prefix = getMetaTitle(rootMeta)
+	return [
+		{
+			title: constructPrefixedTitle('All Products', prefix),
+		},
+	]
 }
 
 export default function ProductsPage() {
@@ -118,10 +124,11 @@ export default function ProductsPage() {
 										<button
 											key={category}
 											onClick={() => setSelectedCategory(category)}
-											className={`block w-full rounded-lg px-3 py-2 text-left transition-colors duration-200 ${selectedCategory === category
-												? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
-												: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
-												}`}
+											className={`block w-full rounded-lg px-3 py-2 text-left transition-colors duration-200 ${
+												selectedCategory === category
+													? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
+													: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
+											}`}
 										>
 											{category}
 										</button>
@@ -138,10 +145,11 @@ export default function ProductsPage() {
 										<button
 											key={brand}
 											onClick={() => setBrand(brand)}
-											className={`block w-full rounded-lg px-3 py-2 text-left transition-colors duration-200 ${selectedBrand === brand
-												? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
-												: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
-												}`}
+											className={`block w-full rounded-lg px-3 py-2 text-left transition-colors duration-200 ${
+												selectedBrand === brand
+													? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
+													: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
+											}`}
 										>
 											{brand}
 										</button>

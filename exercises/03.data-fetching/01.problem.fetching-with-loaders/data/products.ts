@@ -1,6 +1,8 @@
-import { type getProductById, } from "#app/domain/products.server.ts"
+import { type getProductById } from '#app/domain/products.server.ts'
 
-export const products: NonNullable<Awaited<ReturnType<typeof getProductById>>>[] = [
+export const products: NonNullable<
+	Awaited<ReturnType<typeof getProductById>>
+>[] = [
 	{
 		id: '1',
 		name: 'Air Max Revolution',
@@ -21,7 +23,7 @@ export const products: NonNullable<Awaited<ReturnType<typeof getProductById>>>[]
 			'Revolutionary running shoes with advanced air cushioning technology for maximum comfort and performance.',
 
 		reviewScore: 4.8,
-		reviews: []
+		reviews: [],
 	},
 	{
 		id: '2',
@@ -43,7 +45,7 @@ export const products: NonNullable<Awaited<ReturnType<typeof getProductById>>>[]
 			'Revolutionary running shoes with advanced air cushioning technology for maximum comfort and performance.',
 
 		reviewScore: 4.8,
-		reviews: []
+		reviews: [],
 	},
 ]
 

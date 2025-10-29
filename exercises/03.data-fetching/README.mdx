@@ -1,18 +1,19 @@
 # Data fetching
 
 <h2>This module is all about data fetching in React Router! </h2>
- 
-Making the screen look pretty is fun, but making it work is even more fun! In this module, we will explore
-how to fetch data in React Router, and how to use that data to render your app.
+Making the screen look pretty is fun, but making it work is even more fun! In
+this module, we will explore how to fetch data in React Router, and how to use
+that data to render your app.
 
 There are 2 main module exports we will explore in this module:
+
 - `loaders`
 - `clientLoaders`
 
 These two exports are essentially functions that are called by React Router to fetch data for your routes, nothing
-more, nothing less! 
+more, nothing less!
 
-There are a lot of utilities and helpers that React Router provides to make accessing and fetching data easier, 
+There are a lot of utilities and helpers that React Router provides to make accessing and fetching data easier,
 but at the core, it's just about these two exports!
 
 In this module, we will explore both of these exports, and how to use them to fetch data for your routes.
@@ -33,11 +34,12 @@ send promises, dates, and other complex data structures across the wire.
 📜 More information on turbo-stream: https://github.com/jacob-ebey/turbo-stream
 
 There are two distinct cases when fetching data in react-router:
+
 - **Document request**: This is the initial request to the server when you land on the website (think of full page reload or clicking on a link to your website)
 - **Navigation request**: This is when you navigate to a new route within the app (think of clicking on a link within the app)
 
-
 There are three possible scenarios for both of these cases:
+
 1. You navigate to a route that has both a `loader` and a `clientLoader`
 2. You navigate to a route that has only a `loader`
 3. You navigate to a route that has only a `clientLoader`
@@ -47,15 +49,15 @@ There are three possible scenarios for both of these cases:
 #### Document request
 
 In this scenario, React Router will first call the `loader` function on the server side to fetch data for the route.
-Depending on the result of the `loader` function, assuming it didn't throw, the data is returned to the client. 
+Depending on the result of the `loader` function, assuming it didn't throw, the data is returned to the client.
 
 From here there are two possible scenarios depending on if the `clientLoader` function has the `hydrate` property set to `true` or not.
 
-- If the `clientLoader` function has the `hydrate` property set to `true`, then React Router will call the `clientLoader` function on 
-the client side, passing the data returned from the `loader` function as an argument. The result of the `clientLoader` function is 
-then used to render the route. 
+- If the `clientLoader` function has the `hydrate` property set to `true`, then React Router will call the `clientLoader` function on
+  the client side, passing the data returned from the `loader` function as an argument. The result of the `clientLoader` function is
+  then used to render the route.
 - If the `clientLoader` function has the `hydrate` property set to `false`, then React Router will skip calling the `clientLoader`
-function on the client side, and will use the data returned from the `loader` function to render the route.
+  function on the client side, and will use the data returned from the `loader` function to render the route.
 
 In both of these scenarios, subsequent requests trigger the `clientLoader` function to be called again on the client side and it's
 in charge of fetching the data from the `loader` function or any other data source.
@@ -68,29 +70,30 @@ The result of the `clientLoader` function is then used to render the route.
 ### Scenario 2: You navigate to a route that has only a `loader`
 
 For this scenario the behavior is the same for both document requests and navigation requests, and is as follows:
+
 - React Router will call the `loader` function on the server side to fetch data for the route.
 - The data returned from the `loader` function is then used to render the route.
 
 ### Scenario 3: You navigate to a route that has only a `clientLoader`
 
 For this scenario the behavior is the same for both document requests and navigation requests, and is as follows:
+
 - React Router will call the `clientLoader` function on the client side to fetch data for the route.
 - The result of the `clientLoader` function is then used to render the route
 
-
 ## loaders
 
-Loaders are functions that are called by React Router to fetch data for your routes on the **server side**. 
+Loaders are functions that are called by React Router to fetch data for your routes on the **server side**.
 They are typically defined in your route modules, and can be used to fetch data from any data source, such as a database or an API.
 
 Here's an example of a loader function fetching a user:
 
 ```ts
-// app/routes/users.ts 
+// app/routes/users.ts
 export const loader = async ({ params }) => {
-  const user = await getUser(params.userId);
-  return user;
-};
+	const user = await getUser(params.userId)
+	return user
+}
 ```
 
 You can either return the data directly, or you can use the `data` utility to return the data along with custom metadata for the `Response` object:
@@ -99,54 +102,53 @@ You can either return the data directly, or you can use the `data` utility to re
 import { data } from 'react-router'
 
 export const loader = async ({ params }) => {
-  const user = await getUser(params.userId);
-  return data(user, { status: 200, headers: { 'X-Custom-Header': 'value' } });
-};
+	const user = await getUser(params.userId)
+	return data(user, { status: 200, headers: { 'X-Custom-Header': 'value' } })
+}
 ```
 
 You can also return complex data structures, such as promises, dates, and more. React Router will serialize and deserialize the data for you automatically using turbo-stream.
 
 ```ts
 export const loader = async ({ params }) => {
-  // notice no await here, this is a promise and it's intentional
-  const userPromise = getUser(params.userId);
-  const date = new Date();
-  return { user: userPromise, date };
-};
+	// notice no await here, this is a promise and it's intentional
+	const userPromise = getUser(params.userId)
+	const date = new Date()
+	return { user: userPromise, date }
+}
 ```
 
-Another important thing about loaders is that they can throw responses to indicate errors or redirects. 
+Another important thing about loaders is that they can throw responses to indicate errors or redirects.
+
 ```ts
 import { redirect } from 'react-router'
 
 export const loader = async ({ params }) => {
-  const user = await getUser(params.userId);
-  if (!user) {
-    // this will throw a 302 redirect to /login and will stop other loaders from processing and returning data
-    throw redirect('/login');
-  }
-  return user;
-};
+	const user = await getUser(params.userId)
+	if (!user) {
+		// this will throw a 302 redirect to /login and will stop other loaders from processing and returning data
+		throw redirect('/login')
+	}
+	return user
+}
 ```
 
 This is really useful when you want to stop the current flow and redirect the user to another route. As you can see from the example above this is very useful
 for handling authentication and authorization in your app.
 
-
 And finally, you can also throw errors to go into an error boundary:
 
 ```ts
 export const loader = async ({ params }) => {
-  const user = await getUser(params.userId);
-  if (!user) {
-    // this will throw a error and will stop other loaders from processing and returning data
-    // this will send you into the error boundary that is closest to the current route
-    throw new Error('User not found');
-  }
-  return user;
-};
+	const user = await getUser(params.userId)
+	if (!user) {
+		// this will throw a error and will stop other loaders from processing and returning data
+		// this will send you into the error boundary that is closest to the current route
+		throw new Error('User not found')
+	}
+	return user
+}
 ```
- 
 
 ## clientLoaders
 
@@ -157,87 +159,95 @@ Here's an example of a clientLoader function fetching a user:
 ```ts
 // app/routes/users.ts
 export const clientLoader = async ({ params }) => {
-  const user = await fetch(`https://your-api.com/api/users/${params.userId}`).then(res => res.json());
-  return user;
-};
+	const user = await fetch(
+		`https://your-api.com/api/users/${params.userId}`,
+	).then((res) => res.json())
+	return user
+}
 ```
 
 The important thing to know about `clientLoaders` is that they act differently depending on if it's a document request or a navigation request and this mostly
 comes down to the `hydrate` property on the `clientLoader` function.
 
 If set to `true` & a `loader` is on the page:
+
 - On document requests the clientLoader will be `called after the loader` and will receive the data returned from the loader as an argument.
 - On navigation requests the clientLoader will be called first and it's in charge of calling the loader if needed.
 
 If set to `false` & a `loader` is on the page:
+
 - On document requests the clientLoader will be `skipped` and the data returned from the loader will be used to render the route.
 - On navigation requests the clientLoader will be called first and it's in charge of calling the loader if needed.
 
 If no `loader` is on the page:
+
 - On both document requests and navigation requests the clientLoader will be called and it's in charge of fetching the data needed for the route.
 
 Example with `hydrate` set to true:
 
 ```ts
 export const clientLoader = async ({ params, serverLoader }) => {
-  // serverLoader is the function that calls the loader on the server side and returns the data
-  const user = await serverLoader();
-  // you can also fetch more data if needed
-  return user;
-};
+	// serverLoader is the function that calls the loader on the server side and returns the data
+	const user = await serverLoader()
+	// you can also fetch more data if needed
+	return user
+}
 // Tells React Router to call this clientLoader on document requests as well
-clientLoader.hydrate = true;  
+clientLoader.hydrate = true
 ```
 
 Example with `hydrate` set to false:
 
 ```ts
 export const clientLoader = async ({ params, serverLoader }) => {
-  // serverLoader is the function that calls the loader on the server side and returns the data
-  const user = await serverLoader();
-  // you can also fetch more data if needed
-  return user;
-};
+	// serverLoader is the function that calls the loader on the server side and returns the data
+	const user = await serverLoader()
+	// you can also fetch more data if needed
+	return user
+}
 // Tells React Router to NOT call this clientLoader on document requests
 // This is the default behavior if hydrate is not set so you can omit this line if you want
-clientLoader.hydrate = false;  
+clientLoader.hydrate = false
 ```
 
 Also, they work very similarly to loaders in terms of throwing responses and errors to indicate redirects and errors.
 
-
 Throwing responses:
+
 ```ts
 import { redirect } from 'react-router'
 
 export const clientLoader = async ({ params }) => {
-  const user = await fetch(`https://your-api.com/api/users/${params.userId}`).then(res => res.json());
-  if (!user) {
-    // this will throw a 302 redirect to /login and will stop other clientLoaders/loaders from processing and returning data
-    throw redirect('/login');
-  }
-  return user;
-};
+	const user = await fetch(
+		`https://your-api.com/api/users/${params.userId}`,
+	).then((res) => res.json())
+	if (!user) {
+		// this will throw a 302 redirect to /login and will stop other clientLoaders/loaders from processing and returning data
+		throw redirect('/login')
+	}
+	return user
+}
 ```
 
 Throwing errors:
 
 ```ts
 export const clientLoader = async ({ params }) => {
-  const user = await fetch(`https://your-api.com/api/users/${params.userId}`).then(res => res.json());
-  if (!user) {
-    // this will throw a error and will stop other clientLoaders/loaders from processing and returning data
-    // this will send you into the error boundary that is closest to the current route
-    throw new Error('User not found');
-  }
-  return user;
-};
+	const user = await fetch(
+		`https://your-api.com/api/users/${params.userId}`,
+	).then((res) => res.json())
+	if (!user) {
+		// this will throw a error and will stop other clientLoaders/loaders from processing and returning data
+		// this will send you into the error boundary that is closest to the current route
+		throw new Error('User not found')
+	}
+	return user
+}
 ```
 
+## Summary
 
-## Summary 
-
-Ooof, that was a lot of info to take in, right? But don't worry, you don't have to remember everything at once. 
+Ooof, that was a lot of info to take in, right? But don't worry, you don't have to remember everything at once.
 Use this document as a reference whenever you need to, and you'll get the hang of it in no time!
 The best way to learn is by doing, so let's get you started with some exercises to practice what you've just heard!
 

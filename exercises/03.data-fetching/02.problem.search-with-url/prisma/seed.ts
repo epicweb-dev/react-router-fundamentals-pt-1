@@ -1,6 +1,6 @@
-import { faker } from '@faker-js/faker';
+import { faker } from '@faker-js/faker'
 import { db } from '#app/db.server.js'
-import { type ProductUncheckedCreateInput, } from '#app/generated/prisma/models.js';
+import { type ProductUncheckedCreateInput } from '#app/generated/prisma/models.js'
 
 const categories = [
 	'Running',
@@ -13,7 +13,6 @@ const categories = [
 ]
 
 const brands = [
-
 	'SkyStep',
 	'StreetWalk',
 	'ProAthlete',
@@ -56,24 +55,29 @@ const productNames = [
 	'Business Elite',
 ]
 
-function buildProductCatalog(targetCount: number, categoryMap: Map<string, string>, brandMap: Map<string, string>): ProductUncheckedCreateInput[] {
-	const products: ProductUncheckedCreateInput[] = [];
+function buildProductCatalog(
+	targetCount: number,
+	categoryMap: Map<string, string>,
+	brandMap: Map<string, string>,
+): ProductUncheckedCreateInput[] {
+	const products: ProductUncheckedCreateInput[] = []
 	for (let i = 0; i < targetCount; i++) {
 		products.push({
-			name: faker.helpers.arrayElement(productNames) + ' ' + faker.commerce.productAdjective(),
+			name:
+				faker.helpers.arrayElement(productNames) +
+				' ' +
+				faker.commerce.productAdjective(),
 			description: faker.lorem.paragraphs(),
 			imageUrl: faker.helpers.arrayElement(sneakerImages),
 			price: parseFloat(faker.commerce.price({ min: 20, max: 500, dec: 2 })),
-			reviewScore: faker.number.int({ min: 1, max: 5, }),
+			reviewScore: faker.number.int({ min: 1, max: 5 }),
 			categoryId: categoryMap.get(faker.helpers.arrayElement(categories))!,
 			brandId: brandMap.get(faker.helpers.arrayElement(brands))!,
-		});
+		})
 	}
 
 	return products
 }
-
-
 
 async function seed() {
 	console.log('Seeding database...')
@@ -90,7 +94,9 @@ async function seed() {
 
 	const categoryMap = new Map<string, string>()
 	for (const name of categoryNames) {
-		const category = await db.category.create({ data: { name, imageUrl: faker.helpers.arrayElement(sneakerImages) } })
+		const category = await db.category.create({
+			data: { name, imageUrl: faker.helpers.arrayElement(sneakerImages) },
+		})
 		categoryMap.set(name, category.id)
 	}
 
@@ -102,14 +108,12 @@ async function seed() {
 
 	const catalog = buildProductCatalog(100, categoryMap, brandMap)
 
-
 	for (const product of catalog) {
-
 		const createdProduct = await db.product.create({
 			data: product,
 		})
 
-		const colors = ["Red", "Blue", "Black", "White",]
+		const colors = ['Red', 'Blue', 'Black', 'White']
 		const sizes = ['9', '10', '11', '12']
 		const variations = []
 
@@ -132,7 +136,7 @@ async function seed() {
 			await db.productReview.create({
 				data: {
 					productId: createdProduct.id,
-					rating: faker.number.int({ min: 1, max: 5, }),
+					rating: faker.number.int({ min: 1, max: 5 }),
 					variationId: v.id,
 				},
 			})

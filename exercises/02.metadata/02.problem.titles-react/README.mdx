@@ -14,13 +14,13 @@ This JSX:
 
 ```jsx
 function SomeComponent() {
-  return (
-    <>
-      <h1>Hello World</h1>
-      <title>My Page Title</title>
-      <meta name="description" content="My Page Description" />
-    </>
-  )
+	return (
+		<>
+			<h1>Hello World</h1>
+			<title>My Page Title</title>
+			<meta name="description" content="My Page Description" />
+		</>
+	)
 }
 ```
 
@@ -29,29 +29,28 @@ which would produce the following HTML:
 
 ```html
 <head>
-  <title>My Page Title</title>
-  <meta name="description" content="My Page Description" />
+	<title>My Page Title</title>
+	<meta name="description" content="My Page Description" />
 </head>
 <body>
-  <div id="root"> 
-    <h1>Hello World</h1>
-  </div>
+	<div id="root">
+		<h1>Hello World</h1>
+	</div>
 </body>
 ```
- 
+
 Now that you understand how the hoisting mechanism works, let's see how we can use
 this to our advantage by adding titles to our pages using React.
 
 Every route in the project has instructions on what you need to do, go Koala hunting
 and try to add titles to all the pages!
 
-
 📜 https://react.dev/blog/2024/12/05/react-19#support-for-metadata-tags
 
-
-
 ## Exercise overview
+
 In this exercise, we're going to add titles to our pages using React 19 JSX metadata tags.
+
 1. Go through every route, Kody will be there to guide you in what you need to do.
 2. Add titles to all the pages using React 19 JSX metadata tags.
 3. Make sure to test your titles by visiting the pages and checking the document title in the

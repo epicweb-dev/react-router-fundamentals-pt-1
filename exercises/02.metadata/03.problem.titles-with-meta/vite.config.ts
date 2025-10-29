@@ -1,6 +1,6 @@
 import { reactRouter } from '@react-router/dev/vite'
 import tailwindcss from '@tailwindcss/vite'
-import { reactRouterDevTools } from "react-router-devtools"
+import { reactRouterDevTools } from 'react-router-devtools'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
@@ -9,6 +9,6 @@ export default defineConfig({
 		port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
 	},
 	optimizeDeps: {
-		include: ["@epic-web/workshop-utils/iframe-sync", "lucide-react"]
-	}
+		include: ['@epic-web/workshop-utils/iframe-sync', 'lucide-react'],
+	},
 })

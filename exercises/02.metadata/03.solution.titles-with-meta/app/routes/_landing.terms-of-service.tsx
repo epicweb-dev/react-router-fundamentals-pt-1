@@ -1,13 +1,19 @@
 import { Shield, Mail } from 'lucide-react'
-import { getMetaFromMatches, getMetaTitle, constructPrefixedTitle } from '#app/utils/metadata.js';
-import type { Route } from './+types/_landing.terms-of-service';
+import {
+	getMetaFromMatches,
+	getMetaTitle,
+	constructPrefixedTitle,
+} from '#app/utils/metadata.js'
+import { type Route } from './+types/_landing.terms-of-service'
 
 export const meta: Route.MetaFunction = ({ matches }) => {
 	const rootMeta = getMetaFromMatches(matches, 'root')
-	const prefix = getMetaTitle(rootMeta);
-	return [{
-		title: constructPrefixedTitle("Terms of Service", prefix),
-	}]
+	const prefix = getMetaTitle(rootMeta)
+	return [
+		{
+			title: constructPrefixedTitle('Terms of Service', prefix),
+		},
+	]
 }
 
 export default function TOSPage() {

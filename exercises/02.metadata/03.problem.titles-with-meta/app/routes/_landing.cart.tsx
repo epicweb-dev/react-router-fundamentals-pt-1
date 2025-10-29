@@ -1,16 +1,22 @@
 import { Minus, Plus, Trash2, ArrowLeft, ShoppingBag } from 'lucide-react'
 import { Link } from 'react-router'
 // 💰 You will need these utilities! Feel free to check their implementation first!
-import { getMetaFromMatches, getMetaTitle, constructPrefixedTitle } from '#app/utils/metadata.js';
-import type { Route } from './+types/_landing.cart';
+import {
+	getMetaFromMatches,
+	getMetaTitle,
+	constructPrefixedTitle,
+} from '#app/utils/metadata.js'
+import { type Route } from './+types/_landing.cart'
 
 // 🐨 We want to include the root meta in the title to have Epic Shop | Cart
 export const meta: Route.MetaFunction = ({ matches }) => {
 	// 💰 You can use getMetaFromMatches and specify "root" to extract the meta information from root
 	// 💰 You can use getMetaTitle to extract the title from the root meta information
-	return [{
-		// 💰 You can use constructPrefixedTitle to create the title with the prefix you provide   
-	}]
+	return [
+		{
+			// 💰 You can use constructPrefixedTitle to create the title with the prefix you provide
+		},
+	]
 }
 export default function CartPage() {
 	const items: {
@@ -23,32 +29,32 @@ export default function CartPage() {
 		selectedSize: string
 		selectedColor: string
 	}[] = [
-			{
-				id: 1,
-				price: 59.99,
-				image:
-					'https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg?auto=compress&cs=tinysrgb&w=600',
-				brand: 'Nike',
-				quantity: 2,
-				name: 'Air Max 270',
-				selectedSize: '10',
-				selectedColor: 'Black',
-			},
-			{
-				id: 2,
-				price: 89.99,
-				image:
-					'https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg?auto=compress&cs=tinysrgb&w=600',
-				brand: 'Adidas',
-				quantity: 1,
-				name: 'Ultraboost 21',
-				selectedSize: '9',
-				selectedColor: 'White',
-			},
-		]
+		{
+			id: 1,
+			price: 59.99,
+			image:
+				'https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg?auto=compress&cs=tinysrgb&w=600',
+			brand: 'Nike',
+			quantity: 2,
+			name: 'Air Max 270',
+			selectedSize: '10',
+			selectedColor: 'Black',
+		},
+		{
+			id: 2,
+			price: 89.99,
+			image:
+				'https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg?auto=compress&cs=tinysrgb&w=600',
+			brand: 'Adidas',
+			quantity: 1,
+			name: 'Ultraboost 21',
+			selectedSize: '9',
+			selectedColor: 'White',
+		},
+	]
 	const total = 0
 	const itemCount = items.length
-	const handleQuantityChange = (itemId: string, newQuantity: number) => { }
+	const handleQuantityChange = (itemId: string, newQuantity: number) => {}
 
 	const getItemId = (item: any) =>
 		`${item.id}-${item.selectedSize}-${item.selectedColor}`

@@ -1,18 +1,24 @@
 import { Filter, Grid, List, Star, Heart } from 'lucide-react'
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router'
+import {
+	getMetaFromMatches,
+	getMetaTitle,
+	constructPrefixedTitle,
+} from '#app/utils/metadata.js'
 import { products, categories, brands } from '../../data/products'
 // 💰 You will need these utilities! Feel free to check their implementation first!
-import { getMetaFromMatches, getMetaTitle, constructPrefixedTitle } from '#app/utils/metadata.js';
-import type { Route } from './+types/_landing.products._index';
+import { type Route } from './+types/_landing.products._index'
 
 // 🐨 We want to include the root meta in the title to have Epic Shop | All Products
 export const meta: Route.MetaFunction = ({ matches }) => {
 	// 💰 You can use getMetaFromMatches and specify "root" to extract the meta information from root
 	// 💰 You can use getMetaTitle to extract the title from the root meta information
-	return [{
-		// 💰 You can use constructPrefixedTitle to create the title with the prefix you provide   
-	}]
+	return [
+		{
+			// 💰 You can use constructPrefixedTitle to create the title with the prefix you provide
+		},
+	]
 }
 export default function ProductsPage() {
 	const [selectedCategory, setSelectedCategory] = useState('All')
@@ -119,10 +125,11 @@ export default function ProductsPage() {
 										<button
 											key={category}
 											onClick={() => setSelectedCategory(category)}
-											className={`block w-full rounded-lg px-3 py-2 text-left transition-colors duration-200 ${selectedCategory === category
-												? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
-												: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
-												}`}
+											className={`block w-full rounded-lg px-3 py-2 text-left transition-colors duration-200 ${
+												selectedCategory === category
+													? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
+													: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
+											}`}
 										>
 											{category}
 										</button>
@@ -139,10 +146,11 @@ export default function ProductsPage() {
 										<button
 											key={brand}
 											onClick={() => setBrand(brand)}
-											className={`block w-full rounded-lg px-3 py-2 text-left transition-colors duration-200 ${selectedBrand === brand
-												? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
-												: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
-												}`}
+											className={`block w-full rounded-lg px-3 py-2 text-left transition-colors duration-200 ${
+												selectedBrand === brand
+													? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
+													: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
+											}`}
 										>
 											{brand}
 										</button>

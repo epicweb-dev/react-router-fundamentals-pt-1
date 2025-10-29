@@ -6,14 +6,14 @@ import {
 	Scripts,
 	ScrollRestoration,
 } from 'react-router'
-import type { Route } from './+types/root'
+import { type Route } from './+types/root'
 import tailwindStylesheet from './app.css?url'
 import { EpicShop } from './epicshop'
 
 export const links: Route.LinksFunction = () => [
 	// 📜  https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/preconnect
 	{ rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-	{ rel: "stylesheet", href: tailwindStylesheet },
+	{ rel: 'stylesheet', href: tailwindStylesheet },
 	{
 		rel: 'preconnect',
 		href: 'https://fonts.gstatic.com',
@@ -26,9 +26,11 @@ export const links: Route.LinksFunction = () => [
 ]
 
 export const meta: Route.MetaFunction = () => {
-	return [{
-		title: 'Epic Shop',
-	}]
+	return [
+		{
+			title: 'Epic Shop',
+		},
+	]
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {

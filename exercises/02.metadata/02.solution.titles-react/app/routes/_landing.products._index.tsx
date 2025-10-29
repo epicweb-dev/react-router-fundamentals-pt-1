@@ -43,7 +43,6 @@ export default function ProductsPage() {
 
 	return (
 		<div className="min-h-screen bg-stone-50 dark:bg-gray-900">
-
 			<title>All Products</title>
 			{/* Header */}
 			<div className="border-b border-stone-200 bg-white dark:border-gray-700 dark:bg-gray-900">
@@ -110,10 +109,11 @@ export default function ProductsPage() {
 										<button
 											key={category}
 											onClick={() => setSelectedCategory(category)}
-											className={`block w-full rounded-lg px-3 py-2 text-left transition-colors duration-200 ${selectedCategory === category
-												? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
-												: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
-												}`}
+											className={`block w-full rounded-lg px-3 py-2 text-left transition-colors duration-200 ${
+												selectedCategory === category
+													? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
+													: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
+											}`}
 										>
 											{category}
 										</button>
@@ -130,10 +130,11 @@ export default function ProductsPage() {
 										<button
 											key={brand}
 											onClick={() => setBrand(brand)}
-											className={`block w-full rounded-lg px-3 py-2 text-left transition-colors duration-200 ${selectedBrand === brand
-												? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
-												: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
-												}`}
+											className={`block w-full rounded-lg px-3 py-2 text-left transition-colors duration-200 ${
+												selectedBrand === brand
+													? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
+													: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
+											}`}
 										>
 											{brand}
 										</button>

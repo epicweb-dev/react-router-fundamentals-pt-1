@@ -2,8 +2,9 @@
 
 Now that you have a working products listing page, it's time to enhance it with filtering, sorting, and pagination capabilities.
 In this exercise, you'll implement the following features:
+
 - **Filtering**: Allow users to filter products based on categories, brands, and price ranges.
-- **Sorting**: Enable users to sort products by price 
+- **Sorting**: Enable users to sort products by price
 - **Pagination**: Implement pagination to manage large sets of products effectively.
 
 We will be using the URL as the source of truth and we will learn how to do all this in a way that supports progressive enhancement.
@@ -15,16 +16,17 @@ We will also use the `useNavigation` hook to provide feedback to the user when t
 The `useNavigation` hook from React Router provides information about the current navigation state of your application.
 This hook is particularly useful for providing feedback to users during navigation events, such as when a page is loading new data.
 
-When you call `useNavigation`, it returns an object that contains details about the current navigation state. One of the key properties of this object is `state`, 
+When you call `useNavigation`, it returns an object that contains details about the current navigation state. One of the key properties of this object is `state`,
 which can have one of the following values:
+
 - `"idle"`: Indicates that there is no ongoing navigation. The application is in a stable state.
 - `"loading"`: Indicates that a navigation event is in progress, and new data is being loaded.
 - `"submitting"`: Indicates that a form submission is in progress.
 
-By checking the value of `navigation.state`, you can conditionally render UI elements to inform users about the current state of the application. 
+By checking the value of `navigation.state`, you can conditionally render UI elements to inform users about the current state of the application.
 For example, you might display a loading spinner when the state is `"loading"` or disable form inputs when the state is `"submitting"`.
 
-This hook can also be used to show optimistic UI by accessing the `formData` property which is filled with the submitted data 
+This hook can also be used to show optimistic UI by accessing the `formData` property which is filled with the submitted data
 during a form submission. This allows you to reflect the changes immediately in the UI before the server responds, enhancing the user experience.
 
 ## Exercise Goals

@@ -12,32 +12,32 @@ export default function CartPage() {
 		selectedSize: string
 		selectedColor: string
 	}[] = [
-			{
-				id: 1,
-				price: 59.99,
-				image:
-					'https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg?auto=compress&cs=tinysrgb&w=600',
-				brand: 'Nike',
-				quantity: 2,
-				name: 'Air Max 270',
-				selectedSize: '10',
-				selectedColor: 'Black',
-			},
-			{
-				id: 2,
-				price: 89.99,
-				image:
-					'https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg?auto=compress&cs=tinysrgb&w=600',
-				brand: 'Adidas',
-				quantity: 1,
-				name: 'Ultraboost 21',
-				selectedSize: '9',
-				selectedColor: 'White',
-			},
-		]
+		{
+			id: 1,
+			price: 59.99,
+			image:
+				'https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg?auto=compress&cs=tinysrgb&w=600',
+			brand: 'Nike',
+			quantity: 2,
+			name: 'Air Max 270',
+			selectedSize: '10',
+			selectedColor: 'Black',
+		},
+		{
+			id: 2,
+			price: 89.99,
+			image:
+				'https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg?auto=compress&cs=tinysrgb&w=600',
+			brand: 'Adidas',
+			quantity: 1,
+			name: 'Ultraboost 21',
+			selectedSize: '9',
+			selectedColor: 'White',
+		},
+	]
 	const total = 0
 	const itemCount = items.length
-	const handleQuantityChange = (itemId: string, newQuantity: number) => { }
+	const handleQuantityChange = (itemId: string, newQuantity: number) => {}
 
 	const getItemId = (item: any) =>
 		`${item.id}-${item.selectedSize}-${item.selectedColor}`

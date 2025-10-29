@@ -1,16 +1,21 @@
 import { Minus, Plus, Trash2, ArrowLeft, ShoppingBag } from 'lucide-react'
 import { Link } from 'react-router'
-import { constructPrefixedTitle, getMetaFromMatches, getMetaTitle } from '#app/utils/metadata.js'
-import type { Route } from '../+types/root'
+import {
+	constructPrefixedTitle,
+	getMetaFromMatches,
+	getMetaTitle,
+} from '#app/utils/metadata.js'
+import { type Route } from '../+types/root'
 
 export const meta: Route.MetaFunction = ({ matches }) => {
 	const rootMeta = getMetaFromMatches(matches, 'root')
-	const prefix = getMetaTitle(rootMeta);
-	return [{
-		title: constructPrefixedTitle("Cart", prefix),
-	}]
+	const prefix = getMetaTitle(rootMeta)
+	return [
+		{
+			title: constructPrefixedTitle('Cart', prefix),
+		},
+	]
 }
-
 
 export default function CartPage() {
 	const items: {
@@ -23,32 +28,32 @@ export default function CartPage() {
 		selectedSize: string
 		selectedColor: string
 	}[] = [
-			{
-				id: 1,
-				price: 59.99,
-				image:
-					'https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg?auto=compress&cs=tinysrgb&w=600',
-				brand: 'Nike',
-				quantity: 2,
-				name: 'Air Max 270',
-				selectedSize: '10',
-				selectedColor: 'Black',
-			},
-			{
-				id: 2,
-				price: 89.99,
-				image:
-					'https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg?auto=compress&cs=tinysrgb&w=600',
-				brand: 'Adidas',
-				quantity: 1,
-				name: 'Ultraboost 21',
-				selectedSize: '9',
-				selectedColor: 'White',
-			},
-		]
+		{
+			id: 1,
+			price: 59.99,
+			image:
+				'https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg?auto=compress&cs=tinysrgb&w=600',
+			brand: 'Nike',
+			quantity: 2,
+			name: 'Air Max 270',
+			selectedSize: '10',
+			selectedColor: 'Black',
+		},
+		{
+			id: 2,
+			price: 89.99,
+			image:
+				'https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg?auto=compress&cs=tinysrgb&w=600',
+			brand: 'Adidas',
+			quantity: 1,
+			name: 'Ultraboost 21',
+			selectedSize: '9',
+			selectedColor: 'White',
+		},
+	]
 	const total = 0
 	const itemCount = items.length
-	const handleQuantityChange = (itemId: string, newQuantity: number) => { }
+	const handleQuantityChange = (itemId: string, newQuantity: number) => {}
 
 	const getItemId = (item: any) =>
 		`${item.id}-${item.selectedSize}-${item.selectedColor}`

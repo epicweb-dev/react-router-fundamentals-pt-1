@@ -6,7 +6,7 @@ import {
 	Scripts,
 	ScrollRestoration,
 } from 'react-router'
-import type { Route } from './+types/root'
+import { type Route } from './+types/root'
 import { EpicShop } from './epicshop'
 
 export function Layout({ children }: { children: React.ReactNode }) {

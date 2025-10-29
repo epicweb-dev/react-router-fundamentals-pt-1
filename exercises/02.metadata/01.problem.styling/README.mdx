@@ -1,6 +1,6 @@
 # Adding styles and fonts to our apps
 
-In this exercise we will learn how to add styles and fonts to our React Router apps 
+In this exercise we will learn how to add styles and fonts to our React Router apps
 using the `links` export.
 
 ## Using vite to import stylesheets and handle CSS
@@ -22,11 +22,10 @@ To learn more about all the benefits you get by using Vite you can check out the
 
 📜 https://vite.dev/guide/features.html#css
 
-
 ## Understanding the `links` export
 
-Before you begin adding styles and fonts to your app, it's important to understand how the `links` export works. 
-The `links` export is a function that returns an array of `<link>` elements to be included in the 
+Before you begin adding styles and fonts to your app, it's important to understand how the `links` export works.
+The `links` export is a function that returns an array of `<link>` elements to be included in the
 `<head>` of your document. This is where you can add your global stylesheets and font links and whatever
 else you might need in the head of your document.
 
@@ -44,19 +43,20 @@ Here's an example of how to use the `links` export:
 import { LinksFunction } from 'react-router'
 
 // imagine this jsx was in the document
-<link rel="stylesheet" href="/styles/global.css" />, 
-<link
-  href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
-  rel="stylesheet"
-/>
-
+;((<link rel="stylesheet" href="/styles/global.css" />),
+	(
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+			rel="stylesheet"
+		/>
+	))
 
 export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: "/styles/global.css" }, 
-  {
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
-    rel: "stylesheet"
-  }
+	{ rel: 'stylesheet', href: '/styles/global.css' },
+	{
+		href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
+		rel: 'stylesheet',
+	},
 ]
 ```
 
