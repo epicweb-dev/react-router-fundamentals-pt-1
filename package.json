@@ -18,6 +18,7 @@
   },
   "type": "module",
   "scripts": {
+    "clean": "git clean -fdX --exclude=\"!.env\"",
     "postinstall": "cd ./epicshop && npm install",
     "start": "npx --prefix ./epicshop epicshop start",
     "dev": "npx --prefix ./epicshop epicshop start",

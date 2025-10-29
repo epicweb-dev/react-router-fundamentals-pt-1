@@ -1,6 +1,6 @@
-import { products } from 'data/products'
 import { ArrowRight, Star } from 'lucide-react'
 import { Link } from 'react-router'
+import { products } from '../../../data/products'
 
 export const FeaturedProductsSection = () => {
 	const featuredProducts = products.slice(0, 4)
