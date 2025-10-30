@@ -14,17 +14,18 @@
   },
   "dependencies": {
     "@epic-web/workshop-utils": "^6.40.0",
-    "@react-router/node": "^7.5.3",
-    "@react-router/serve": "^7.5.3",
+    "@react-router/node": "^7.9.5",
+    "@react-router/serve": "^7.9.5",
     "isbot": "^5.1.27",
     "lucide-react": "^0.525.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router": "^7.5.3"
+    "react-router": "^7.9.5"
   },
   "devDependencies": {
     "@playwright/test": "^1.39.0",
-    "@react-router/dev": "^7.5.3",
+    "@react-router/dev": "^7.9.5",
+    "@react-router/fs-routes": "^7.9.5",
     "@tailwindcss/vite": "^4.1.4",
     "@types/node": "^20",
     "@types/react": "^19.1.2",

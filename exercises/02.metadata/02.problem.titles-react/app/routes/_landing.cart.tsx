@@ -71,8 +71,6 @@ export default function CartPage() {
 		<div className="min-h-screen bg-stone-50 dark:bg-gray-900">
 			<div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
 				{/* Header */}
-				{/* 🐨 Add a <title></title> tag here */}
-				{/*  💰 The title should be: "Cart" */}
 				<div className="mb-8 flex items-center justify-between">
 					<div>
 						<h1 className="text-3xl font-light text-gray-900 dark:text-white">

@@ -1,21 +1,5 @@
 import { Mail, Phone, MapPin, Send, CheckCircle, Clock } from 'lucide-react'
 import React, { useState } from 'react'
-import {
-	constructPrefixedTitle,
-	getMetaFromMatches,
-	getMetaTitle,
-} from '#app/utils/metadata.js'
-import { type Route } from './+types/_landing.contact'
-
-export const meta: Route.MetaFunction = ({ matches }) => {
-	const rootMeta = getMetaFromMatches(matches, 'root')
-	const prefix = getMetaTitle(rootMeta)
-	return [
-		{
-			title: constructPrefixedTitle('Contact Us', prefix),
-		},
-	]
-}
 
 export default function ContactPage() {
 	const [formData, setFormData] = useState({

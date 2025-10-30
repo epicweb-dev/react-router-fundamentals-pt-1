@@ -1,23 +1,6 @@
 import { Minus, Plus, Trash2, ArrowLeft, ShoppingBag } from 'lucide-react'
 import { Link } from 'react-router'
-// 💰 You will need these utilities! Feel free to check their implementation first!
-import {
-	getMetaFromMatches,
-	getMetaTitle,
-	constructPrefixedTitle,
-} from '#app/utils/metadata.js'
-import { type Route } from './+types/_landing.cart'
 
-// 🐨 We want to include the root meta in the title to have Epic Shop | Cart
-export const meta: Route.MetaFunction = ({ matches }) => {
-	// 💰 You can use getMetaFromMatches and specify "root" to extract the meta information from root
-	// 💰 You can use getMetaTitle to extract the title from the root meta information
-	return [
-		{
-			// 💰 You can use constructPrefixedTitle to create the title with the prefix you provide
-		},
-	]
-}
 export default function CartPage() {
 	const items: {
 		id: number

@@ -1,20 +1,4 @@
 import { Award, Heart, Compass, Lightbulb } from 'lucide-react'
-import {
-	getMetaFromMatches,
-	getMetaTitle,
-	constructPrefixedTitle,
-} from '#app/utils/metadata.js'
-import { type Route } from './+types/_landing.about'
-
-export const meta: Route.MetaFunction = ({ matches }) => {
-	const rootMeta = getMetaFromMatches(matches, 'root')
-	const prefix = getMetaTitle(rootMeta)
-	return [
-		{
-			title: constructPrefixedTitle('About Us', prefix),
-		},
-	]
-}
 
 export default function AboutPage() {
 	const team = [

@@ -3,8 +3,6 @@ import { FileText, Mail } from 'lucide-react'
 export default function TOUPage() {
 	return (
 		<div className="bg-stone-50 dark:bg-gray-900">
-			{/* 🐨 Add a <title></title> tag here */}
-			{/*  💰 The title should be: "Terms of Use" */}
 			{/* Hero Section */}
 			<div className="bg-gradient-to-br from-stone-50 via-amber-50/30 to-stone-100 py-32 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
 				<div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">

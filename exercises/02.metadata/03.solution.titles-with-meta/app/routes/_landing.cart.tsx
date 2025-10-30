@@ -1,21 +1,5 @@
 import { Minus, Plus, Trash2, ArrowLeft, ShoppingBag } from 'lucide-react'
 import { Link } from 'react-router'
-import {
-	constructPrefixedTitle,
-	getMetaFromMatches,
-	getMetaTitle,
-} from '#app/utils/metadata.js'
-import { type Route } from '../+types/root'
-
-export const meta: Route.MetaFunction = ({ matches }) => {
-	const rootMeta = getMetaFromMatches(matches, 'root')
-	const prefix = getMetaTitle(rootMeta)
-	return [
-		{
-			title: constructPrefixedTitle('Cart', prefix),
-		},
-	]
-}
 
 export default function CartPage() {
 	const items: {

@@ -3,28 +3,25 @@
 Welcome to your first exercise! In this exercise,
 you will learn how to register routes in a React Router application.
 
-## Exercise Overview
+## Understanding the `routes.ts` file
+
+The `app/routes.ts` file is where you define the routes for your application. Each route corresponds to a specific URL path
+and is associated with a React component that will be rendered when the user navigates to that path.
+
+This file is picked up by the React Router vite plugin and is used to generate the routing configuration for your app.
+What's important to keep in mind is that this in the end, is just a regular TypeScript file, so you can use all the features of TypeScript
+to help you define your routes. You can fetch them from third-parties, define helper functions, and so on.
+
+React router offers you a few utilities to help you define your routes more easily.
+
+## Exercise Goals
 
 In this exercise, you will:
 
 1. Explore the `app/routes` directory.
-2. Register those routes in the `app/routes.ts` file.
-3. (Bonus) Create a utility to easily define landing page routes.
-
-## Getting Started
+2. Learn about the utilites offered by React Router to define routes.
+3. Register those routes in the `app/routes.ts` file.
+4. (Bonus) Create a utility to easily define landing page routes.
 
 To get started, find our helpful assistants comments in the `app/routes.ts` file. (They include 🐨 emoji)
-and implement the following routes:
-
-- `Landing page layout` that wraps all the other routes (`./routes/_landing.tsx`).
-- `/` - The index route that renders the landing page (`./routes/_landing._index/route.tsx`).
-- `/about` - The about route that renders the `About` page (`./routes/_landing.about.tsx`).
-- `/products` - The products route that renders the `Products` page (`./routes/_landing.products._index.tsx`).
-- `/products/:productId` - The product details route that renders the `ProductDetails` page (`./routes/_landing.products.$productId.tsx`).
-- `/contact` - The contact route that renders the `Contact` page (`./routes/_landing.contact.tsx`).
-- `/cart` - The cart route that renders the `Cart` page (`./routes/_landing.cart.tsx`).
-- `/terms-of-use` - The terms of use route that renders the `TermsOfUse` page (`./routes/_landing.terms-of-use.tsx`).
-- `/terms-of-service` - The terms of service route that renders the `TermsOfService` page (`./routes/_landing.terms-of-service.tsx`).
-
-> Bonus (only after completing the above): Create a utility function to easily define landing page routes.
-> This utility should be used to define the routes above
+and implement the required routes for this project!
