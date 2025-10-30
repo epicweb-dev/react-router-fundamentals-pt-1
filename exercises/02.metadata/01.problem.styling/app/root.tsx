@@ -7,19 +7,16 @@ import {
 	ScrollRestoration,
 } from 'react-router'
 import { type Route } from './+types/root'
+import tailwindStylesheet from './app.css?url'
 import { EpicShop } from './epicshop'
 
 export const links: Route.LinksFunction = () => [
-	/**
-	 * 🐨 This exercise will let us learn how to use the links export and it's strengths while working
-	 * with meta-data!
-	 *
-	 * 🐨 To get us started add the styles into your project that are already prepared for you!
-	 * 🐨 Then after you're done with that you can add fonts inside of here!
-	 *
-	 *  💰 this is the link to the fonts we want to use:
-	 *  https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap
-	 */
+	// 🐨 Add the stylesheet imported from app.css!
+	// 🐨 Add fonts and preconnect to google!
+	// 💰 { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+	// 💰 { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
+	// 💰 this is the link to the fonts we want to use:
+	//  https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap
 ]
 
 export function Layout({ children }: { children: React.ReactNode }) {

@@ -11,9 +11,9 @@ import tailwindStylesheet from './app.css?url'
 import { EpicShop } from './epicshop'
 
 export const links: Route.LinksFunction = () => [
+	{ rel: 'stylesheet', href: tailwindStylesheet },
 	// 📜  https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/preconnect
 	{ rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-	{ rel: 'stylesheet', href: tailwindStylesheet },
 	{
 		rel: 'preconnect',
 		href: 'https://fonts.gstatic.com',
