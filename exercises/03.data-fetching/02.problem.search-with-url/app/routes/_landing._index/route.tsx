@@ -1,5 +1,5 @@
-import { getAllCategories } from '#app/domain/category.server.ts'
-import { getProducts } from '#app/domain/products.server.ts'
+import { getAllCategories } from '#app/domain/category.server.js'
+import { getProducts } from '#app/domain/products.server.js'
 import { getMetaFromMatches, getMetaTitle } from '#app/utils/metadata.js'
 import { type Route } from './+types/route'
 import { CategoriesSection } from './categories-section'

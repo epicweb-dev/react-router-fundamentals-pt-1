@@ -1,9 +1,9 @@
 import { Filter, Grid, List } from 'lucide-react'
 import { useState } from 'react'
 import { ProductCard } from '#app/components/product-card.js'
-import { getAllBrands } from '#app/domain/brand.server.ts'
-import { getAllCategories } from '#app/domain/category.server.ts'
-import { getProducts } from '#app/domain/products.server.ts'
+import { getAllBrands } from '#app/domain/brand.server.js'
+import { getAllCategories } from '#app/domain/category.server.js'
+import { getProducts } from '#app/domain/products.server.js'
 import {
 	getMetaFromMatches,
 	getMetaTitle,
