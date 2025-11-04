@@ -3,8 +3,7 @@
   <strong>
     First part of the react-router fundamentals workshop. We go over everything you need to know about data reading and display.
   </strong>
-  <p>
-    This workshop is the first part of a series on react-router v7, focusing on
+    This workshop focuses on
     data loading and display. It is designed to teach you the core concepts of
     react-router v7 in a hands-on, project-based way.
 
@@ -23,12 +22,11 @@
     use react-router v7 to build data-driven applications. You will also have a
     working e-commerce app that you can use as a starting point for your own
     projects.
-
-    <em>
-      This workshop assumes you have a basic understanding of React and
-      JavaScript. No prior knowledge of react-router is required.
-    </em>
-  </p>
+ 
+    This workshop assumes you have a basic understanding of React and
+    JavaScript. No prior knowledge of react-router is required.
+     
+  
 </div>
 
 <hr />
