@@ -54,11 +54,7 @@ if (!process.env.SKIP_PRISMA) {
 		const prismaDir = path.join(app.fullPath, 'prisma')
 		try {
 			if (await fsExtra.exists(prismaDir)) {
-				if (await fsExtra.exists(path.join(prismaDir, 'sql'))) {
-					await $({ cwd: app.fullPath, all: true })`prisma generate --sql`
-				} else {
-					await $({ cwd: app.fullPath, all: true })`prisma generate`
-				}
+				await execa(`npm run db:gen`, { cwd: app.fullPath, all: true })
 			}
 		} catch (prismaGenerateResult) {
 			console.log(prismaGenerateResult.all)
