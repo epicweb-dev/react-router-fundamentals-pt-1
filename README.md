@@ -3,6 +3,9 @@
   <strong>
     First part of the react-router fundamentals workshop. We go over everything you need to know about data reading and display.
   </strong>
+     
+  
+</div>
     This workshop focuses on
     data loading and display. It is designed to teach you the core concepts of
     react-router v7 in a hands-on, project-based way.
@@ -25,9 +28,6 @@
  
     This workshop assumes you have a basic understanding of React and
     JavaScript. No prior knowledge of react-router is required.
-     
-  
-</div>
 
 <hr />
 
