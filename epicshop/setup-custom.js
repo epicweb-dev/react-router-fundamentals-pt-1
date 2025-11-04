@@ -48,3 +48,22 @@ if (!process.env.SKIP_PLAYGROUND) {
 		)
 	}
 }
+if (!process.env.SKIP_PRISMA) {
+	console.log(`🏗  generating prisma client in all ${allApps.length} apps...`)
+	for (const app of allApps) {
+		const prismaDir = path.join(app.fullPath, 'prisma')
+		try {
+			if (await fsExtra.exists(prismaDir)) {
+				if (await fsExtra.exists(path.join(prismaDir, 'sql'))) {
+					await $({ cwd: app.fullPath, all: true })`prisma generate --sql`
+				} else {
+					await $({ cwd: app.fullPath, all: true })`prisma generate`
+				}
+			}
+		} catch (prismaGenerateResult) {
+			console.log(prismaGenerateResult.all)
+			throw new Error(`❌  prisma generate failed in ${app.relativePath}`)
+		}
+	}
+	console.log('✅ prisma client generated')
+}

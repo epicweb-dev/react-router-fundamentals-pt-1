@@ -33,6 +33,7 @@
     "dotenv": "^16.3.1",
     "tailwindcss": "^4.1.4",
     "typescript": "^5.8.3",
-    "vite": "^6.3.3"
+    "vite": "^6.3.3",
+    "vite-plugin-devtools-json": "^1.0.0"
   }
 }
