@@ -3,31 +3,34 @@
   <strong>
     First part of the react-router fundamentals workshop. We go over everything you need to know about data reading and display.
   </strong>
-     
-    This workshop focuses on
-    data loading and display. It is designed to teach you the core concepts of
-    react-router v7 in a hands-on, project-based way.
+  <p>
+      
+This workshop focuses on
+data loading and display. It is designed to teach you the core concepts of
+react-router v7 in a hands-on, project-based way.
 
-    We will learn how to build an e-commerce app from scratch using react-router
-    v7. Along the way, we will cover topics such as:
-    - Setting up a react-router v7 project
-    - Creating routes and nested routes
-    - Loading data with loaders
-    - Displaying data with components
-    - Handling loading states
-    - Using fetchers to fetch data
-    - Sorting, filtering, and paginating data
-    - Progressive enhancement and accessibility
+We will learn how to build an e-commerce app from scratch using react-router
+v7. Along the way, we will cover topics such as:
+- Setting up a react-router v7 project
+- Creating routes and nested routes
+- Loading data with loaders
+- Displaying data with components
+- Handling loading states
+- Using fetchers to fetch data
+- Sorting, filtering, and paginating data
+- Progressive enhancement and accessibility
 
-    By the end of this workshop, you will have a solid understanding of how to
-    use react-router v7 to build data-driven applications. You will also have a
-    working e-commerce app that you can use as a starting point for your own
-    projects.
- 
-    This workshop assumes you have a basic understanding of React and
-    JavaScript. No prior knowledge of react-router is required.
-  
+By the end of this workshop, you will have a solid understanding of how to
+use react-router v7 to build data-driven applications. You will also have a
+working e-commerce app that you can use as a starting point for your own
+projects.
+
+This workshop assumes you have a basic understanding of React and
+JavaScript. No prior knowledge of react-router is required.
+</p>
 </div>
+ 
+   
 
 <hr />
 
