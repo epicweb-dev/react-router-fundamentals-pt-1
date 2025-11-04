@@ -47,10 +47,13 @@ a different concept of data fetching with loaders:
 
 1. **Basic Data Fetching**: In the first route, we will implement a simple loader that fetches
    all products from the database and displays them on the page. This will help you understand
-   the basics of setting up a loader and using the fetched data in your components.
+   the basics of setting up a loader and using the fetched data in your components.  (`_landing._index.route.tsx`)
 2. **Using URL Parameters**: The second route will introduce URL parameters. We will create a loader
    that fetches a product based on the ID provided in the URL. This will teach you how to read
-   URL parameters in loaders and use them to fetch specific data.
+   URL parameters in loaders and use them to fetch specific data. (`_landing.products.$productId.route.tsx`)
 3. **Optimizing Data Fetching**: In the final route, we will focus on optimizing our data fetching.
    We will use a simple trick of parallelizing multiple data fetches to improve performance. This will help you
-   understand how to make your loaders more efficient.
+   understand how to make your loaders more efficient. (`_landing.products._index/route.tsx`)
+
+We also want to replace the hardcoded data we had before with real data from the database in `categories-section.tsx`
+and `featured-products-section.tsx` components.

@@ -1,3 +1,4 @@
+// 💰 You will need these utilities! Feel free to check their implementation first!
 import {
 	getMetaFromMatches,
 	getMetaTitle,
@@ -9,7 +10,6 @@ import { FeaturedProductsSection } from './featured-products.section'
 import { FeaturesSection } from './features-section'
 import { HeroSection } from './hero-section'
 import { NewsletterSection } from './newsletter-section'
-// 💰 You will need these utilities! Feel free to check their implementation first!
 
 // 🐨 We want to include the root meta in the title to have Epic Shop | Terms of Use
 export const meta: Route.MetaFunction = ({ matches }) => {

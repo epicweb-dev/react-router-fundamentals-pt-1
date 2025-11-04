@@ -28,6 +28,7 @@ export const links: Route.LinksFunction = () => [
 export const meta: Route.MetaFunction = () => {
 	// 🐨 Add the title to this page
 	// 💰 The title should be "Epic Shop"
+	// 💰 Even if you add it the child route (_landing._index/route.tsx) takes precedence so you need to change it there as well to see this reflected on the page
 	return []
 }
 

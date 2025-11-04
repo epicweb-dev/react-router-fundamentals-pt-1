@@ -13,8 +13,10 @@ import { EpicShop } from './epicshop'
 export const links: Route.LinksFunction = () => [
 	// 🐨 Add the stylesheet imported from app.css!
 	// 🐨 Add fonts and preconnect to google!
-	// 💰 { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-	// 💰 { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
+	// 💰 Use this to preconnect to google fonts
+	// { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+	// 💰 Use this to preconnect to google fonts
+	// { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
 	// 💰 this is the link to the fonts we want to use:
 	//  https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap
 ]

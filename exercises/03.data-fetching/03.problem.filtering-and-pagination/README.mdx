@@ -32,6 +32,9 @@ during a form submission. This allows you to reflect the changes immediately in 
 ## Exercise Goals
 
 In this exercise, you will enhance the products listing page by implementing filtering, sorting, and pagination features.
-You will first use the prepared method for extracting all the search parameters from the URL and then apply those filters to the products listing.
-You will pass back the info to the client and then use that info to render true information instead of the hardcoded info we had before.
-You will also learn how to use the `useNavigation` hook to provide feedback to users when the page is loading new data.
+
+You will first use the prepared method for extracting all the search parameters from the URL and then apply those filters to the products listing. (`getProducts` in `products.server.ts`)
+
+You will pass back the info to the client and then use that info to render true information instead of the hardcoded info we had before. (`_landing.products._index/route.tsx`)
+
+You will also learn how to use the `useNavigation` hook to provide feedback to users when the page is loading new data. (`_landing.products._index/route.tsx` and `product-filters.tsx`)

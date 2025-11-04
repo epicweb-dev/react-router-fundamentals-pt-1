@@ -151,8 +151,10 @@ export default function ProductsPage({ loaderData }: Route.ComponentProps) {
 										// 💰 You can just use category.id and category.name here!
 										<button
 											key={category}
+											// 💰 Use category.name
 											onClick={() => setSelectedCategory(category)}
 											className={`block w-full rounded-lg px-3 py-2 text-left transition-colors duration-200 ${
+												// 💰 Match with category.name
 												selectedCategory === category
 													? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
 													: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
@@ -174,8 +176,10 @@ export default function ProductsPage({ loaderData }: Route.ComponentProps) {
 										// 💰 You can just use brand.id and brand.name here!
 										<button
 											key={brand}
+											// 💰 Use brand.name
 											onClick={() => setBrand(brand)}
 											className={`block w-full rounded-lg px-3 py-2 text-left transition-colors duration-200 ${
+												// 💰 Use brand.name
 												selectedBrand === brand
 													? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
 													: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'

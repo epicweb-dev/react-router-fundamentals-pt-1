@@ -2,8 +2,7 @@
 	"typescript.preferences.autoImportFileExcludePatterns": [
 		"@remix-run/server-runtime",
 		"@remix-run/router",
-		"react-router-dom",
-		"react-router"
+		"react-router-dom"
 	],
 	"workbench.editorAssociations": {
 		"*.db": "sqlite-viewer.view"

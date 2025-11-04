@@ -51,7 +51,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 }
 
 export default function ProductsPage({ loaderData }: Route.ComponentProps) {
-	const { products, categories, brands } = loaderData
+	const { products } = loaderData
 	// 💣 We won't be needing these manual state filters anymore, we are using the url!
 	const [selectedCategory, setSelectedCategory] = useState('All')
 	const [selectedBrand, setBrand] = useState('All')
@@ -116,6 +116,8 @@ export default function ProductsPage({ loaderData }: Route.ComponentProps) {
 							<select
 								// 🐨 Let's do the same for sortBy as it's done with perPage select!
 								// 💰 Remove the value and onChange and use perPage as reference!
+								// 💰 Don't forget to set the name to be perPage
+								// 💰 Default value also should be set!
 								value={sortBy}
 								onChange={(e) => setSortBy(e.target.value)}
 								className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white"

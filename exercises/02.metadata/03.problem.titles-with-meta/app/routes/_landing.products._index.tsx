@@ -1,13 +1,13 @@
 import { Filter, Grid, List, Star, Heart } from 'lucide-react'
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router'
+// 💰 You will need these utilities! Feel free to check their implementation first!
 import {
 	getMetaFromMatches,
 	getMetaTitle,
 	constructPrefixedTitle,
 } from '#app/utils/metadata.js'
 import { products, categories, brands } from '../../data/products'
-// 💰 You will need these utilities! Feel free to check their implementation first!
 import { type Route } from './+types/_landing.products._index'
 
 // 🐨 We want to include the root meta in the title to have Epic Shop | All Products

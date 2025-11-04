@@ -37,5 +37,11 @@ In this exercise, we will implement a search functionality for our product listi
 page. The search term will be stored in the URL as a query parameter, allowing users
 to share links to specific search results and bookmark their searches for later.
 
-The header component will have a search input field where users can type their search queries.
+The `header.tsx` component will have a search input field where users can type their search queries.
 When the form is submitted, the search term will be added to the URL as a query parameter.
+
+Then on the `_landing.products._index/route.tsx` route, we will read the search term
+from the URL and filter the list of products based on the search term.
+
+Finally from there we will update the `getProducts` function in `products.server.ts` to accept a search filter
+and return only products that match the search term.
