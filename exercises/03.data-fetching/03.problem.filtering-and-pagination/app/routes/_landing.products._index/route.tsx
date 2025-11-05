@@ -70,7 +70,7 @@ export default function ProductsPage({ loaderData }: Route.ComponentProps) {
 	return (
 		<div className="min-h-screen bg-stone-50 dark:bg-gray-900">
 			{/* Header */}
-			<div className="border-b border-stone-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+			<div className="sticky top-20 z-40 border-b border-stone-200 bg-white opacity-90 dark:border-gray-700 dark:bg-gray-900">
 				<div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
 					<div className="flex flex-col md:flex-row md:items-center md:justify-between">
 						<div>
