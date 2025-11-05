@@ -21,10 +21,11 @@ const productShortInfoSelect = {
 	},
 } as const satisfies ProductSelect
 
-export async function getProducts() {
+export async function getProducts({ perPage }: { perPage?: number }) {
 	// Get products with pagination
 	const products = await db.product.findMany({
 		select: productShortInfoSelect,
+		...(perPage ? { take: perPage } : {}),
 	})
 
 	return {
@@ -75,10 +76,13 @@ export async function getProductById(id: string) {
 }
 
 export async function getRelatedProducts(
-	productId: string,
+	productId: string | undefined,
 	categoryId: string | undefined,
 	brandId: string | undefined,
 ) {
+	if (!productId) {
+		return []
+	}
 	const products = await db.product.findMany({
 		where: {
 			id: { not: productId },

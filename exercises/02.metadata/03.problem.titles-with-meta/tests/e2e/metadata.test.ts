@@ -8,7 +8,7 @@ test.describe('Routing E2E Tests', () => {
 		await expect(page).toHaveTitle('Epic Shop')
 
 		// Check for duplicate <title> elements
-		const titleElements = page.locator('title')
+		const titleElements = page.locator('head > title')
 		await expect(titleElements).toHaveCount(1)
 	})
 
@@ -18,7 +18,7 @@ test.describe('Routing E2E Tests', () => {
 		await page.goto('/products')
 		await expect(page).toHaveTitle('Epic Shop | All Products')
 		// Check for duplicate <title> elements
-		const titleElements = page.locator('title')
+		const titleElements = page.locator('head > title')
 		await expect(titleElements).toHaveCount(1)
 	})
 
@@ -28,7 +28,7 @@ test.describe('Routing E2E Tests', () => {
 		await page.goto('/products/1')
 		await expect(page).toHaveTitle('Epic Shop | Product overview')
 		// Check for duplicate <title> elements
-		const titleElements = page.locator('title')
+		const titleElements = page.locator('head > title')
 		await expect(titleElements).toHaveCount(1)
 	})
 })

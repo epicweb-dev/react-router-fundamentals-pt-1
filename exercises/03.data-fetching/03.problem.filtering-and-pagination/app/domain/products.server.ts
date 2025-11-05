@@ -190,10 +190,13 @@ export async function getProductById(id: string) {
 }
 
 export async function getRelatedProducts(
-	productId: string,
+	productId: string | undefined,
 	categoryId: string | undefined,
 	brandId: string | undefined,
 ) {
+	if (!productId) {
+		return []
+	}
 	const products = await db.product.findMany({
 		where: {
 			id: { not: productId },

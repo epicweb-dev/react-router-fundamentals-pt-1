@@ -9,8 +9,9 @@ This workshop focuses on
 data loading and display. It is designed to teach you the core concepts of
 react-router v7 in a hands-on, project-based way.
 
-We will learn how to build an e-commerce app from scratch using react-router
-v7. Along the way, we will cover topics such as:
+We will learn how to build an e-commerce app from scratch using react-router v7.
+Along the way, we will cover topics such as:
+
 - Setting up a react-router v7 project
 - Creating routes and nested routes
 - Loading data with loaders
@@ -20,17 +21,17 @@ v7. Along the way, we will cover topics such as:
 - Sorting, filtering, and paginating data
 - Progressive enhancement and accessibility
 
-By the end of this workshop, you will have a solid understanding of how to
-use react-router v7 to build data-driven applications. You will also have a
-working e-commerce app that you can use as a starting point for your own
-projects.
+By the end of this workshop, you will have a solid understanding of how to use
+react-router v7 to build data-driven applications. You will also have a working
+e-commerce app that you can use as a starting point for your own projects.
 
-This workshop assumes you have a basic understanding of React and
-JavaScript. No prior knowledge of react-router is required.
+This workshop assumes you have a basic understanding of React and JavaScript. No
+prior knowledge of react-router is required.
+
 </p>
 </div>
  
-   
+
 
 <hr />
 
@@ -73,12 +74,18 @@ speed on some of the tools and concepts we'll be covering:
 - https://react.dev/blog/2024/12/05/react-19 (React 19 blog post)
 - https://react.dev/learn (React official docs - learn section)
 - https://reactrouter.com/home (React Router official docs)
-- https://www.typescriptlang.org/docs/handbook/2/basic-types.html (TypeScript basic types docs)
+- https://www.typescriptlang.org/docs/handbook/2/basic-types.html (TypeScript
+  basic types docs)
 
 Useful to go through if you want to get a head start on the workshop:
-- https://v2.remix.run/docs/discussion/introduction (Remix introduction docs, keep in mind that react-router v7 framework mode is a continuation of Remix v2)
-- https://v2.remix.run/docs/discussion/progressive-enhancement (Progressive enhancement in Remix, also applicable to react-router v7 framework mode)
-- https://developer.mozilla.org/en-US/ (this is your best friend for web development, check out anything you don't understand here)
+
+- https://v2.remix.run/docs/discussion/introduction (Remix introduction docs,
+  keep in mind that react-router v7 framework mode is a continuation of Remix
+  v2)
+- https://v2.remix.run/docs/discussion/progressive-enhancement (Progressive
+  enhancement in Remix, also applicable to react-router v7 framework mode)
+- https://developer.mozilla.org/en-US/ (this is your best friend for web
+  development, check out anything you don't understand here)
 
 ## System Requirements
 

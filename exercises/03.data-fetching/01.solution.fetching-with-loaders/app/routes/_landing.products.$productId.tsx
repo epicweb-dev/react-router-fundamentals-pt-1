@@ -36,7 +36,7 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 	const { productId } = params
 	const product = await getProductById(productId)
 	const relatedProducts = await getRelatedProducts(
-		productId,
+		product?.id,
 		product?.category.id,
 		product?.brand.id,
 	)

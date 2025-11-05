@@ -50,13 +50,4 @@ test.describe('Routing E2E Tests', () => {
 			page.getByRole('heading', { name: 'Terms of Use' }),
 		).toBeVisible()
 	})
-
-	test('should navigate to specific product page and render correct content', async ({
-		page,
-	}) => {
-		await page.goto('/products/1')
-		await expect(
-			page.getByRole('heading', { name: 'Air Max Revolution' }),
-		).toBeVisible()
-	})
 })

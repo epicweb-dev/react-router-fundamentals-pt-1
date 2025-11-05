@@ -18,12 +18,15 @@ import {
 import { products } from '../../data/products'
 import { type Route } from './+types/_landing.products.$productId'
 
-export const meta: Route.MetaFunction = ({ matches }) => {
+export const meta: Route.MetaFunction = ({ matches, params }) => {
 	const rootMeta = getMetaFromMatches(matches, 'root')
 	const prefix = getMetaTitle(rootMeta)
 	return [
 		{
-			title: constructPrefixedTitle('Product overview', prefix),
+			title: constructPrefixedTitle(
+				`Product overview ${params.productId}`,
+				prefix,
+			),
 		},
 	]
 }

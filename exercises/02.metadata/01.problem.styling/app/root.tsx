@@ -14,6 +14,7 @@ export const links: Route.LinksFunction = () => [
 	// 🐨 Add the stylesheet imported from app.css!
 	// 🐨 Add fonts and preconnect to google!
 	// 💰 Use this to preconnect to google fonts
+	// 📜  https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/preconnect
 	// { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
 	// 💰 Use this to preconnect to google fonts
 	// { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },

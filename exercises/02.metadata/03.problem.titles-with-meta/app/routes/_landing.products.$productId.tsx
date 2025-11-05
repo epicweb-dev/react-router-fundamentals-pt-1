@@ -8,7 +8,7 @@ import {
 	Plus,
 	Minus,
 } from 'lucide-react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useParams, Link } from 'react-router'
 import {
 	getMetaFromMatches,
@@ -19,8 +19,8 @@ import { products } from '../../data/products'
 // 💰 You will need these utilities! Feel free to check their implementation first!
 import { type Route } from './+types/_landing.products.$productId'
 
-// 🐨 We want to include the root meta in the title to have Epic Shop | Product overview
-export const meta: Route.MetaFunction = ({ matches }) => {
+// 🐨 We want to include the root meta in the title to have Epic Shop | Product overview ${productId}
+export const meta: Route.MetaFunction = ({ matches, params }) => {
 	// 💰 You can use getMetaFromMatches and specify "root" to extract the meta information from root
 	// 💰 You can use getMetaTitle to extract the title from the root meta information
 	return [

@@ -11,7 +11,7 @@ import { FeaturesSection } from './features-section'
 import { HeroSection } from './hero-section'
 import { NewsletterSection } from './newsletter-section'
 
-// 🐨 We want to include the root meta in the title to have Epic Shop | Terms of Use
+// 🐨 We want to include the root meta in the title to have Epic Shop
 export const meta: Route.MetaFunction = ({ matches }) => {
 	// 💰 You can use getMetaFromMatches and specify "root" to extract the meta information from root
 	// 💰 You can use getMetaTitle to extract the title from the root meta information

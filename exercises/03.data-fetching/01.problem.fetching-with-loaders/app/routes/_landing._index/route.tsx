@@ -18,6 +18,7 @@ export const loader = async () => {
 	// 🐨 You should fetch the data directly from the DB here!
 	// 💰 Bonus points: Optimize the retrieval of products and categories by fetching them in parallel
 	// 💰 You can use the function 🧝‍♀️ prepared for us above called `getProducts`
+	// 💰 take 3 products only via `perPage`
 
 	// 💰 You can use the function 🧝‍♀️ prepared for us above called `getAllCategories`
 	// 💰 take 4 categories only
