@@ -8,7 +8,6 @@ import {
 } from 'react-router'
 import { type Route } from './+types/root'
 import tailwindStylesheet from './app.css?url'
-import { EpicShop } from './epicshop'
 
 export const links: Route.LinksFunction = () => [
 	{ rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -37,7 +36,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				{children}
 				<ScrollRestoration />
 				<Scripts />
-				<EpicShop />
 			</body>
 		</html>
 	)

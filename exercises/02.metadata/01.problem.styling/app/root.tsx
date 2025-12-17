@@ -8,7 +8,6 @@ import {
 } from 'react-router'
 import { type Route } from './+types/root'
 import tailwindStylesheet from './app.css?url'
-import { EpicShop } from './epicshop'
 
 export const links: Route.LinksFunction = () => [
 	// 🐨 Add the stylesheet imported from app.css!
@@ -35,7 +34,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				{children}
 				<ScrollRestoration />
 				<Scripts />
-				<EpicShop />
 			</body>
 		</html>
 	)
