@@ -37,6 +37,8 @@ jobs:
       - name: ⬣ ESLint
         run: npm run lint
         working-directory: ./workshop
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
 
   deploy:
     name: 🚀 Deploy
