@@ -23,7 +23,7 @@ export const meta: Route.MetaFunction = ({ matches }) => {
 
 export const loader = async ({}: Route.LoaderArgs) => {
 	const [{ products }, { categories }, { brands }] = await Promise.all([
-		getProducts(),
+		getProducts({}),
 		getAllCategories(),
 		getAllBrands(),
 	])
